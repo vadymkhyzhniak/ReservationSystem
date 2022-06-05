@@ -63,3 +63,11 @@ sourceSets {
 processServerResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
