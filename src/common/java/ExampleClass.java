@@ -1,5 +1,5 @@
 import java.util.UUID;
 
-public class Test {
+public class ExampleClass {
     private UUID id;
 }
