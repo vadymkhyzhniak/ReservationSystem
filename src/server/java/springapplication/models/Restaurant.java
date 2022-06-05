@@ -1,8 +1,5 @@
-package hello.world.demo.restaurant;
+package springapplication.models;
 
-import hello.world.demo.tables.Table;
-
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Arrays;
 

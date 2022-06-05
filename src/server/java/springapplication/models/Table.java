@@ -1,4 +1,4 @@
-package hello.world.demo.tables;
+package springapplication.models;
 
 public class Table {
     private long id;

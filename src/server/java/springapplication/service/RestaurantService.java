@@ -1,7 +1,7 @@
-package hello.world.demo.restaurant;
+package springapplication.service;
 
-import hello.world.demo.tables.Table;
-import org.springframework.stereotype.Component;
+import springapplication.models.Restaurant;
+import springapplication.models.Table;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
