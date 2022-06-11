@@ -1,4 +1,4 @@
-package persistancemanagement;
+package springapplication.persistancemanagement;
 
 import org.jetbrains.annotations.NotNull;
 import springapplication.models.Reservation;
