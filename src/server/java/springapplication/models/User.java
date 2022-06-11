@@ -2,8 +2,11 @@ package springapplication.models;
 
 public class User {
 
+    private long uid;
+
     private String name;
-    private long id;
+
+    private String password;
 
     public String getName() {
         return name;
@@ -13,16 +16,17 @@ public class User {
         this.name = name;
     }
 
-    public User(long id, String name){
-        this.id = id;
+    public long getUid() {
+        return uid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public User(long uid, String name, String password) {
+        this.uid = uid;
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.password = password;
     }
 }

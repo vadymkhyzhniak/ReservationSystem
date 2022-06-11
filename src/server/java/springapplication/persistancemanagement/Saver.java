@@ -77,10 +77,10 @@ public class Saver {
     }
 
     public static void main (String[] args) {
-        Restaurant restaurant = new Restaurant(1L,"L'Osteria", LocalTime.NOON,LocalTime.MIDNIGHT);
+        Restaurant restaurant = new Restaurant("L'Osteria", LocalTime.NOON,LocalTime.MIDNIGHT, 3, 3);
         File file = new File(restaurant.getRestaurantFile().getAbsolutePath());
-        User user = new User(1L,"Chiheb");
-        Table table = new Table(1L, "T1",restaurant);
+        User user = new User(1L,"Chiheb", "goodpass");
+        Table table = new Table(1L, restaurant);
         Reservation reservation = new Reservation(LocalTime.MIN,LocalTime.MAX,user,restaurant,1L,table);
         System.out.println(reservation.toString());
         Saver.modifyReservation(file,reservation);

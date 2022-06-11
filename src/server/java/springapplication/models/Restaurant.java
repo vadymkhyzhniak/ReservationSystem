@@ -12,27 +12,31 @@ public class Restaurant {
     private Table[] tables;
     private LocalTime openedFrom;
     private LocalTime openedTo;
+
+    private int stars;
+    private int priceRange;
     private File restaurantFile;
 
-    public Restaurant() {
-    }
-
-    public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo) {
+    public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange) {
         this.id = id;
         this.name = name;
         this.tableSchema = Generator.generateRandomTableSchema();
         this.tables = new Table[tableSchema.length()];
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
+        this.stars = stars;
+        this.priceRange = priceRange;
         this.restaurantFile = new File(Saver.generateFileName(this));
     }
 
-    public Restaurant(String name, LocalTime openedFrom, LocalTime openedTo) {
+    public Restaurant(String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange) {
         this.name = name;
         this.tableSchema = Generator.generateRandomTableSchema();
         this.tables = new Table[tables.length];
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
+        this.stars = stars;
+        this.priceRange = priceRange;
         this.restaurantFile = new File(Saver.generateFileName(this));
     }
 
