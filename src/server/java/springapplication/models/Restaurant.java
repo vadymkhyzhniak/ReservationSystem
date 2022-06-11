@@ -1,31 +1,39 @@
 package springapplication.models;
 
+import persistancemanagement.Saver;
+
+import java.io.File;
 import java.time.LocalTime;
-import java.util.Arrays;
 
 public class Restaurant {
     private long id;
     private String name;
-    private Table[] tableSchema;
+    private String tableSchema;
+    private Table[] tables;
     private LocalTime openedFrom;
     private LocalTime openedTo;
+    private File restaurantFile;
 
     public Restaurant() {
     }
 
-    public Restaurant(long id, String name, Table[] tableSchema, LocalTime openedFrom, LocalTime openedTo) {
+    public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo) {
         this.id = id;
         this.name = name;
-        this.tableSchema = tableSchema;
+        this.tableSchema = Generator.generateRandomTableSchema();
+        this.tables = new Table[tableSchema.length()];
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
+        this.restaurantFile = new File(Saver.generateFileName(this));
     }
 
-    public Restaurant(String name, Table[] tableSchema, LocalTime openedFrom, LocalTime openedTo) {
+    public Restaurant(String name, LocalTime openedFrom, LocalTime openedTo) {
         this.name = name;
-        this.tableSchema = tableSchema;
+        this.tableSchema = Generator.generateRandomTableSchema();
+        this.tables = new Table[tables.length];
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
+        this.restaurantFile = new File(Saver.generateFileName(this));
     }
 
     public long getId() {
@@ -40,15 +48,23 @@ public class Restaurant {
         return name;
     }
 
+    public void setTables(Table[] tables) {
+        this.tables = tables;
+    }
+
+    public Table[] getTables() {
+        return this.tables;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public Table[] getTableSchema() {
+    public String getTableSchema() {
         return tableSchema;
     }
 
-    public void setTableSchema(Table[] tableSchema) {
+    public void setTableSchema(String tableSchema) {
         this.tableSchema = tableSchema;
     }
 
@@ -68,14 +84,12 @@ public class Restaurant {
         this.openedTo = openedTo;
     }
 
+    public File getRestaurantFile(){
+        return this.restaurantFile;
+    }
+
     @Override
     public String toString() {
-        return "Restaurant{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", tableSchema=" + Arrays.toString(tableSchema) +
-                ", openedFrom=" + openedFrom +
-                ", openedTo=" + openedTo +
-                '}';
+        return "<<REST><ID:" + id + "><NAME:" + name + "><TS:" + tableSchema + "><OF:" + openedFrom + "><OT:" + openedTo +"></REST>>";
     }
 }

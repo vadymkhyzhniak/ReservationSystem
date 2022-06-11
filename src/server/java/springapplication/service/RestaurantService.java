@@ -10,12 +10,15 @@ import java.util.List;
 @Service
 public class RestaurantService {
     public List<Restaurant> getRestaurants() {
-        Table[] test = {new Table(1, "te"), new Table(2, "asdf") };
-        return List.of(
-                new Restaurant(1, "TEst restaurant", test,
-                        LocalTime.of(10,0,0),
-                        LocalTime.of(18,0,0))
+        Restaurant restaurant = new Restaurant(1, "TEst restaurant",
+                LocalTime.of(10,0,0),
+                LocalTime.of(18,0,0));
 
+        Table[] test = {new Table(1, "te",restaurant), new Table(2, "asdf",restaurant) };
+
+
+        return List.of(
+                restaurant
         );
     }
 }
