@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
     serverImplementation 'org.springframework.boot:spring-boot-starter-web'
 
+
     clientImplementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -33,7 +34,7 @@ dependencies {
 
 javafx {
     version = '17.0.2'
-    modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.media' ,'javafx.web' ]
     configuration = 'clientImplementation'
 }
 
@@ -70,14 +71,18 @@ sourceSets {
         resources {
             'src/test/resources'
         }
-        compileClasspath += common.output
+    compileClasspath += common.output
         runtimeClasspath += common.output
         compileClasspath += server.output
         runtimeClasspath += server.output
+
     }
 }
 
 processServerResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+processClientResources{
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
