@@ -4,14 +4,12 @@ import java.time.LocalTime;
 
 public class Reservation {
 
+    private long id;
+    private Restaurant restaurant;
+    private Table table;
+    private User reservedBy;
     private LocalTime reservationStart;
     private LocalTime reservationEnd;
-
-    private Restaurant restaurant;
-    private User reservedBy;
-
-    private Table table;
-    private long id;
 
     public Reservation (LocalTime reservationStart, LocalTime reservationEnd,User reservedBy, Restaurant restaurant, long id,Table table) {
         this.reservationStart = reservationStart;
@@ -34,28 +32,19 @@ public class Reservation {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public User getReservedBy() {
         return reservedBy;
     }
 
-    public void setReservedBy(User reservedBy) {
-        this.reservedBy = reservedBy;
-    }
 
     public Restaurant getRestaurant() {
         return restaurant;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
 
     public String toString(){
-        return "<<RES><ID:"+id+"><RID:"+restaurant.getId()+"><PID:"+reservedBy.getId()+"><RS:"+reservationStart.toString()+"><RE:"+reservationEnd.toString()+"></RES>>";
+        return "<<RES><ID:"+id+"><RID:"+restaurant.getId()+"><PID:"+reservedBy.getUid()+"><RS:"+reservationStart.toString()+"><RE:"+reservationEnd.toString()+"></RES>>";
     }
 
     public Table getTable() {

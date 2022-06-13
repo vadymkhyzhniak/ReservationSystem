@@ -1,13 +1,13 @@
 package springapplication.rest;
 
+import org.springframework.web.bind.annotation.*;
 import springapplication.models.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import springapplication.service.RestaurantService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path="api/v1/restaurant")
@@ -22,5 +22,15 @@ public class RestaurantController {
     @GetMapping
     public List<Restaurant> getRestaurants() {
         return restaurantService.getRestaurants();
+    }
+
+    @GetMapping("limit/{limit}")
+    public List<Restaurant> getRestaurantsByLimit(@PathVariable("limit") int limit) {
+        return restaurantService.getRestaurantsByLimit(limit);
+    }
+
+    @GetMapping("{restaurantName}")
+    public Optional<Restaurant> getRestaurantsByName(@PathVariable("restaurantName") String restaurantName) {
+        return restaurantService.getRestaurantByName(restaurantName);
     }
 }
