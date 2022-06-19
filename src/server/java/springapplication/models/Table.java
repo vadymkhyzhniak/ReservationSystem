@@ -14,8 +14,6 @@ public class Table {
         reservationList = new ArrayList<>();
         this.restaurant = restaurant;
     }
-//TODO
-
 
     public long getId() {
         return id;

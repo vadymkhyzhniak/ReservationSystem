@@ -1,5 +1,7 @@
 package springapplication.models;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 public class Generator {
@@ -20,6 +22,11 @@ public class Generator {
             }
         }
         return str;
+    }
+
+    public static @NotNull String generateFileName(@NotNull Restaurant restaurant) {
+        String temp = restaurant.getId() + restaurant.getName() + restaurant.getOpenedFrom() + restaurant.getOpenedTo();
+        return "src/server/resources/Restaurants/" + Integer.toString(Math.abs(temp.hashCode())) + ".dat";
     }
 
 }

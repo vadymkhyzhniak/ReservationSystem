@@ -7,11 +7,11 @@ public class Reservation {
     private long id;
     private Restaurant restaurant;
     private Table table;
-    private User reservedBy;
+    private long reservedBy;
     private LocalTime reservationStart;
     private LocalTime reservationEnd;
 
-    public Reservation (LocalTime reservationStart, LocalTime reservationEnd,User reservedBy, Restaurant restaurant, long id,Table table) {
+    public Reservation(LocalTime reservationStart, LocalTime reservationEnd, long reservedBy, Restaurant restaurant, long id, Table table) {
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
         this.reservedBy = reservedBy;
@@ -33,7 +33,7 @@ public class Reservation {
     }
 
 
-    public User getReservedBy() {
+    public long getReservedBy() {
         return reservedBy;
     }
 
@@ -43,8 +43,8 @@ public class Reservation {
     }
 
 
-    public String toString(){
-        return "<<RES><ID:"+id+"><RID:"+restaurant.getId()+"><PID:"+reservedBy.getUid()+"><RS:"+reservationStart.toString()+"><RE:"+reservationEnd.toString()+"></RES>>";
+    public String toString() {
+        return "<<RES><ID:" + id + "><RID:" + restaurant.getId() + "><TAB:" + this.table.getId() + "><PID:" + reservedBy + "><RS:" + reservationStart.toString() + "><RE:" + reservationEnd.toString() + "></RES>>";
     }
 
     public Table getTable() {

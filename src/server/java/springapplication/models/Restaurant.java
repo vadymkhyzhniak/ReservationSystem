@@ -1,9 +1,9 @@
 package springapplication.models;
 
-import springapplication.persistancemanagement.Saver;
-
 import java.io.File;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Restaurant {
     private long id;
@@ -17,6 +17,10 @@ public class Restaurant {
     private int priceRange;
     private File restaurantFile;
 
+    private List<Reservation> reservationList = new ArrayList<>();
+
+    private String restInfo;
+
     public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange) {
         this.id = id;
         this.name = name;
@@ -26,19 +30,13 @@ public class Restaurant {
         this.openedTo = openedTo;
         this.stars = stars;
         this.priceRange = priceRange;
-        this.restaurantFile = new File(Saver.generateFileName(this));
+        this.restaurantFile = new File("src/server/resources/Restaurants/" + Generator.generateFileName(this));
+        this.restInfo = "<<REST><ID:" + id + "><NAME:" + name + "><TS:" + tableSchema + ">" +
+                "<OF:" + openedFrom + "><OT:" + openedTo + ">" +
+                "<PRICE:" + priceRange + "><STARS:" + stars + "></REST>>";
+
     }
 
-    public Restaurant(String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange) {
-        this.name = name;
-        this.tableSchema = Generator.generateRandomTableSchema();
-        this.tables = new Table[tables.length];
-        this.openedFrom = openedFrom;
-        this.openedTo = openedTo;
-        this.stars = stars;
-        this.priceRange = priceRange;
-        this.restaurantFile = new File(Saver.generateFileName(this));
-    }
 
     public long getId() {
         return id;
@@ -88,12 +86,22 @@ public class Restaurant {
         this.openedTo = openedTo;
     }
 
-    public File getRestaurantFile(){
+    public File getRestaurantFile() {
         return this.restaurantFile;
     }
 
     @Override
     public String toString() {
-        return "<<REST><ID:" + id + "><NAME:" + name + "><TS:" + tableSchema + "><OF:" + openedFrom + "><OT:" + openedTo +"></REST>>";
+
+        if (reservationList.isEmpty()) {
+            return restInfo;
+        } else {
+            String temp = restInfo;
+            reservationList.forEach(res -> {
+                temp.concat(res.toString());
+            });
+            return temp;
+        }
+
     }
 }
