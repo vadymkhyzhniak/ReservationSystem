@@ -70,4 +70,5 @@ public class User {
     public void setPasswordHash(int passwordHash) {
         this.passwordHash = passwordHash;
     }
+
 }

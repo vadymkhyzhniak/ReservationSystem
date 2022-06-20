@@ -1,10 +1,7 @@
 package springapplication.persistancemanagement;
 
 import org.jetbrains.annotations.NotNull;
-import springapplication.models.Reservation;
-import springapplication.models.Restaurant;
-import springapplication.models.Table;
-import springapplication.models.User;
+import springapplication.models.*;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -30,17 +27,19 @@ public class Parser {
     @NotNull
     public static Restaurant getRestaurantFromFile(@NotNull File file) {
         String restaurantData = DataHandler.readFile(file);
-        String[] components = restaurantData.split("><", 9);
+        String[] components = restaurantData.split("><", 11);
         // I hard coded this part just for a better performance,
         // otherwise there would be a lot of String iterations and also a lot of checks
-        long id = Long.getLong(components[1].substring(3));
+        long id = Long.parseLong(components[1].substring(3));
         String name = components[2].substring(5);
         String tableSchema = components[3].substring(3);
         LocalTime openedFrom = LocalTime.parse(components[4].substring(3));
         LocalTime openedTo = LocalTime.parse(components[5].substring(3));
         int price = Integer.valueOf(components[6].substring(6));
         int stars = Integer.valueOf(components[7].substring(6));
-        return new Restaurant(id, name, openedFrom, openedTo, stars, price);
+        Speciality speciality = Enum.valueOf(Speciality.class,components[8].substring(5));
+        String location = components[9].substring(4);
+        return new Restaurant(id, name, openedFrom, openedTo, stars, price,speciality,location);
     }
 
     @NotNull

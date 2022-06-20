@@ -13,6 +13,8 @@ public class Restaurant {
     private LocalTime openedFrom;
     private LocalTime openedTo;
 
+    private String location;
+    private Speciality speciality;
     private int stars;
     private int priceRange;
     private File restaurantFile;
@@ -21,7 +23,7 @@ public class Restaurant {
 
     private String restInfo;
 
-    public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange) {
+    public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange, Speciality speciality, String location) {
         this.id = id;
         this.name = name;
         this.tableSchema = Generator.generateRandomTableSchema();
@@ -31,12 +33,13 @@ public class Restaurant {
         this.stars = stars;
         this.priceRange = priceRange;
         this.restaurantFile = new File("src/server/resources/Restaurants/" + Generator.generateFileName(this));
+        this.speciality = speciality;
+        this.location = location;
         this.restInfo = "<<REST><ID:" + id + "><NAME:" + name + "><TS:" + tableSchema + ">" +
                 "<OF:" + openedFrom + "><OT:" + openedTo + ">" +
-                "<PRICE:" + priceRange + "><STARS:" + stars + "></REST>>";
-
+                "<PRICE:" + priceRange + "><STARS:" + stars + ">" +
+                "<SPEC:" + speciality + "><LOC:" + location + "></REST>>";
     }
-
 
     public long getId() {
         return id;

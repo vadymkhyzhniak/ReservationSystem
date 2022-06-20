@@ -1,6 +1,7 @@
 package springapplication.service;
 
 import springapplication.models.Restaurant;
+import springapplication.models.Speciality;
 import springapplication.models.Table;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,10 @@ public class RestaurantService {
 
     public RestaurantService() {
         this.restaurants = new ArrayList<>();
+
         restaurants.add(new Restaurant(1, "TEst restaurant",
                 LocalTime.of(10,0,0),
-                LocalTime.of(18,0,0), 3, 1));
+                LocalTime.of(18,0,0), 3, 1, Speciality.Pizza,"Somewhere"));
         Table[] test = {new Table(1, restaurants.get(0)), new Table(2, restaurants.get(0)) };
         // TODO: We need parser.getallrestaurants()
         //this.restaurants = Parser.getAllRestaurants();

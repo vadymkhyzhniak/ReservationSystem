@@ -40,12 +40,12 @@ public class Saver {
         }
     }
 
-    private static void createNewRestaurantFile(File file) {
+    private static void createNewRestaurantFile(Restaurant restaurant) {
 
         PrintWriter pw;
         try {
-            pw = new PrintWriter(file.getPath());
-            pw.println("<REST></REST>");
+            pw = new PrintWriter(Generator.generateFileName(restaurant));
+            pw.println(restaurant.toString());
             pw.flush();
             pw.close();
         } catch (FileNotFoundException e) {
@@ -57,7 +57,7 @@ public class Saver {
     public static void modifyReservation(@NotNull File file, Reservation reservation) {
 
         if (!file.exists()) {
-            createNewRestaurantFile(file);
+            createNewRestaurantFile(reservation.getRestaurant());
         }
         String restaurantData = DataHandler.readFile(file);
         String reservationData = reservation.toString();
@@ -72,8 +72,8 @@ public class Saver {
 
 
     public static void main(String[] args) {
-        Restaurant restaurant = new Restaurant(1, "L'Osteria", LocalTime.NOON, LocalTime.MIDNIGHT, 3, 3);
-        Restaurant restaurant1 = new Restaurant(2, "L'Osteria", LocalTime.NOON, LocalTime.MIDNIGHT, 3, 3);
+        Restaurant restaurant = new Restaurant(1, "L'Osteria", LocalTime.NOON, LocalTime.MIDNIGHT, 3, 3,Speciality.Pizza,"Somewhere");
+        Restaurant restaurant1 = new Restaurant(2, "L'Osteria", LocalTime.NOON, LocalTime.MIDNIGHT, 3, 3,Speciality.Pizza,"Somewhere");
         File file = new File(Generator.generateFileName(restaurant));
         File file1 = new File(Generator.generateFileName(restaurant1));
         User user = new User(1L, "Chiheb", "goodpass".hashCode());
@@ -87,6 +87,8 @@ public class Saver {
         Reservation reservation3 = new Reservation(LocalTime.MIN, LocalTime.MAX, 1, restaurant1, 2L, table1);
         Saver.modifyReservation(file1, reservation2);
         Saver.modifyReservation(file1, reservation3);
+        System.out.println(file.exists());
+        System.out.println(Parser.getRestaurantFromFile(file).toString());
     }
 
     /*public static void main(String[] args) {
