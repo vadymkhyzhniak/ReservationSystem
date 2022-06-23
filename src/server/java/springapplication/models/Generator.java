@@ -26,7 +26,9 @@ public class Generator {
 
     public static @NotNull String generateFileName(@NotNull Restaurant restaurant) {
         String temp = restaurant.getId() + restaurant.getName() + restaurant.getOpenedFrom() + restaurant.getOpenedTo();
-        return "src/server/resources/Restaurants/" + Integer.toString(Math.abs(temp.hashCode())) + ".dat";
+        String fileID = Integer.toString(Math.abs(temp.hashCode()));
+
+        return "src/server/resources/Restaurants/" + fileID + ".dat";
     }
 
 }

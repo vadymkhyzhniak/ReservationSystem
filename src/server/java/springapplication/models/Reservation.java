@@ -1,5 +1,6 @@
 package springapplication.models;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Reservation {
@@ -10,14 +11,17 @@ public class Reservation {
     private long reservedBy;
     private LocalTime reservationStart;
     private LocalTime reservationEnd;
+    private LocalDate reservationDate;
 
-    public Reservation(LocalTime reservationStart, LocalTime reservationEnd, long reservedBy, Restaurant restaurant, long id, Table table) {
+    public Reservation(LocalTime reservationStart, LocalTime reservationEnd, long reservedBy, Restaurant restaurant, long id, Table table, LocalDate reservationDate) {
         this.reservationStart = reservationStart;
         this.reservationEnd = reservationEnd;
         this.reservedBy = reservedBy;
         this.restaurant = restaurant;
         this.id = id;
         this.table = table;
+        this.reservationDate = reservationDate;
+
     }
 
     public LocalTime getReservationEnd() {
