@@ -32,6 +32,10 @@ public class User {
         return passwordHash;
     }
 
+    public List<Reservation> getReservationList() {
+        return reservationList;
+    }
+
     public User(long uid, String name, int passwordHash) {
         this.uid = uid;
         this.name = name;

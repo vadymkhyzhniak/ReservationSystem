@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import springapplication.models.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Parser {
 
     // This parses a file (presumably not empty) and creates a Restaurant instance accordingly
     @NotNull
-    public static Restaurant getRestaurantFromFile(@NotNull File file) {
+    public static Restaurant getRestaurantFromFile(@NotNull File file){
         String restaurantData = DataHandler.readFile(file);
         String[] components = restaurantData.split("><", 11);
         // I hard coded this part just for a better performance,
@@ -150,7 +151,7 @@ public class Parser {
         return users.contains("<USER><ID:" + String.valueOf(id) + ">");
     }
 
-    public static List<Restaurant> getAllRestaurants() {
+    public static List<Restaurant> getAllRestaurants(){
         File file = new File("src/server/resources/RestaurantIDs.dat");
         List<Restaurant> restaurantList = new ArrayList<>();
         if (!file.exists()) {

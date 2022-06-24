@@ -93,6 +93,14 @@ public class Restaurant {
         return this.restaurantFile;
     }
 
+    public int getStars() {
+        return stars;
+    }
+
+    public int getPriceRange() {
+        return priceRange;
+    }
+
     @Override
     public String toString() {
 

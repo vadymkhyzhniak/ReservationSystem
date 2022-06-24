@@ -1,17 +1,46 @@
 package springapplication.service;
 
 import org.springframework.stereotype.Service;
+import springapplication.models.Reservation;
 import springapplication.models.User;
+import springapplication.persistancemanagement.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
-    public boolean authenticateUser(User user) {
-        // TODO: get the Password and real username from the filesystem
-        if(user.getName().equals("test") && user.getPasswordHash() == "pass".hashCode()){
-            return true;
-        }
-        return false;
+
+    public boolean authenticateUser(User sentUser) {
+        User realUser = Parser.getUserById(sentUser.getUid());
+        return realUser != null && realUser.getPasswordHash() == sentUser.getPasswordHash();
     }
 
-    // TODO: RESERVATION OF AUTHENTICATED
+    public Optional<User> getUser(long id){
+        User returnedUser = Parser.getUserById(id);
+        if(returnedUser == null){
+            return Optional.empty();
+        }
+        return Optional.of(returnedUser);
+    }
+
+    public Optional<List<Reservation>> getReservationsOfUser(long id){
+        User returnedUser = Parser.getUserById(id);
+        if(returnedUser == null){
+            return Optional.empty();
+        }
+        return Optional.of(returnedUser.getReservationList());
+    }
+
+    public boolean addUser(User user){
+        // TODO: Make passwordhash check for incorrect value
+        if(Parser.userExists(user.getUid()) || user.getName().isEmpty() || user.getPasswordHash() == 0){
+            return false;
+        }
+
+
+        //TODO save user
+        //Saver.addUser()
+        return true;
+    }
 }
