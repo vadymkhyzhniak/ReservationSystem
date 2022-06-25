@@ -1,7 +1,6 @@
 package springapplication.rest;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springapplication.models.Restaurant;
@@ -10,15 +9,14 @@ import springapplication.service.RestaurantService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path="api/v1/restaurant")
-public class RestaurantController {
+public class RestaurantResource {
     private final RestaurantService restaurantService;
 
     @Autowired
-    public RestaurantController(RestaurantService restaurantService) {
+    public RestaurantResource(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 

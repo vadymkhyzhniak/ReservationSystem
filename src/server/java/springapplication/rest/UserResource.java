@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springapplication.models.Reservation;
-import springapplication.models.Restaurant;
-import springapplication.models.User;
+import springapplication.models.*;
 import springapplication.service.UserService;
 
 import java.util.List;
@@ -14,11 +12,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path="api/v1/user")
-public class UserController {
+public class UserResource {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserResource(UserService userService) {
         this.userService = userService;
     }
 

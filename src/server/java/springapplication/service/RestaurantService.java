@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class RestaurantService {
-
     private final List<Restaurant> restaurants;
 
     public RestaurantService() {
@@ -70,21 +69,5 @@ public class RestaurantService {
         }
 
         return restaurants.stream().filter(filter).collect(Collectors.toList());
-    }
-
-
-    //  ToDo: Move to Different Location
-    private void generateTestRestaurants(String[] args) {
-        RestaurantService restaurantService = new RestaurantService();
-
-        for(int i=0; i<50000; i++){
-            Table[] tables = {new Table(i+1, restaurantService.getRestaurants().get(0)), new Table(i+2, restaurantService.getRestaurants().get(0)), new Table(i+2, restaurantService.getRestaurants().get(0)), new Table(i+2, restaurantService.getRestaurants().get(0)) };
-            Restaurant restaurant = new Restaurant(1,"test", LocalTime.now(), LocalTime.now(), i%5, (1+i) % 5, Speciality.Chinesisch, "a");
-            restaurantService.getRestaurants().add(restaurant);
-            restaurant.setTables(tables);
-            if(i % 5000 == 0){
-                System.out.println(i);
-            }
-        }
     }
 }
