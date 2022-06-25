@@ -33,8 +33,7 @@ public class UserService {
     }
 
     public boolean addUser(User user){
-        // TODO: Make passwordhash check for incorrect value
-        if(Parser.userExists(user.getUid()) || user.getName().isEmpty() || user.getPasswordHash() == 0){
+        if(Parser.userExists(user.getUid()) || user.getName().isEmpty()){
             return false;
         }
 
