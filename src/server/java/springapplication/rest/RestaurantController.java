@@ -1,5 +1,7 @@
 package springapplication.rest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springapplication.models.Restaurant;
@@ -25,25 +27,37 @@ public class RestaurantController {
      * Otherwise all the filters that are set will be used
      */
     @GetMapping
-    public List<Restaurant> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
+    public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
                                                    @RequestParam(required = false, name = "priceRange", defaultValue = "-1") int priceRange,
                                                    @RequestParam(required = false, name = "priceRange", defaultValue = "false") boolean currentlyOpen){
-        return restaurantService.getRestaurantsByFilter(stars, priceRange, currentlyOpen);
+        List<Restaurant> result = restaurantService.getRestaurantsByFilter(stars, priceRange, currentlyOpen);
+        if(result.size() == 0){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(result);
     }
 
     /**
      * Return limit number of restaurants we have in the DB
      */
     @GetMapping("limit/{limit}")
-    public List<Restaurant> getRestaurantsByLimit(@PathVariable("limit") int limit) {
-        return restaurantService.getRestaurantsByLimit(limit);
+    public ResponseEntity<List<Restaurant>> getRestaurantsByLimit(@PathVariable("limit") int limit) {
+        List<Restaurant> result = restaurantService.getRestaurantsByLimit(limit);
+        if(result.size() == 0){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(result);
     }
 
     /**
      * Returns an Optional of a Restaurant with a given name if it exits
      */
     @GetMapping("{restaurantName}")
-    public Optional<Restaurant> getRestaurantsByName(@PathVariable("restaurantName") String restaurantName) {
-        return restaurantService.getRestaurantByName(restaurantName);
+    public ResponseEntity<Restaurant> getRestaurantsByName(@PathVariable("restaurantName") String restaurantName) {
+        Optional<Restaurant> result = restaurantService.getRestaurantByName(restaurantName);
+        if(result.isPresent()){
+            return ResponseEntity.ok(result.get());
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -161,6 +161,9 @@ public class Parser {
         String[] idArray = restaurantIDs.split(",");
         for (String id : idArray) {
             File tempFile = new File("src/server/resources/Restaurants/"+ id + ".dat");
+            if (!tempFile.exists()) {
+                continue;
+            }
             restaurantList.add(getRestaurantFromFile(tempFile));
         }
         return restaurantList;

@@ -1,4 +1,5 @@
 package javafxapplication;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
-
+import java.util.List;
 
 
 public class LoginController {
@@ -63,5 +64,11 @@ public class LoginController {
     }
 
 
+    // We change the scene here if the authentication was successful
+    // use on the authentication method like
+    // userController.authenticate(user, this::changeToMainScene);
+    private void changeToMainScene() {
+
+    }
 }
 

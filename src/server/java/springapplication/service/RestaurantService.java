@@ -20,9 +20,7 @@ public class RestaurantService {
     private final List<Restaurant> restaurants;
 
     public RestaurantService() {
-        this.restaurants = new ArrayList<>();
-        // ToDo: Fix File not found
-        //this.restaurants = Parser.getAllRestaurants();
+        this.restaurants = Parser.getAllRestaurants();
     }
 
     /**
