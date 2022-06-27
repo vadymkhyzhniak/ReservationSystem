@@ -1,14 +1,10 @@
 package springapplication.service;
 
-import springapplication.models.Restaurant;
-import springapplication.models.Speciality;
-import springapplication.models.Table;
+import commonapplication.models.Restaurant;
 import org.springframework.stereotype.Service;
-import springapplication.persistancemanagement.Parser;
+import commonapplication.persistancemanagement.Parser;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;

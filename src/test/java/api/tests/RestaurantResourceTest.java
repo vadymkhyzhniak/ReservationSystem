@@ -2,9 +2,9 @@ package api.tests;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import springapplication.models.Restaurant;
-import springapplication.models.Speciality;
-import springapplication.models.Table;
+import commonapplication.models.Restaurant;
+import commonapplication.models.Speciality;
+import commonapplication.models.Table;
 import springapplication.service.RestaurantService;
 
 import java.time.LocalTime;

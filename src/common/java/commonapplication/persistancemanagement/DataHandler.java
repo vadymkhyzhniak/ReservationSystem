@@ -1,4 +1,4 @@
-package springapplication.persistancemanagement;
+package commonapplication.persistancemanagement;
 
 import java.io.*;
 

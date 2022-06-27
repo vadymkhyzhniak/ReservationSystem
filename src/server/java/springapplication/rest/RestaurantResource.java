@@ -3,7 +3,7 @@ package springapplication.rest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springapplication.models.Restaurant;
+import commonapplication.models.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import springapplication.service.RestaurantService;
 

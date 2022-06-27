@@ -1,4 +1,4 @@
-package springapplication.models;
+package commonapplication.models;
 
 import java.io.File;
 import java.time.LocalTime;

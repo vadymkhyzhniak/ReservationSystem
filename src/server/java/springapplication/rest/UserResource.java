@@ -1,17 +1,19 @@
 package springapplication.rest;
 
+import commonapplication.models.Reservation;
+import commonapplication.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springapplication.models.*;
 import springapplication.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path="api/v1/user")
+@RequestMapping(path="api/v1/user",consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserResource {
     private final UserService userService;
 
@@ -58,7 +60,7 @@ public class UserResource {
      * Returns true if it was successful, false otherwise
      */
     @PostMapping
-    public ResponseEntity<Boolean> addUser(@RequestBody User user) {
+    public ResponseEntity<Optional<User>> addUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.addUser(user));
     }
 }

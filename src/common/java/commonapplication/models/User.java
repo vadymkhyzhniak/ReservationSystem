@@ -1,10 +1,14 @@
-package springapplication.models;
+package commonapplication.models;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class User {
+    public User(String name, int passwordHash) {
+        this.name = name;
+        this.passwordHash = passwordHash;
+    }
 
     private long uid;
 

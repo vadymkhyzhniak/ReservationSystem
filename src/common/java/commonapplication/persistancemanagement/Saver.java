@@ -1,7 +1,7 @@
-package springapplication.persistancemanagement;
+package commonapplication.persistancemanagement;
 
+import commonapplication.models.*;
 import org.jetbrains.annotations.NotNull;
-import springapplication.models.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package springapplication.models;
+package commonapplication.models;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,9 @@
-package springapplication.persistancemanagement;
+package commonapplication.persistancemanagement;
 
+import commonapplication.models.*;
 import org.jetbrains.annotations.NotNull;
-import springapplication.models.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -178,8 +177,8 @@ public class Parser {
         //List<Reservation> list = getReservationListFromFile(file,restaurant);
         //list.forEach(e -> System.out.println(e.toString()));
 
-        //User user = new User(1,"Chiheb","nepderp".hashCode());
-        //Saver.saveToFile("",user.toString(),-2);
+        User user = new User(1,"Chiheb","nepderp".hashCode());
+        Saver.saveToFile("resources/Users.dat",user.toString(),-2);
         //System.out.println(getUserById(2).toString());
         //LocalDate ld = LocalDate.parse("2000-06-13");
         //System.out.println(ld.toString());

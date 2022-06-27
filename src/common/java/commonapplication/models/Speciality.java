@@ -1,4 +1,4 @@
-package springapplication.models;
+package commonapplication.models;
 
 public enum Speciality {
     Chinesisch, Deutsch, Griechisch, Hamburger, Indisch,

@@ -18,6 +18,7 @@ repositories {
 configurations {
     serverImplementation.extendsFrom(implementation)
     clientImplementation.extendsFrom(implementation)
+    commonImplementation.extendsFrom(implementation)
 }
 
 dependencies {
