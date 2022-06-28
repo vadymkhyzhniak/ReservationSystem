@@ -3,14 +3,12 @@ package javafxapplication.controller;
 import commonapplication.models.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 import java.util.function.Consumer;
 
 public class UserController {
@@ -27,35 +25,35 @@ public class UserController {
         this.users = new ArrayList<>();
     }
 
-    public void addUser(User user, Consumer<List<User>> notesConsumer) {
+    public void addUser(User user, Consumer<List<User>> userConsumer) {
         webClient.post()
                 .uri("user")
                 .bodyValue(user)
                 .retrieve()
                 .bodyToMono(User.class)
                 .onErrorStop()
-                .subscribe(newUser-> {
+                .subscribe(newUser -> {
                     users.add(newUser);
-                    notesConsumer.accept(users);
+                    userConsumer.accept(users);
                 });
     }
-    public boolean authenticateUser(User user, Consumer<List<User>> notesConsumer) {
-   return webClient.post().
-           uri("user/authenticate").bodyValue(user)
-           .retrieve().bodyToMono(User.class).subscribe(x->{
-               users.add(user);
-               notesConsumer.accept(users);
-           }).isDisposed();
+
+    public boolean authenticateUser(User user, Consumer<List<User>> userConsumer) {
+        return webClient.post().
+                uri("user/authenticate").bodyValue(user)
+                .retrieve().bodyToMono(User.class).subscribe(x -> {
+                    users.add(user);
+                    userConsumer.accept(users);
+                }).isDisposed();
 
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 
-        User u=new User(12L,"maha","123".hashCode());
-        Consumer<List<User>> con= x->x.add(u);
-        UserController c= new UserController();
-        c.addUser(u,con);
+        User u = new User(12L, "maha", "123".hashCode());
+        Consumer<List<User>> con = x -> x.add(u);
+        UserController c = new UserController();
+        c.addUser(u, con);
         System.out.println(c.users.size());
 
 

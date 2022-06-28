@@ -40,7 +40,7 @@ public class LoginController {
     }
 
     private final File file= new File("src/server/resources/Users.dat");
-    private UserController controller;
+    private final UserController controller;
     @FXML
     private Button cancel;
     @FXML

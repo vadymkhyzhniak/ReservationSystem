@@ -38,7 +38,7 @@ public class RestaurantService {
     public Optional<Restaurant> getRestaurantByName(String restaurantName) {
         return restaurants.stream().filter(r -> r.getName().equals(restaurantName)).findFirst();
     }
-
+//TODO: please add filter for specialty
     /**
      * Returns a List of restaurants that match the filter (Stars, PriceRange, CurrentlyOpen)
      * This function can be used to search for a specific restaurant and get its reservation etc.

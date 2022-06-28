@@ -1,6 +1,7 @@
 package commonapplication.models;
 
 import java.io.File;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,27 @@ public class Restaurant {
     private int stars;
     private int priceRange;
     private File restaurantFile;
+    private boolean openNow;
 
     private List<Reservation> reservationList = new ArrayList<>();
 
     private String restInfo;
 
+    public Restaurant(String name, Speciality speciality, int stars, int priceRange, boolean openNow) {
+        this.name = name;
+        this.speciality = speciality;
+        this.stars = stars;
+        this.priceRange = priceRange;
+        this.openNow = openNow;
+    }
+
+    public boolean isOpenNow() {
+        return openNow;
+    }
+
+    private boolean openNow(){
+    return LocalTime.now().isAfter(openedFrom) && LocalTime.now().isBefore(openedTo);
+             }
     public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange, Speciality speciality, String location) {
         this.id = id;
         this.name = name;
@@ -30,6 +47,7 @@ public class Restaurant {
         this.tables = new Table[tableSchema.length()];
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
+        this.openNow=isOpenNow();
         this.stars = stars;
         this.priceRange = priceRange;
         this.restaurantFile = new File("src/server/resources/Restaurants/" + Generator.generateFileName(this));
@@ -39,6 +57,7 @@ public class Restaurant {
                 "<OF:" + openedFrom + "><OT:" + openedTo + ">" +
                 "<PRICE:" + priceRange + "><STARS:" + stars + ">" +
                 "<SPEC:" + speciality + "><LOC:" + location + "></REST>>";
+
     }
 
     public long getId() {
@@ -100,6 +119,8 @@ public class Restaurant {
     public int getPriceRange() {
         return priceRange;
     }
+
+
 
     @Override
     public String toString() {

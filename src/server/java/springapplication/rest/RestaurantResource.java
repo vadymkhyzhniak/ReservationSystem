@@ -21,13 +21,13 @@ public class RestaurantResource {
     }
 
     /**
-     * Return all the restaurants we have in the DB if not filters are applied
+     * Return all the restaurants we have in the DB if no filters are applied
      * Otherwise all the filters that are set will be used
      */
     @GetMapping
     public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
                                                    @RequestParam(required = false, name = "priceRange", defaultValue = "-1") int priceRange,
-                                                   @RequestParam(required = false, name = "priceRange", defaultValue = "false") boolean currentlyOpen){
+                                                   @RequestParam(required = false, name = "currentlyOpen", defaultValue = "false") boolean currentlyOpen){
         List<Restaurant> result = restaurantService.getRestaurantsByFilter(stars, priceRange, currentlyOpen);
         if(result.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
