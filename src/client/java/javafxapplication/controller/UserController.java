@@ -5,10 +5,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.function.Consumer;
 
 public class UserController {
@@ -50,7 +48,7 @@ public class UserController {
 
     public static void main(String[] args) {
 
-        User u = new User(12L, "maha", "123".hashCode());
+        User u = new User("maha", "123".hashCode());
         Consumer<List<User>> con = x -> x.add(u);
         UserController c = new UserController();
         c.addUser(u, con);

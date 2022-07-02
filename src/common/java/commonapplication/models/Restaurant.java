@@ -1,7 +1,9 @@
 package commonapplication.models;
 
+import commonapplication.persistancemanagement.Saver;
+
 import java.io.File;
-import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +39,10 @@ public class Restaurant {
         return openNow;
     }
 
-    private boolean openNow(){
-    return LocalTime.now().isAfter(openedFrom) && LocalTime.now().isBefore(openedTo);
-             }
+    private boolean openNow() {
+        return LocalTime.now().isAfter(openedFrom) && LocalTime.now().isBefore(openedTo);
+    }
+
     public Restaurant(long id, String name, LocalTime openedFrom, LocalTime openedTo, int stars, int priceRange, Speciality speciality, String location) {
         this.id = id;
         this.name = name;
@@ -47,7 +50,7 @@ public class Restaurant {
         this.tables = new Table[tableSchema.length()];
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
-        this.openNow=isOpenNow();
+        this.openNow = isOpenNow();
         this.stars = stars;
         this.priceRange = priceRange;
         this.restaurantFile = new File("src/server/resources/Restaurants/" + Generator.generateFileName(this));
@@ -67,6 +70,7 @@ public class Restaurant {
     public void setId(long id) {
         this.id = id;
     }
+
 
     public String getName() {
         return name;
@@ -112,6 +116,18 @@ public class Restaurant {
         return this.restaurantFile;
     }
 
+    public void setRestaurantFile(File restaurantFile) {
+        this.restaurantFile = restaurantFile;
+    }
+
+    public List<Reservation> getReservationList() {
+        return reservationList;
+    }
+
+    public void setReservationList(List<Reservation> reservationList) {
+        this.reservationList = reservationList;
+    }
+
     public int getStars() {
         return stars;
     }
@@ -120,7 +136,21 @@ public class Restaurant {
         return priceRange;
     }
 
-
+    public boolean makeReservation(LocalTime reservationStart, LocalTime reservationEnd,
+                                   String reservedBy, Table table, LocalDate reservationDate) {
+        for (Reservation res : this.reservationList) {
+            if (!res.timeSuitable(reservationStart, reservationEnd)) return false;
+        }
+        Reservation reservation = new Reservation(reservationStart, reservationEnd, reservedBy, this, table, reservationDate);
+        this.reservationList.add(reservation);
+        Saver.addReservation(reservation);
+        //TODO : addReservation only adds it to the restaurant files, i'm actually a bit
+        // confused now on where to store the reservation data, i have to change a lot
+        // of other stuff, because some methods i worked on assume that reservations are stored
+        // in some places and some other methods assume reservations are stored in other
+        // places. WILL FIX
+        return true;
+    }
 
     @Override
     public String toString() {

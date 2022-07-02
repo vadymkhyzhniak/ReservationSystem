@@ -1,8 +1,6 @@
 package javafxapplication.controller;
 
 import commonapplication.models.User;
-import commonapplication.persistancemanagement.Parser;
-import commonapplication.persistancemanagement.Saver;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 // login as guest to view app, still working on client-server connection
 public class LoginController {
@@ -79,7 +76,7 @@ public class LoginController {
     public void register(ActionEvent e) throws IOException {
      if (e.getSource()==register){
 
-         var newUser = new User(getId(),userTxt.getText(), passTxt.getText().hashCode());
+         var newUser = new User(userTxt.getText(), passTxt.getText().hashCode());
              controller.addUser(newUser,this::setUserList);
 
           userTxt.setText("");
@@ -94,10 +91,10 @@ public class LoginController {
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
             }
-            else if (Parser.userExists(getId())){
-                //TODO: authenticate user
-                //    controller.authenticateUser(userList.get(0),this::setUserList);
-            }
+            //else if (Parser.userExists(getId())){
+            //TODO: authenticate user
+            //    controller.authenticateUser(userList.get(0),this::setUserList);
+            //}
                     else
                 {
                 loginLabel.setText("Invalid user, please enter correct username and password");

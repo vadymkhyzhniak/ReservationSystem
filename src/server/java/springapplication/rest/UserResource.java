@@ -34,10 +34,10 @@ public class UserResource {
     /**
      * Return an Optional of a specific User
      */
-    @GetMapping("{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
-        Optional<User> result = userService.getUser(id);
-        if (result.isPresent()){
+    @GetMapping("{username}")
+    public ResponseEntity<User> getUser(@PathVariable("username") String username) {
+        Optional<User> result = userService.getUser(username);
+        if (result.isPresent()) {
             return ResponseEntity.ok(result.get());
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -46,10 +46,10 @@ public class UserResource {
     /**
      * Returns an Option that only contains the reservations of a specific User
      */
-    @GetMapping("{id}/reservations")
-    public ResponseEntity<List<Reservation>> getReservationsOfUser(@PathVariable("id") long id) {
-        Optional<List<Reservation>> result = userService.getReservationsOfUser(id);
-        if (result.isPresent() && result.get().size() > 0){
+    @GetMapping("{username}/reservations")
+    public ResponseEntity<List<Reservation>> getReservationsOfUser(@PathVariable("username") String username) {
+        Optional<List<Reservation>> result = userService.getReservationsOfUser(username);
+        if (result.isPresent() && result.get().size() > 0) {
             return ResponseEntity.ok(result.get());
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

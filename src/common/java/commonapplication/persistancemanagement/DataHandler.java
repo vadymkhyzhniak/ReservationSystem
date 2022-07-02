@@ -5,6 +5,9 @@ import java.io.*;
 public abstract class DataHandler {
 
     public static String readFile(File file) {
+        if (file == null) {
+            return "";
+        }
         BufferedReader input;
         try {
             input = new BufferedReader(new FileReader(file.getPath()));

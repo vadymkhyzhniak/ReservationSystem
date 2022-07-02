@@ -1,18 +1,14 @@
 package commonapplication.models;
 
+import commonapplication.persistancemanagement.Saver;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class User {
-    public User(String name, int passwordHash) {
-        this.name = name;
-        this.passwordHash = passwordHash;
-    }
 
-    private long uid;
-
-    private String name;
+    private String username;
 
     private int passwordHash;
 
@@ -20,17 +16,14 @@ public class User {
 
     private String userInfo;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
-    public long getUid() {
-        return uid;
-    }
 
     public int getPasswordHash() {
         return passwordHash;
@@ -40,11 +33,18 @@ public class User {
         return reservationList;
     }
 
-    public User(long uid, String name, int passwordHash) {
-        this.uid = uid;
-        this.name = name;
+    public void addReservation(Reservation reservation) {
+        this.reservationList.add(reservation);
+    }
+
+    public void setReservationList(List<Reservation> reservationList) {
+        this.reservationList = reservationList;
+    }
+
+    public User(String name, int passwordHash) {
+        this.username = name;
         this.passwordHash = passwordHash;
-        this.userInfo = "<<USER><ID:" + uid + "><NAME:" + name + ">" +
+        this.userInfo = "<<USER><NAME:" + name + ">" +
                 "<PWD:" + passwordHash + "></USER>>";
     }
 
@@ -54,10 +54,14 @@ public class User {
         } else {
             String temp = userInfo;
             reservationList.forEach(res -> {
-                temp.concat(res.toString());
+                temp.concat("<RES:" + res.getId() + ">");
             });
             return temp;
         }
+    }
+
+    public String getUserInfo() {
+        return this.userInfo;
     }
 
     @Override
@@ -65,20 +69,25 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return uid == user.uid && passwordHash == user.passwordHash && Objects.equals(name, user.name);
+        return passwordHash == user.passwordHash && Objects.equals(username, user.getUsername());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uid, name, passwordHash);
+        return Objects.hash(username, passwordHash);
     }
 
     // This will be used to change the password,
     // we don't care if the new password is equal to the old one
-    public void setPasswordHash(int passwordHash) {
+    private void setPasswordHash(int passwordHash) {
         this.passwordHash = passwordHash;
     }
 
+    //This changes the value of the password hash on the current user instance and in the files as well
+    public void setPassword(String password) {
+        setPasswordHash(password.hashCode());
+        Saver.modifyUser(this);
+    }
 
 
 }

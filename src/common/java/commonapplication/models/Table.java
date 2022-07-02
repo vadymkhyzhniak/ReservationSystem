@@ -21,6 +21,6 @@ public class Table {
 
     @Override
     public String toString() {
-        return "Table" + id + "OfRestaurant:" + restaurant.getId();
+        return "<T:" + id + "><R:" + restaurant.getId() + ">";
     }
 }
