@@ -1,6 +1,7 @@
 package springapplication.service;
 
 import commonapplication.models.Restaurant;
+import commonapplication.models.Speciality;
 import org.springframework.stereotype.Service;
 import commonapplication.persistancemanagement.Parser;
 
@@ -38,13 +39,13 @@ public class RestaurantService {
     public Optional<Restaurant> getRestaurantByName(String restaurantName) {
         return restaurants.stream().filter(r -> r.getName().equals(restaurantName)).findFirst();
     }
-//TODO: please add filter for specialty
+
     /**
-     * Returns a List of restaurants that match the filter (Stars, PriceRange, CurrentlyOpen)
+     * Returns a List of restaurants that match the filter (Stars, PriceRange, CurrentlyOpen, Speciality)
      * This function can be used to search for a specific restaurant and get its reservation etc.
      * If no filters are set we return all restaurants
      */
-    public List<Restaurant> getRestaurantsByFilter(int stars, int priceRange, boolean currentlyOpen){
+    public List<Restaurant> getRestaurantsByFilter(int stars, int priceRange, boolean currentlyOpen, Speciality speciality){
         Predicate<Restaurant> filter = null;
 
         if(stars >= 1 && stars <= 5){
@@ -58,6 +59,10 @@ public class RestaurantService {
         if(currentlyOpen){
             filter = (filter == null ? r -> r.getOpenedFrom().isBefore(LocalTime.now()) && r.getOpenedTo().isAfter(LocalTime.now()) :
                     filter.and(r -> r.getOpenedFrom().isBefore(LocalTime.now()) && r.getOpenedTo().isAfter(LocalTime.now())));
+        }
+
+        if(speciality != Speciality.Unbekannt){
+            filter = (filter == null ? r -> r.getSpeciality() == speciality : filter.and(r -> r.getSpeciality() == speciality));
         }
 
         if(filter == null){

@@ -1,5 +1,6 @@
 package springapplication.rest;
 
+import commonapplication.models.Speciality;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +27,10 @@ public class RestaurantResource {
      */
     @GetMapping
     public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
-                                                   @RequestParam(required = false, name = "priceRange", defaultValue = "-1") int priceRange,
-                                                   @RequestParam(required = false, name = "currentlyOpen", defaultValue = "false") boolean currentlyOpen){
-        List<Restaurant> result = restaurantService.getRestaurantsByFilter(stars, priceRange, currentlyOpen);
+                                                           @RequestParam(required = false, name = "priceRange", defaultValue = "-1") int priceRange,
+                                                           @RequestParam(required = false, name = "currentlyOpen", defaultValue = "false") boolean currentlyOpen,
+                                                           @RequestParam(required = false, name = "currentlyOpen", defaultValue = "Unbekannt") Speciality speciality){
+        List<Restaurant> result = restaurantService.getRestaurantsByFilter(stars, priceRange, currentlyOpen, speciality);
         if(result.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

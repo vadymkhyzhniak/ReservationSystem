@@ -136,6 +136,10 @@ public class Restaurant {
         return priceRange;
     }
 
+    public Speciality getSpeciality() {
+        return speciality;
+    }
+
     public boolean makeReservation(LocalTime reservationStart, LocalTime reservationEnd,
                                    String reservedBy, Table table, LocalDate reservationDate) {
         for (Reservation res : this.reservationList) {
