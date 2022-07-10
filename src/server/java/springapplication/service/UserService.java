@@ -15,6 +15,8 @@ private final List<User> users;
 
     public UserService() {
         this.users = new ArrayList<>();
+        users.add(new User("asdf", 12));
+        users.add(new User("test", 999));
     }
 
     public boolean authenticateUser(User sentUser) {
@@ -48,10 +50,5 @@ private final List<User> users;
         Saver.saveToFile("",str,2);
         */
         return Optional.of(user);
-    }
-
-    public static void main(String[] args) {
-        UserService s= new UserService();
-        s.addUser(new User("maha", "123".hashCode()));
     }
 }

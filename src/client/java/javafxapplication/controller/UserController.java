@@ -15,7 +15,7 @@ public class UserController {
 
     public UserController() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://localhost:8080/")
+                .baseUrl("http://localhost:8080/api/v1/")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -25,7 +25,7 @@ public class UserController {
 
     public void addUser(User user, Consumer<List<User>> userConsumer) {
         webClient.post()
-                .uri("user")
+                .uri("user/")
                 .bodyValue(user)
                 .retrieve()
                 .bodyToMono(User.class)
