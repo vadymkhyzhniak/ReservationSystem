@@ -3,6 +3,7 @@ package springapplication.service;
 import commonapplication.models.Reservation;
 import commonapplication.models.User;
 import commonapplication.persistancemanagement.Parser;
+import commonapplication.persistancemanagement.Saver;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,11 +45,10 @@ private final List<User> users;
         if (Parser.userExists(user.getUsername()) || user.getUsername().isEmpty()) {
             return Optional.empty();
         }
-        //TODO save user
-       /*  users.add(user);
-        String str= "<<USER><ID:"+user.getUid()+"><NAME:"+user.getName()+"><PWD:" +user.getPasswordHash()+ "></USER>>";
-        Saver.saveToFile("",str,2);
-        */
+
+        Saver.addUser(user);
+        users.add(user);
+
         return Optional.of(user);
     }
 }

@@ -48,6 +48,16 @@ public class User {
                 "<PWD:" + passwordHash + "></USER>>";
     }
 
+    public User() {
+    }
+
+    public User(String username, int passwordHash, List<Reservation> reservationList, String userInfo) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.reservationList = reservationList;
+        this.userInfo = userInfo;
+    }
+
     public String toString() {
         if (this.reservationList.isEmpty()) {
             return userInfo;
