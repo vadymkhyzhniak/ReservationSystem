@@ -11,22 +11,11 @@ import java.util.List;
 
 public class Parser {
 
-    private static String dataTo(String data) {
-        String tempData = data.substring(1, data.length() - 1);
-        tempData.split("<");
-        if (tempData.contains("<REST>")) {
-
-        }
-        return null;
-    }
-
-    public static Restaurant getRestaurantByName(String name) {
-        return null;
-    }
 
     // This parses a file (presumably not empty) and creates a Restaurant instance accordingly
     @NotNull
     public static Restaurant getRestaurantFromFile(@NotNull File file) {
+        if (!file.exists()) return null;
         String restaurantData = DataHandler.readFile(file);
         String[] components = restaurantData.split("><", 11);
         // I hard coded this part just for a better performance,
@@ -171,10 +160,19 @@ public class Parser {
     public static boolean userExists(String username) {
         File file = new File("src/server/resources/Usernames.dat");
         if (!file.exists()) {
+            Saver.saveToFile("", "", 3);
             return false;
         }
         String users = DataHandler.readFile(file);
-        return users.contains("<USER><NAME:" + username + ">");
+        if (users == null) {
+            return false;
+        }
+        String[] temp = users.split(",");
+        for (String str : temp) {
+            if (username.equals(str))
+                return true;
+        }
+        return false;
     }
 
     public static Restaurant getRestaurantById(String restId) {
@@ -213,7 +211,10 @@ public class Parser {
         //list.forEach(e -> System.out.println(e.toString()));
 
         User user = new User("Chiheb", "nepderp".hashCode());
-        Saver.saveToFile("resources/Users.dat", user.toString(), -2);
+        Saver.addUser(user);
+        //System.out.println(DataHandler.readFile(new File("src/server/resources/Usernames.dat")));
+        //System.out.println(Parser.userExists(user.getUsername()));
+        //System.out.println(userExists(user.getUsername()));
         //System.out.println(getUserById(2).toString());
         //LocalDate ld = LocalDate.parse("2000-06-13");
         //System.out.println(ld.toString());
@@ -226,7 +227,7 @@ public class Parser {
         //System.out.println(newUser.toString());
         //getUserStringById(1);
 
-        List<Restaurant> x = getAllRestaurants();
-        x.forEach(e -> System.out.println(e.toString()));
+        //List<Restaurant> x = getAllRestaurants();
+        //x.forEach(e -> System.out.println(e.toString()));
     }
 }

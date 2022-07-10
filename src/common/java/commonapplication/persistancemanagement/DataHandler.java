@@ -15,11 +15,22 @@ public abstract class DataHandler {
             throw new RuntimeException(e);
         }
         try {
-            return input.readLine();
+            String temp = input.readLine();
+            return temp == null ? "" : temp;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static void main(String[] args) {
+        File file = new File("src/server/resources/Restaurants/4.dat");
+        //if (!file.exists()) {
+        //Saver.createEmptyFile(file.getPath());
+        //}
+        System.out.println(file.getName());
+        //System.out.println("1 : "+DataHandler.readFile(file));
+        //System.out.println("null : "+DataHandler.readFile(null));
     }
 
 }

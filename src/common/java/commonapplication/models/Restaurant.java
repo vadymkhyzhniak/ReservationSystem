@@ -53,14 +53,15 @@ public class Restaurant {
         this.openNow = isOpenNow();
         this.stars = stars;
         this.priceRange = priceRange;
-        this.restaurantFile = new File("src/server/resources/Restaurants/" + Generator.generateFileName(this));
+        this.restaurantFile = new File(Generator.generateFileName(id, name, openedFrom, openedTo));
         this.speciality = speciality;
         this.location = location;
         this.restInfo = "<<REST><ID:" + id + "><NAME:" + name + "><TS:" + tableSchema + ">" +
                 "<OF:" + openedFrom + "><OT:" + openedTo + ">" +
                 "<PRICE:" + priceRange + "><STARS:" + stars + ">" +
                 "<SPEC:" + speciality + "><LOC:" + location + "></REST>>";
-
+        if (!restaurantFile.exists())
+            Saver.saveToFile(restaurantFile.getPath(), restInfo, 0);
     }
 
     public long getId() {

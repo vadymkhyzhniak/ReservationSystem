@@ -38,7 +38,18 @@ public class Saver {
     }
 
 
-    private static void createNewFile(Object object, int config) {
+    /*public static void createEmptyFile(String path) {
+        try {
+            PrintWriter pw = new PrintWriter(path);
+            pw.println("");
+            pw.flush();
+            pw.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
+    public static void createNewFile(Object object, int config) {
         PrintWriter pw;
         try {
             if (object instanceof Restaurant) {
@@ -51,7 +62,7 @@ public class Saver {
                 }
                 if (config == 1 || config == 2) {
                     pw = new PrintWriter("src/server/resources/RestaurantIDs.dat");
-                    pw.println(Generator.generateFileName(restaurant));
+                    pw.println(Generator.generateFileName(restaurant) + ",");
                     pw.flush();
                     pw.close();
                 }
@@ -187,6 +198,9 @@ public class Saver {
                     return true;
                 }
             }
+        } else if (object instanceof Restaurant) {
+            Restaurant restaurant = (Restaurant) object;
+            //if ( restaurant.)
         }
         return true;
     }
@@ -210,12 +224,9 @@ public class Saver {
         return modifyData(user, -2);
     }
 
-    /*public static void modifyUserData(User user) {
-        if (!file.exists()) {
-            createNewFile(user.toString());
-        }
-    }*/
-
+    public static boolean addRestaurant(Restaurant restaurant) {
+        return modifyData(restaurant, 0);
+    }
 
     public static void main(String[] args) {
         Restaurant restaurant = new Restaurant(1, "L'Osteria", LocalTime.NOON, LocalTime.MIDNIGHT, 3, 3, Speciality.Pizza, "Somewhere");
@@ -234,7 +245,8 @@ public class Saver {
         Saver.modifyData(reservation2, 0);
         Saver.modifyData(reservation3, 0);
         System.out.println(file.exists());
-        System.out.println(Parser.getRestaurantFromFile(file).toString());
+        Restaurant restaurant2 = Parser.getRestaurantFromFile(file);
+        System.out.println(restaurant2 == null ? null : restaurant2.toString());
     }
 
     /*public static void main(String[] args) {
