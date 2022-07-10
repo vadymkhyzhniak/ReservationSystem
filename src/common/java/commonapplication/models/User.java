@@ -48,6 +48,7 @@ public class User {
                 "<PWD:" + passwordHash + "></USER>>";
     }
 
+    // DO NOT DELETE THIS CONSTRUCTOR. OTHERWISE NOTHING WILL WORK ANYMORE
     public User() {
     }
 
