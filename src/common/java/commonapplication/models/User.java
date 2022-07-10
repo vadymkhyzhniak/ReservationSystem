@@ -48,6 +48,17 @@ public class User {
                 "<PWD:" + passwordHash + "></USER>>";
     }
 
+    // DO NOT DELETE THIS CONSTRUCTOR. OTHERWISE NOTHING WILL WORK ANYMORE
+    public User() {
+    }
+
+    public User(String username, int passwordHash, List<Reservation> reservationList, String userInfo) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.reservationList = reservationList;
+        this.userInfo = userInfo;
+    }
+
     public String toString() {
         if (this.reservationList.isEmpty()) {
             return userInfo;
