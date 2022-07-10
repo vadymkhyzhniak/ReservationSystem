@@ -169,7 +169,7 @@ public class Parser {
         }
         String[] temp = users.split(",");
         for (String str : temp) {
-            if (username.equals(str))
+            if (("/" + username).equals(str))
                 return true;
         }
         return false;

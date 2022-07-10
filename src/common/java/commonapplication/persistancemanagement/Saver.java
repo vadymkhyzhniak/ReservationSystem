@@ -136,7 +136,7 @@ public class Saver {
                         } else { //!f2e
                             createNewFile(user, 0);
                             String usernames = DataHandler.readFile(file1);
-                            usernames = usernames.concat(user.getUsername() + ",");
+                            usernames = usernames.concat("/" + user.getUsername() + ",");
                             saveToFile("", usernames, 3);
                         }
                     } else {
@@ -144,7 +144,7 @@ public class Saver {
                         usersData = usersData.concat(user.toString());
                         saveToFile("", usersData, 2);
                         String usernames = DataHandler.readFile(file1);
-                        usernames = usernames.concat(user.getUsername() + ",");
+                        usernames = usernames.concat("/" + user.getUsername() + ",");
                         saveToFile("", usernames, 3);
                     }
                 }
@@ -164,14 +164,14 @@ public class Saver {
                         saveToFile("", usersData, 2);
                     } else {
                         String usernames = DataHandler.readFile(file1);
-                        usernames = usernames.replaceFirst(user.getUsername() + ",", "");
+                        usernames = usernames.replaceFirst("/" + user.getUsername() + ",", "");
                         saveToFile("", usernames, 3);
                     }
                 } else {
                     String userData = DataHandler.readFile(file2);
                     String usernames = DataHandler.readFile(file1);
                     userData = userData.replaceFirst(user.toString(), "");
-                    usernames = usernames.replaceFirst(user.getUsername() + ",", "");
+                    usernames = usernames.replaceFirst("/" + user.getUsername() + ",", "");
                     saveToFile("", userData, 2);
                     saveToFile("", usernames, 3);
                 }
