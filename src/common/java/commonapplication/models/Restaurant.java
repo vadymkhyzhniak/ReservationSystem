@@ -1,9 +1,9 @@
 package commonapplication.models;
 
+import commonapplication.persistancemanagement.DataHandler;
 import commonapplication.persistancemanagement.Saver;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ public class Restaurant {
 
     private String restInfo;
 
+    //TODO : This constructor is incomplete, using it as it is will lead to a lot of null pointer exceptions
     public Restaurant(String name, Speciality speciality, int stars, int priceRange, boolean openNow) {
         this.name = name;
         this.speciality = speciality;
@@ -47,7 +48,13 @@ public class Restaurant {
         this.id = id;
         this.name = name;
         this.tableSchema = Generator.generateRandomTableSchema();
-        this.tables = new Table[tableSchema.length()];
+        int tsl = tableSchema.length();
+        this.tables = new Table[tsl];
+        for (int i = 0; i < tsl; i++) {
+            if (tableSchema.charAt(i) == '1') {
+                this.tables[i] = new Table(i, this);
+            }
+        }
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
         this.openNow = isOpenNow();
@@ -60,7 +67,7 @@ public class Restaurant {
                 "<OF:" + openedFrom + "><OT:" + openedTo + ">" +
                 "<PRICE:" + priceRange + "><STARS:" + stars + ">" +
                 "<SPEC:" + speciality + "><LOC:" + location + "></REST>>";
-        if (!restaurantFile.exists())
+        if (!restaurantFile.exists() || DataHandler.readFile(restaurantFile).isEmpty())
             Saver.saveToFile(restaurantFile.getPath(), restInfo, 0);
     }
 
@@ -141,20 +148,15 @@ public class Restaurant {
         return speciality;
     }
 
-    public boolean makeReservation(LocalTime reservationStart, LocalTime reservationEnd,
-                                   String reservedBy, Table table, LocalDate reservationDate) {
+    public boolean makeReservation(Reservation reservation) {
         for (Reservation res : this.reservationList) {
-            if (!res.timeSuitable(reservationStart, reservationEnd)) return false;
+            if (!res.timeSuitable(reservation.getReservationStart(), reservation.getReservationEnd())) return false;
         }
-        Reservation reservation = new Reservation(reservationStart, reservationEnd, reservedBy, this, table, reservationDate);
-        this.reservationList.add(reservation);
-        Saver.addReservation(reservation);
-        //TODO : addReservation only adds it to the restaurant files, i'm actually a bit
-        // confused now on where to store the reservation data, i have to change a lot
-        // of other stuff, because some methods i worked on assume that reservations are stored
-        // in some places and some other methods assume reservations are stored in other
-        // places. WILL FIX
-        return true;
+        return Saver.addReservation(reservation);
+    }
+
+    public boolean cancelReservation(Reservation reservation) {
+        return Saver.removeReservation(reservation);
     }
 
     @Override

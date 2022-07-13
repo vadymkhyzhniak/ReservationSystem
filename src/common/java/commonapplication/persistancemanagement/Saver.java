@@ -87,31 +87,47 @@ public class Saver {
         }
     }
 
-    public static void addReservation(Reservation reservation) {
-        modifyData(reservation, 0);
+    public static boolean addReservation(Reservation reservation) {
+        return modifyData(reservation, 0);
     }
 
-    public static void removeReservation(Reservation reservation) {
-        modifyData(reservation, 1);
+    public static boolean removeReservation(Reservation reservation) {
+        return modifyData(reservation, 1);
     }
 
     private static boolean modifyData(Object object, int config) {
         if (object instanceof Reservation) {
             Reservation reservation = (Reservation) object;
             File restFile = reservation.getRestaurant().getRestaurantFile();
-            if (!restFile.exists()) {
-                createNewFile(reservation.getRestaurant(), -1);
-                return true;
+            File usersFile = new File("src/server/resources/Users.dat");
+            String usersData = DataHandler.readFile(usersFile);
+            if (restFile != null && !restFile.exists()) { //This shouldn't really happen, since we call this method on a restaurant,
+                // and so we already assume that the restaurant file exists, as it was created upon the instantiation of the restaurant.
+                createNewFile(reservation.getRestaurant(), 2);
+                return false;
             }
             String restaurantData = DataHandler.readFile(restFile);
             String reservationData = reservation.toString();
+            User reservedBy = Parser.getUserByUsername(reservation.getReservedBy());
+            Restaurant restaurant = reservation.getRestaurant();
             if (config == 1) {
                 restaurantData = restaurantData.replaceFirst(reservationData, "");
+                reservedBy.getReservationList().remove(reservation);
+                usersData = usersData.replaceFirst(reservation.toString(), "");
+                restaurant.getReservationList().remove(reservation);
             } else {
-                if (!restaurantData.contains(reservationData))
+                if (!restaurantData.contains(reservationData)) {
                     restaurantData = restaurantData.concat(reservationData);
+                    restaurant.getReservationList().add(reservation);
+                }
+                if (!usersData.contains(reservationData)) {
+                    reservedBy.addReservation(reservation);
+                    String reserverInfo = reservedBy.getUserInfo();
+                    usersData = usersData.replaceFirst(reserverInfo, reserverInfo + reservation.toString());
+                }
             }
-            saveToFile(Generator.generateFileName(reservation.getRestaurant()), restaurantData, 1);
+            saveToFile(Generator.generateFileName(reservation.getRestaurant()), restaurantData, 0);
+            saveToFile("", usersData, 2);
             return true;
         } else if (object instanceof User) {
             User user = (User) object;
@@ -198,9 +214,6 @@ public class Saver {
                     return true;
                 }
             }
-        } else if (object instanceof Restaurant) {
-            Restaurant restaurant = (Restaurant) object;
-            //if ( restaurant.)
         }
         return true;
     }
@@ -224,9 +237,6 @@ public class Saver {
         return modifyData(user, -2);
     }
 
-    public static boolean addRestaurant(Restaurant restaurant) {
-        return modifyData(restaurant, 0);
-    }
 
     public static void main(String[] args) {
         Restaurant restaurant = new Restaurant(1, "L'Osteria", LocalTime.NOON, LocalTime.MIDNIGHT, 3, 3, Speciality.Pizza, "Somewhere");

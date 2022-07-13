@@ -65,7 +65,7 @@ public class User {
         } else {
             String temp = userInfo;
             reservationList.forEach(res -> {
-                temp.concat("<RES:" + res.getId() + ">");
+                temp.concat(res.toString());
             });
             return temp;
         }

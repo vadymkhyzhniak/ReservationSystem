@@ -1,10 +1,15 @@
 package commonapplication.persistancemanagement;
 
+import commonapplication.models.Reservation;
+import commonapplication.models.Restaurant;
+import commonapplication.models.Speciality;
 import commonapplication.models.User;
 import org.jetbrains.annotations.TestOnly;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -102,18 +107,21 @@ public class dataTesting {
         assertEquals("", usersData);
         // now adding the users again -now they have reservations- and then deleting them
         //TODO : Okay so i have to fix stuff in here, because it doesn't really work right yet...
-        /*
-        Restaurant restaurant = new Restaurant(1L,"X",LocalTime.NOON,LocalTime.MIDNIGHT,5,5,Speciality.Pizza,"X");
+
+        Restaurant restaurant = new Restaurant(1L, "X", LocalTime.NOON, LocalTime.MIDNIGHT, 5, 5, Speciality.Pizza, "X");
         Reservation reservation = new Reservation(LocalTime.MIN,
                 LocalTime.MAX,
                 user0.getUsername(),
                 restaurant,
                 restaurant.getTables()[0],
-                LocalDate.MAX );
-        user0.addReservation(reservation);
-        Saver.addUser(user0);
-        Saver.deleteUser(user0);
-         */
+                LocalDate.MAX);
+        //Saver.addUser(user0);
+        //restaurant.makeReservation(reservation);
+        //Saver.deleteUser(user0);
+
+        //TODO : Update : deleting a user currently doesn't delete his reservations, will fix... And the tests up here will all fail,
+        // because they don't account for reservations yet since i fixed that recently... will fix that too...
+
     }
 
 
