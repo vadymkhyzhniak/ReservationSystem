@@ -2,6 +2,7 @@ package springapplication.rest;
 
 import commonapplication.models.Speciality;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import commonapplication.models.Restaurant;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path="api/v1/restaurant")
+@RequestMapping(path="api/v1/restaurant",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class RestaurantResource {
     private final RestaurantService restaurantService;
 
@@ -20,6 +21,7 @@ public class RestaurantResource {
     public RestaurantResource(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
+
 
     /**
      * Return all the restaurants we have in the DB if no filters are applied
@@ -29,7 +31,7 @@ public class RestaurantResource {
     public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
                                                            @RequestParam(required = false, name = "priceRange", defaultValue = "-1") int priceRange,
                                                            @RequestParam(required = false, name = "currentlyOpen", defaultValue = "false") boolean currentlyOpen,
-                                                           @RequestParam(required = false, name = "currentlyOpen", defaultValue = "Unbekannt") Speciality speciality){
+                                                           @RequestParam(required = false, name = "speciality", defaultValue = "Unbekannt") Speciality speciality){
         List<Restaurant> result = restaurantService.getRestaurantsByFilter(stars, priceRange, currentlyOpen, speciality);
         if(result.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

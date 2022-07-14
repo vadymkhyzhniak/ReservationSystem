@@ -7,12 +7,10 @@ import springapplication.rest.UserResource;
 import springapplication.service.UserService;
 
 @SpringBootApplication
-@ComponentScan(basePackageClasses = UserResource.class)
-@ComponentScan(basePackageClasses = UserService.class)
+@ComponentScan(basePackages ={"springapplication.rest","springapplication.service"})
 public class RestaurantAPI {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestaurantAPI.class, args);
 	}
-
 }

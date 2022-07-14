@@ -15,22 +15,23 @@
         <AnchorPane prefHeight="400.0" prefWidth="265.0" style="-fx-background-color: #4d9ae0;" BorderPane.alignment="CENTER">
             <children>
                 <TextField fx:id="searchBar" layoutX="3.0" layoutY="14.0" onAction="#search" prefHeight="33.0" prefWidth="181.0" promptText="type keyword, name" AnchorPane.topAnchor="14.0" />
-                <Button fx:id="search" layoutX="194.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="33.0" prefWidth="69.0" text="Search" textFill="#5e5b5b" AnchorPane.topAnchor="14.0">
+                <Button fx:id="search" layoutX="194.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="33.0" prefWidth="63.0" text="Search" textFill="#5e5b5b" AnchorPane.topAnchor="14.0">
                     <font>
                         <Font name="Calibri" size="11.0" />
                     </font>
                 </Button>
-                <Label alignment="CENTER" layoutX="1.0" layoutY="368.0" prefHeight="17.0" prefWidth="263.0" text="Copyright(c).All Rights Reserved" textFill="#efebeb" AnchorPane.bottomAnchor="14.666666666666668">
+                <Label alignment="CENTER" layoutX="1.0" layoutY="377.0" prefHeight="17.0" prefWidth="263.0" text="Copyright(c).All Rights Reserved" textFill="#efebeb" AnchorPane.bottomAnchor="5.666666666666686">
                     <font>
                         <Font name="Calibri" size="11.0" />
                     </font>
                 </Label>
-                <ChoiceBox fx:id="filterBox" layoutX="110.0" layoutY="62.0" prefHeight="25.0" prefWidth="147.0" AnchorPane.topAnchor="62.0" />
-            <Button fx:id="exit" layoutX="107.0" layoutY="342.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="65.0" text="exit" AnchorPane.bottomAnchor="32.66666666666667" />
+            <Button fx:id="exit" layoutX="162.0" layoutY="342.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="65.0" text="exit" AnchorPane.bottomAnchor="32.666666666666686" />
             <ListView fx:id="listView" layoutX="20.0" layoutY="97.0" prefHeight="237.0" prefWidth="245.0" AnchorPane.bottomAnchor="65.66666666666666" AnchorPane.leftAnchor="20.00000000000003" AnchorPane.rightAnchor="9.999999999999972" AnchorPane.topAnchor="97.0" />
-            <Label alignment="CENTER" layoutX="23.0" layoutY="66.0" prefHeight="17.0" prefWidth="77.0" text="Filter" textAlignment="CENTER" textFill="#fbfbfb">
+            <Button fx:id="reserve" layoutX="20.0" layoutY="342.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="make Reservation" AnchorPane.bottomAnchor="32.66666666666667" />
+            <ChoiceBox fx:id="filterBox" layoutX="127.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#filter" prefHeight="25.0" prefWidth="113.0" />
+            <Label layoutX="27.0" layoutY="62.0" prefHeight="24.0" prefWidth="94.0" text="choose a Filter" textFill="#e6e1e1">
                <font>
-                  <Font name="System Italic" size="15.0" />
+                  <Font name="Calibri Bold Italic" size="14.0" />
                </font>
             </Label>
             </children>

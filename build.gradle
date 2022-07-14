@@ -66,6 +66,8 @@ sourceSets {
         }
         compileClasspath += common.output
         runtimeClasspath += common.output
+        compileClasspath += server.output
+        runtimeClasspath += server.output
     }
     test {
         java {

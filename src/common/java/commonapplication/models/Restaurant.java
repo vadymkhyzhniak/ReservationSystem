@@ -4,6 +4,7 @@ import commonapplication.persistancemanagement.DataHandler;
 import commonapplication.persistancemanagement.Saver;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,29 @@ public class Restaurant {
     private List<Reservation> reservationList = new ArrayList<>();
 
     private String restInfo;
+
+    public Restaurant(Speciality speciality, int stars, int priceRange, boolean openNow) {
+        this.speciality = speciality;
+        this.stars = stars;
+        this.priceRange = priceRange;
+        this.openNow = openNow;
+    }
+
+    public void setSpeciality(Speciality speciality) {
+        this.speciality = speciality;
+    }
+
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
+    public void setPriceRange(int priceRange) {
+        this.priceRange = priceRange;
+    }
+
+    public void setOpenNow(boolean openNow) {
+        this.openNow = openNow;
+    }
 
     //TODO : This constructor is incomplete, using it as it is will lead to a lot of null pointer exceptions
     public Restaurant(String name, Speciality speciality, int stars, int priceRange, boolean openNow) {

@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.springframework.context.ConfigurableApplicationContext;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -14,9 +16,6 @@ import java.util.Objects;
 public class JavaFXApp extends Application{
 
     private static final String MAIN = "/main.fxml";
-
-
-
 
     @Override
     public void start(Stage primaryStage) throws IOException {

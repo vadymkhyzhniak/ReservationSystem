@@ -1,7 +1,10 @@
 package javafxapplication.controller;
 
 import commonapplication.models.User;
+import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +33,7 @@ public class LoginController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private final List<User> userList;
+    private final ObservableList<User> userList;
 
     public List<User> getUserList() {
         return userList;
@@ -52,26 +55,17 @@ public class LoginController {
     private PasswordField passTxt;
     @FXML
     private Button register;
-    private long id;
+
 
     public LoginController() {
-        this.userList =new ArrayList<>();
+        this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
-        this.id = 0;
     }
     public void exit(ActionEvent e){
         stage= (Stage) cancel.getScene().getWindow();
         stage.close();
     }
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public void register(ActionEvent e) throws IOException {
      if (e.getSource()==register){
@@ -85,16 +79,18 @@ public class LoginController {
    }
     public void login(ActionEvent e) throws IOException {
 
+
         if (e.getSource() == login) {
             String user = userTxt.getText();
             String pass = passTxt.getText();
+          //  var newUser= new User(user,pass);
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
             }
-            //else if (Parser.userExists(getId())){
-            //TODO: authenticate user
-            //    controller.authenticateUser(userList.get(0),this::setUserList);
-            //}
+          else if (Parser.userExists(user)){
+           changeToMainScene(e);
+
+            }
                     else
                 {
                 loginLabel.setText("Invalid user, please enter correct username and password");
@@ -102,37 +98,33 @@ public class LoginController {
 
 
         }
-            else if(e.getSource()==loginGuest){
-                Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
-                Parent root = loader.load();
-
-                stage= (Stage) ((Node)e.getSource()).getScene().getWindow();
-                stage.setWidth(600);
-                stage.setHeight(400);
-                Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
-                stage.setScene(scene);
-                stage.centerOnScreen();
-                stage.show();
-
-            }
+else if (e.getSource()==loginGuest){
+    changeToMainScene(e);
+        }
 
 
     }
 
     private void setUserList(List<User> users) {
         Platform.runLater(()-> {
-            for (int i = 0; i < users.size(); i++) {
-                userList.set(i,users.get(i));
+            userList.setAll(users);
 
-            }
         });
     }
 
-    // We change the scene here if the authentication was successful
-    // use on the authentication method like
     // userController.authenticate(user, this::changeToMainScene);
-    private void changeToMainScene() {
+    private void changeToMainScene(ActionEvent e) throws IOException {
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
+        Parent root = loader.load();
+
+        stage= (Stage) ((Node)e.getSource()).getScene().getWindow();
+        stage.setWidth(600);
+        stage.setHeight(400);
+        Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
 
     }
  private boolean parseMatch(String username)  {
@@ -161,7 +153,7 @@ public class LoginController {
 
     public static void main(String[] args) throws IOException {
       LoginController controller =new LoginController();
-    //  controller.register();
+   // controller.register();
        controller.userList.forEach(System.out::println);
     }
 }

@@ -3,9 +3,12 @@ package javafxapplication.controller;
 import commonapplication.models.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,6 +25,9 @@ public class UserController {
         this.users = new ArrayList<>();
     }
 
+    /**
+    sends a request to add a user to the server's database when invoking the register method in LoginController
+     */
     public void addUser(User user, Consumer<List<User>> userConsumer) {
         webClient.post()
                 .uri("user/")
@@ -34,14 +40,21 @@ public class UserController {
                     userConsumer.accept(users);
                 });
     }
+// TODO : authentification
+    public boolean authenticateUser(User u,Consumer<List<User>> userConsumer) {
+        String basicAuthHeader = "basic " + Base64Utils.encodeToString((u.getUsername()+ ":" +u.getPassword()).getBytes());
 
-    public boolean authenticateUser(User user, Consumer<List<User>> userConsumer) {
-        return webClient.post().
-                uri("user/authenticate").bodyValue(user)
-                .retrieve().bodyToMono(User.class).subscribe(x -> {
-                    users.add(user);
-                    userConsumer.accept(users);
-                }).isDisposed();
+   /*  webClient.get().uri("/user/authenticate")
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, basicAuthHeader)
+                .exchangeToMono(x->x.bodyToMono(User.class))
+                .subscribe(user -> System.out.println("All Users : " + u.getUsername() + ":" ));*/
+
+        return Boolean.TRUE.equals(webClient.post().
+                uri("user/authenticate")
+                        .headers(h->h.setBasicAuth(u.getUsername(),u.getPassword()))
+                .retrieve().bodyToMono(Boolean.class).
+                onErrorStop().block());
 
     }
 
@@ -51,7 +64,6 @@ public class UserController {
         Consumer<List<User>> con = x -> x.add(u);
         UserController c = new UserController();
         c.addUser(u, con);
-        System.out.println(c.users.size());
 
 
     }

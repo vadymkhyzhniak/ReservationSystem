@@ -71,4 +71,11 @@ public class RestaurantService {
 
         return restaurants.stream().filter(filter).collect(Collectors.toList());
     }
+
+    public static void main(String[] args) {
+        RestaurantService s= new RestaurantService();
+       for (int i=0; i<s.getRestaurants().size();i++){
+           System.out.println( s.getRestaurants().get(i));
+       }
+    }
 }

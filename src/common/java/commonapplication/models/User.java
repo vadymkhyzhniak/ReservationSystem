@@ -11,7 +11,7 @@ public class User {
     private String username;
 
     private int passwordHash;
-
+      private String password;
     private List<Reservation> reservationList = new ArrayList<>();
 
     private String userInfo;
@@ -46,6 +46,15 @@ public class User {
         this.passwordHash = passwordHash;
         this.userInfo = "<<USER><NAME:" + name + ">" +
                 "<PWD:" + passwordHash + "></USER>>";
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     // DO NOT DELETE THIS CONSTRUCTOR. OTHERWISE NOTHING WILL WORK ANYMORE

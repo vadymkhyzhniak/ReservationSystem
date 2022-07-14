@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path="api/v1/user/")
+@RequestMapping(path="api/v1/user/",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserResource {
     private final UserService userService;
 
@@ -59,7 +59,7 @@ public class UserResource {
      * Add a user
      * Returns true if it was successful, false otherwise
      */
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Optional<User>> addUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.addUser(user));
     }
