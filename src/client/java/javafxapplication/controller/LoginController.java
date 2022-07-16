@@ -89,19 +89,18 @@ private  ActionEvent e;
                 loginLabel.setText("Please enter username and password");
             }
           else {
-         //  controller.authenticateUser(newUser, this::setAuthenticate);
-
+                controller.authenticateUser(newUser, e, this::setAuthenticate);
             }
 
         }
-else if (e.getSource()==loginGuest){
-    changeToMainScene(e);
+        else if (e.getSource()==loginGuest){
+            changeToMainScene(e);
         }
 
 
     }
 
-    public void setAuthenticate(Boolean authenticate) {
+    public void setAuthenticate(Boolean authenticate, ActionEvent e) {
         this.authenticate = authenticate;
         try{
             changeToMainScene(e);
