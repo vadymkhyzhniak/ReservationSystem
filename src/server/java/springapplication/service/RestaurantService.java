@@ -18,9 +18,6 @@ public class RestaurantService {
 
     public RestaurantService() {
         this.restaurants=Parser.getAllRestaurants();
-      //  restaurants.add(new Restaurant(1,"raa",Speciality.Thailändisch,1,1,true));
-       // restaurants.add(new Restaurant(Speciality.Thailändisch,3,1,false));
-
     }
 
     /**
@@ -38,7 +35,7 @@ public class RestaurantService {
     }
 
     /**
-     * Returns an Optional maybe one restaurant with given name
+     * Returns a Restaurant with a given name if it exits otherwise empty
      */
     public Optional<Restaurant> getRestaurantByName(String restaurantName) {
         return restaurants.stream().filter(r -> r.getName().equals(restaurantName)).findFirst();
@@ -74,12 +71,5 @@ public class RestaurantService {
         }
 
         return restaurants.stream().filter(filter).collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-        RestaurantService s= new RestaurantService();
-       for (int i=0; i<s.getRestaurants().size();i++){
-           System.out.println( s.getRestaurants().get(i));
-       }
     }
 }

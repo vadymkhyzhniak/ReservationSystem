@@ -7,11 +7,8 @@ public class Table {
     private long id;
     private Restaurant restaurant;
 
-    private List<Reservation> reservationList;
-
     public Table(long id, Restaurant restaurant) {
         this.id = id;
-        reservationList = new ArrayList<>();
         this.restaurant = restaurant;
     }
 

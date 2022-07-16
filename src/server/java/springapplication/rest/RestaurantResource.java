@@ -24,8 +24,11 @@ public class RestaurantResource {
 
 
     /**
-     * Return all the restaurants we have in the DB if no filters are applied
+     * Returns all the restaurants we have in the DB if no filters are applied
      * Otherwise all the filters that are set will be used
+     * Returns a List of restaurants that match the filter (Stars, PriceRange, CurrentlyOpen, Speciality)
+     * This function can be used to search for a specific restaurant and get its reservation etc.
+     * If no filters are set we return all restaurants
      */
     @GetMapping
     public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
@@ -40,7 +43,7 @@ public class RestaurantResource {
     }
 
     /**
-     * Return limit number of restaurants we have in the DB
+     * Returns the restaurants we have in the DB but at must {limit}
      */
     @GetMapping("limit/{limit}")
     public ResponseEntity<List<Restaurant>> getRestaurantsByLimit(@PathVariable("limit") int limit) {
@@ -52,7 +55,7 @@ public class RestaurantResource {
     }
 
     /**
-     * Returns an Optional of a Restaurant with a given name if it exits
+     * Returns a Restaurant with a given name if it exits otherwise empty
      */
     @GetMapping("{restaurantName}")
     public ResponseEntity<Restaurant> getRestaurantsByName(@PathVariable("restaurantName") String restaurantName) {

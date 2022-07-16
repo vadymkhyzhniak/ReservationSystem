@@ -16,15 +16,20 @@ private final List<User> users;
 
     public UserService() {
         this.users = new ArrayList<>();
-        users.add(new User("asdf", 12));
-        users.add(new User("test", 999));
     }
 
+    /**
+     * Authenticates a specific User
+     * Returns true if the passwordHash and userId of the User Object are equal to the one we have in the File System
+     */
     public boolean authenticateUser(User sentUser) {
         User realUser = Parser.getUserByUsername(sentUser.getUsername());
         return realUser != null && realUser.getPasswordHash() == sentUser.getPasswordHash();
     }
 
+    /**
+     * Return an Optional of a specific User
+     */
     public Optional<User> getUser(String username) {
         User returnedUser = Parser.getUserByUsername(username);
         if (returnedUser == null) {
@@ -33,6 +38,9 @@ private final List<User> users;
         return Optional.of(returnedUser);
     }
 
+    /**
+     * Return an Optional of the reservation List of a user
+     */
     public Optional<List<Reservation>> getReservationsOfUser(String username) {
         User returnedUser = Parser.getUserByUsername(username);
         if (returnedUser == null) {
@@ -41,6 +49,9 @@ private final List<User> users;
         return Optional.of(returnedUser.getReservationList());
     }
 
+    /**
+     * Returns the user that was added to the DB
+     */
     public Optional<User> addUser(User user) {
         if (Parser.userExists(user.getUsername()) || user.getUsername().isEmpty()) {
             return Optional.empty();

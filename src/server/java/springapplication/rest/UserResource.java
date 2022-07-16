@@ -32,7 +32,7 @@ public class UserResource {
     }
 
     /**
-     * Return an Optional of a specific User
+     * Return a specific User if it exists otherwise empty
      */
     @GetMapping("{username}")
     public ResponseEntity<User> getUser(@PathVariable("username") String username) {
@@ -44,7 +44,7 @@ public class UserResource {
     }
 
     /**
-     * Returns an Option that only contains the reservations of a specific User
+     * Returns the reservations of a specific User (by username) if it exists otherwise empty
      */
     @GetMapping("{username}/reservations")
     public ResponseEntity<List<Reservation>> getReservationsOfUser(@PathVariable("username") String username) {
@@ -57,7 +57,7 @@ public class UserResource {
 
     /**
      * Add a user
-     * Returns true if it was successful, false otherwise
+     * Returns an optional of the user that was created
      */
     @PostMapping()
     public ResponseEntity<Optional<User>> addUser(@RequestBody User user) {
