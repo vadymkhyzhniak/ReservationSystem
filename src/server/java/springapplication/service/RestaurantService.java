@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import commonapplication.persistancemanagement.Parser;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -16,7 +17,10 @@ public class RestaurantService {
     private final List<Restaurant> restaurants;
 
     public RestaurantService() {
-        this.restaurants = Parser.getAllRestaurants();
+        this.restaurants=Parser.getAllRestaurants();
+      //  restaurants.add(new Restaurant(1,"raa",Speciality.Thailändisch,1,1,true));
+       // restaurants.add(new Restaurant(Speciality.Thailändisch,3,1,false));
+
     }
 
     /**

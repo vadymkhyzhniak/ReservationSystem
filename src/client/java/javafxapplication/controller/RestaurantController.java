@@ -47,7 +47,6 @@ public class RestaurantController {
 
     public void getAllRestaurants(Restaurant r,Consumer<List<Restaurant>> restaurantConsumer) {
 
-
         webClient.get().uri(uriBuilder -> uriBuilder.path("restaurant")
                         .queryParam("stars",r.getStars())
                         .queryParam("priceRange",r.getPriceRange())
@@ -64,4 +63,5 @@ public class RestaurantController {
                     restaurantConsumer.accept(restaurants);
                 });
     }
+
 }

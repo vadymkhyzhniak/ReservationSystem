@@ -3,6 +3,8 @@ import commonapplication.models.Restaurant;
 import commonapplication.models.Speciality;
 import commonapplication.models.User;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -43,6 +45,8 @@ public class HomeController implements Initializable {
     private TextField searchBar;
     @FXML
     private ChoiceBox<String> filterBox;
+    @FXML
+    private Label label;
 
 //TODO : get restaurants from database, connection is yet to be tested
     public void setListView(ListView<String> listView) {
@@ -88,8 +92,12 @@ private ListView<String> listView;
         engine = webView.getEngine();
         listView.getItems().addAll(toStringList(list));
         filterBox.getItems().addAll(filters);
-
+        filterBox.getSelectionModel().selectedItemProperty()
+                .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                        -> filter(newValue));
         loadPage();
+
+
     }
 public void search(ActionEvent e){
         if (e.getSource()==search){
@@ -116,22 +124,55 @@ private List<String> searchList(String words, List<String> list){
     /**
  filters the search through the value chosen by the user in the ChoiceBox
      */
-    public void filter(ActionEvent e){
-// will change the switch statements
+    private void filter(String value) {
 
-    switch(filterBox.getValue()) {
-        case "price range":
-            r.setPriceRange(Integer.getInteger(filterBox.getValue()));
-            break;
-        case "cuisine":
-            r.setSpeciality(Speciality.valueOf(filterBox.getValue()));
-            break;
-        case "stars":
-            r.setStars(Integer.getInteger(filterBox.getValue()));
-        case "openNow":
-            r.setOpenNow(true);
-    }
-        controller.getAllRestaurants(r,this::setRestaurantList);
+        for (int i = 0; i < filters.length; i++) {
+            if (value.equals("$")) {
+                r.setPriceRange(1);
+                break;
+            }
+            if (value.equals("$$")) {
+                r.setPriceRange(2);
+                break;
+            }
+            if (value.equals("$$$")) {
+                r.setPriceRange(3);
+                break;
+            }
+            if (value.equals("open now")) {
+                r.setOpenNow(true);
+                break;
+            }
+            if (value.equals("★")) {
+                r.setStars(1);
+                break;
+            }
+            if (value.equals("★★")) {
+                r.setStars(2);
+                break;
+            }
+            if (value.equals("★★★")) {
+                r.setStars(3);
+                break;
+            }
+            if (value.equals("★★★★")) {
+                r.setStars(4);
+                break;
+            }
+            if (value.equals("★★★★★")) {
+                r.setStars(5);
+                break;
+            }
+            if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
+                r.setSpeciality(Speciality.valueOf(value));
+                break;
+            }
+        }
+
+        controller.getAllRestaurants(r, this::setRestaurantList);
+        listView.getItems().clear();
+        listView.getItems().addAll(toStringList(list));
+
 
 
 }
@@ -140,6 +181,9 @@ private List<String> searchList(String words, List<String> list){
             list.setAll(restaurants);
 
         });
+    }
+    public void makeReservation(ActionEvent e){
+
     }
 // the map is now resizable
     public void loadPage() {

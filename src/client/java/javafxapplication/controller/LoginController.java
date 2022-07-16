@@ -34,7 +34,7 @@ public class LoginController {
     private Scene scene;
     private Parent root;
     private final ObservableList<User> userList;
-
+private  boolean authenticate;
     public List<User> getUserList() {
         return userList;
     }
@@ -55,11 +55,12 @@ public class LoginController {
     private PasswordField passTxt;
     @FXML
     private Button register;
-
+private  ActionEvent e;
 
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
+        authenticate= false;
     }
     public void exit(ActionEvent e){
         stage= (Stage) cancel.getScene().getWindow();
@@ -83,19 +84,14 @@ public class LoginController {
         if (e.getSource() == login) {
             String user = userTxt.getText();
             String pass = passTxt.getText();
-          //  var newUser= new User(user,pass);
+         var newUser= new User(user,pass);
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
             }
-          else if (Parser.userExists(user)){
-           changeToMainScene(e);
+          else {
+         //  controller.authenticateUser(newUser, this::setAuthenticate);
 
             }
-                    else
-                {
-                loginLabel.setText("Invalid user, please enter correct username and password");
-            }
-
 
         }
 else if (e.getSource()==loginGuest){
@@ -105,6 +101,16 @@ else if (e.getSource()==loginGuest){
 
     }
 
+    public void setAuthenticate(Boolean authenticate) {
+        this.authenticate = authenticate;
+        try{
+            changeToMainScene(e);
+        }
+      catch (IOException ignored){
+
+      }
+    }
+
     private void setUserList(List<User> users) {
         Platform.runLater(()-> {
             userList.setAll(users);
@@ -112,7 +118,8 @@ else if (e.getSource()==loginGuest){
         });
     }
 
-    // userController.authenticate(user, this::changeToMainScene);
+
+
     private void changeToMainScene(ActionEvent e) throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
