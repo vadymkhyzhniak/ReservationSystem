@@ -1,7 +1,6 @@
 package javafxapplication.controller;
 
 import commonapplication.models.User;
-import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,12 +18,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +32,6 @@ public class LoginController {
     private Scene scene;
     private Parent root;
     private final ObservableList<User> userList;
-private  boolean authenticate;
     public List<User> getUserList() {
         return userList;
     }
@@ -56,12 +52,11 @@ private  boolean authenticate;
     private PasswordField passTxt;
     @FXML
     private Button register;
-
+private  ActionEvent e;
 
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
-        authenticate= false;
     }
     public void exit(ActionEvent e){
         stage= (Stage) cancel.getScene().getWindow();
@@ -90,26 +85,26 @@ private  boolean authenticate;
                 loginLabel.setText("Please enter username and password");
             }
           else {
-           controller.authenticateUser(newUser, e,this::setAuthenticate);
-
+                controller.authenticateUser(newUser, e, this::setAuthenticate);
             }
 
         }
-else if (e.getSource()==loginGuest){
-    changeToMainScene(e);
+        else if (e.getSource()==loginGuest){
+            changeToMainScene(e);
         }
 
 
     }
 
     public void setAuthenticate(Boolean authenticate, ActionEvent e) {
-        this.authenticate = authenticate;
-        try{
-            changeToMainScene(e);
-        }
-      catch (IOException ignored){
+        if(authenticate){
+            try{
+                changeToMainScene(e);
+            }
+            catch (IOException ignored){
 
-      }
+            }
+        }
     }
 
     private void setUserList(List<User> users) {
