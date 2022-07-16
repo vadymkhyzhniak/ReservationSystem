@@ -29,7 +29,7 @@ public class RestaurantController {
 
     public void addRestaurant(Restaurant restaurant, Consumer<List<Restaurant>> restaurantConsumer) {
         webClient.post()
-                .uri("restaurant")
+                .uri("restaurant/")
                 .bodyValue(restaurant)
                 .retrieve()
                 .bodyToMono(Restaurant.class)

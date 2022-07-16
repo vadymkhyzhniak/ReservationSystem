@@ -1,13 +1,13 @@
 package javafxapplication.controller;
 
 import commonapplication.models.User;
+import javafx.event.ActionEvent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +44,7 @@ public class UserController {
     }
 
 
-    public void authenticateUser(User u, ActionEvent e, BiConsumer<Boolean, ActionEvent> userConsumer) {
+    public void authenticateUser(User u, ActionEvent e, BiConsumer<Boolean, javafx.event.ActionEvent> userConsumer) {
         webClient.post()
                 .uri("user/authenticate")
                 .bodyValue(u)

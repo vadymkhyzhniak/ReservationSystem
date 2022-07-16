@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -55,7 +56,7 @@ private  boolean authenticate;
     private PasswordField passTxt;
     @FXML
     private Button register;
-private  ActionEvent e;
+
 
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
@@ -84,12 +85,12 @@ private  ActionEvent e;
         if (e.getSource() == login) {
             String user = userTxt.getText();
             String pass = passTxt.getText();
-         var newUser= new User(user,pass);
+         var newUser= new User(user,pass.hashCode());
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
             }
           else {
-         //  controller.authenticateUser(newUser, this::setAuthenticate);
+           controller.authenticateUser(newUser, e,this::setAuthenticate);
 
             }
 
@@ -101,7 +102,7 @@ else if (e.getSource()==loginGuest){
 
     }
 
-    public void setAuthenticate(Boolean authenticate) {
+    public void setAuthenticate(Boolean authenticate, ActionEvent e) {
         this.authenticate = authenticate;
         try{
             changeToMainScene(e);

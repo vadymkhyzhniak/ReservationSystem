@@ -2,6 +2,7 @@ package javafxapplication.controller;
 import commonapplication.models.Restaurant;
 import commonapplication.models.Speciality;
 import commonapplication.models.User;
+import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -45,8 +46,8 @@ public class HomeController implements Initializable {
     private TextField searchBar;
     @FXML
     private ChoiceBox<String> filterBox;
-    @FXML
-    private Label label;
+@FXML
+private Button reserve;
 
 //TODO : get restaurants from database, connection is yet to be tested
     public void setListView(ListView<String> listView) {
@@ -182,7 +183,18 @@ private List<String> searchList(String words, List<String> list){
 
         });
     }
-    public void makeReservation(ActionEvent e){
+    public void makeReservation(ActionEvent e) throws IOException {
+        if (e.getSource()==reserve){
+            listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+                String selectedItem = listView.getSelectionModel().getSelectedItem();
+          Restaurant r= (Restaurant) list.stream().map(x-> x.getName().equals(selectedItem)? x : null);
+
+                controller.addRestaurant(r,this::setRestaurantList);
+            });
+
+            goToReservation();
+        }
+
 
     }
 // the map is now resizable
@@ -207,13 +219,21 @@ private List<String> searchList(String words, List<String> list){
         stage.centerOnScreen();
         stage.show();
     }
+    public void goToReservation() throws IOException{
 
-    public static void main(String[] args) {
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation.fxml"));
+        Parent root = loader.load();
 
-     List<Restaurant> list= Arrays.asList
-                (new Restaurant("McDonalds", Speciality.Hamburger,3,1,true)
-                        ,new Restaurant("L'osteria", Speciality.Pizza,4,2,false),
-                        new Restaurant("Thai Imbiss", Speciality.Thailändisch,5,3,true));
+        stage= (Stage) exit.getScene().getWindow();
+        stage.setWidth(600);
+        stage.setHeight(400);
+        Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
+
+
 }
 

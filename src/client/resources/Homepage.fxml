@@ -29,7 +29,7 @@
             <ListView fx:id="listView" layoutX="20.0" layoutY="97.0" prefHeight="237.0" prefWidth="245.0" AnchorPane.bottomAnchor="65.66666666666666" AnchorPane.leftAnchor="20.00000000000003" AnchorPane.rightAnchor="9.999999999999972" AnchorPane.topAnchor="97.0" />
             <Button fx:id="reserve" layoutX="20.0" layoutY="342.0" mnemonicParsing="false" onAction="#makeReservation" prefHeight="25.0" prefWidth="121.0" text="make Reservation" AnchorPane.bottomAnchor="32.66666666666667" />
             <ChoiceBox fx:id="filterBox" layoutX="127.0" layoutY="61.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="113.0" />
-            <Label fx:id="label" layoutX="27.0" layoutY="62.0" onMouseClicked="#filter" prefHeight="24.0" prefWidth="94.0" text="choose a Filter" textFill="#e6e1e1">
+            <Label fx:id="label" layoutX="27.0" layoutY="62.0" prefHeight="24.0" prefWidth="94.0" text="choose a Filter" textFill="#e6e1e1">
                <font>
                   <Font name="Calibri Bold Italic" size="14.0" />
                </font>
