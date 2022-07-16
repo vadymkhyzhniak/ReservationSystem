@@ -7,9 +7,11 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class UserController {
@@ -40,22 +42,18 @@ public class UserController {
                     userConsumer.accept(users);
                 });
     }
-// TODO : authentification
-    public boolean authenticateUser(User u,Consumer<List<User>> userConsumer) {
-        String basicAuthHeader = "basic " + Base64Utils.encodeToString((u.getUsername()+ ":" +u.getPassword()).getBytes());
 
-   /*  webClient.get().uri("/user/authenticate")
-                .accept(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, basicAuthHeader)
-                .exchangeToMono(x->x.bodyToMono(User.class))
-                .subscribe(user -> System.out.println("All Users : " + u.getUsername() + ":" ));*/
 
-        return Boolean.TRUE.equals(webClient.post().
-                uri("user/authenticate")
-                        .headers(h->h.setBasicAuth(u.getUsername(),u.getPassword()))
-                .retrieve().bodyToMono(Boolean.class).
-                onErrorStop().block());
-
+    public void authenticateUser(User u, ActionEvent e, BiConsumer<Boolean, ActionEvent> userConsumer) {
+        webClient.post()
+                .uri("user/authenticate")
+                .bodyValue(u)
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .onErrorStop()
+                .subscribe(returnValue -> {
+                    userConsumer.accept(returnValue, e);
+                });
     }
 
     public static void main(String[] args) {
