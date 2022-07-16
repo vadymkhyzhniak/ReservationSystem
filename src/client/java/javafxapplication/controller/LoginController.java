@@ -1,7 +1,6 @@
 package javafxapplication.controller;
 
 import commonapplication.models.User;
-import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +22,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public class LoginController {
     private Scene scene;
     private Parent root;
     private final ObservableList<User> userList;
-private  boolean authenticate;
     public List<User> getUserList() {
         return userList;
     }
@@ -60,7 +57,6 @@ private  ActionEvent e;
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
-        authenticate= false;
     }
     public void exit(ActionEvent e){
         stage= (Stage) cancel.getScene().getWindow();
@@ -84,7 +80,7 @@ private  ActionEvent e;
         if (e.getSource() == login) {
             String user = userTxt.getText();
             String pass = passTxt.getText();
-         var newUser= new User(user,pass);
+         var newUser= new User(user,pass.hashCode());
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
             }
@@ -101,13 +97,14 @@ private  ActionEvent e;
     }
 
     public void setAuthenticate(Boolean authenticate, ActionEvent e) {
-        this.authenticate = authenticate;
-        try{
-            changeToMainScene(e);
-        }
-      catch (IOException ignored){
+        if(authenticate){
+            try{
+                changeToMainScene(e);
+            }
+            catch (IOException ignored){
 
-      }
+            }
+        }
     }
 
     private void setUserList(List<User> users) {

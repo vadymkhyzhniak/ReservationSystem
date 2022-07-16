@@ -20,7 +20,7 @@ public class RestaurantController {
 
     public RestaurantController() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://localhost:8080/")
+                .baseUrl("http://localhost:8080/api/v1/")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
