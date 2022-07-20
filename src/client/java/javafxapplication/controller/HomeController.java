@@ -93,10 +93,10 @@ private ListView<String> listView;
         engine = webView.getEngine();
         listView.getItems().addAll(toStringList(list));
         filterBox.getItems().addAll(filters);
+        loadPage();
         filterBox.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                         -> filter(newValue));
-        loadPage();
 
 
     }
@@ -112,7 +112,6 @@ public void search(ActionEvent e){
             }
 
         }
-
 }
 private List<String> searchList(String words, List<String> list){
         List<String> wordsList =Arrays.asList(words.trim().split(" "));
