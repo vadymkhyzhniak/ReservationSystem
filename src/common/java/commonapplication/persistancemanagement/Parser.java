@@ -146,6 +146,13 @@ public class Parser {
         return getReservationFromString(reservationData.substring(8), restaurant);
     }
 
+    public static String getRestaurantIdFromReservationId(String id) {
+        File file = new File("src/server/resources/Reservations/" + id + ".dat");
+        String reservationData = DataHandler.readFile(file);
+        String[] temp = reservationData.split("RID:");
+        temp = temp[1].split(">");
+        return temp[0];
+    }
 
     // Returns the toString() of a user by Username from the Users file
     // empty String if user doesn't exist
