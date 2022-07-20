@@ -24,6 +24,7 @@ public class Saver {
             case 1 -> str = "src/server/resources/RestaurantIDs.dat";
             case 2 -> str = "src/server/resources/Users.dat";
             case 3 -> str = "src/server/resources/Usernames.dat";
+            case 4 -> str = "src/server/resources/ReservationIDs.dat";
         }
 
         PrintWriter pw;
@@ -110,6 +111,7 @@ public class Saver {
     }
 
     public static boolean confirmReservation(Reservation reservation) {
+        reservation.setConfirmed(true);
         return modifyData(reservation, 9);
     }
 
@@ -136,6 +138,10 @@ public class Saver {
             Restaurant restaurant = reservation.getRestaurant();
             String resId = "<RES:" + reservation.getId() + ">";
             if (config == 1) { // for deleting and cancelling a reservation
+                saveToFile(reservation.getResFile().getPath(), "", 0);
+                File file = new File("src/server/resources/ReservationIDs.dat");
+                String resIDs = DataHandler.readFile(file);
+                saveToFile("src/server/resources/ReservationIDs.dat", resIDs.replaceFirst("/" + reservation.getId() + ",", ""), 4);
                 restaurantData = restaurantData.replaceFirst(resId, "");
                 reservedBy.getReservationList().remove(reservation);
                 usersData = usersData.replaceFirst(resId, "");
@@ -146,13 +152,13 @@ public class Saver {
                 return true;
             } else {
                 if (!restaurantData.contains("<RES:" + reservation.getId() + ">")) {
-                    restaurantData = restaurantData.concat(reservation.getId());
+                    restaurantData = restaurantData.concat("<RES:" + reservation.getId() + ">");
                     restaurant.getReservationList().add(reservation);
                 }
                 if (!usersData.contains("<RES:" + reservation.getId() + ">")) {
                     reservedBy.addReservation(reservation);
                     String reserverInfo = reservedBy.getUserInfo();
-                    usersData = usersData.replaceFirst(reserverInfo, reserverInfo + reservation.toString());
+                    usersData = usersData.replaceFirst(reserverInfo, reserverInfo + "<RES:" + reservation.getId() + ">");
                 }
             }
             saveToFile(Generator.generateFileName(reservation.getRestaurant()), restaurantData, 0);
@@ -219,14 +225,9 @@ public class Saver {
                     String usersData = DataHandler.readFile(file2);
                     String usernames = DataHandler.readFile(file1);
                     for (Reservation userRes : user.getReservationList()) {
-                        System.out.println("UserRes before del " + userRes.toString());
                         usersData = usersData.replaceFirst(userRes.getId(), "");
-                        System.out.println("UserRes after del " + userRes.toString());
                     }
-                    System.out.println("usersData before user deletion :" + usersData);
                     usersData = usersData.replaceFirst(user.getUserInfo(), "");
-                    System.out.println("usersData after user deletion :" + usersData);
-                    System.out.println();
                     usernames = usernames.replaceFirst("/" + user.getUsername() + ",", "");
                     saveToFile("", usersData, 2);
                     saveToFile("", usernames, 3);
@@ -255,19 +256,32 @@ public class Saver {
                 }
             }
         } else if (object instanceof String) {
-            String restId = (String) object;
-            String restIDs = DataHandler.readFile(new File("src/server/resources/RestaurantIDs.dat"));
-            if (restIDs.contains("/" + restId)) {
-                return false;
+            String Id = (String) object;
+            if (config == 0) {
+                String restIDs = DataHandler.readFile(new File("src/server/resources/RestaurantIDs.dat"));
+                if (restIDs.contains("/" + Id)) {
+                    return false;
+                }
+                restIDs = restIDs + "/" + Id;
+                saveToFile("", restIDs, 1);
+            } else {
+                String resIDs = DataHandler.readFile(new File("src/server/resources/ReservationIDs.dat"));
+                if (resIDs.contains("/" + Id)) {
+                    return false;
+                }
+                resIDs = resIDs + "/" + Id;
+                saveToFile("", resIDs, 4);
             }
-            restIDs = restIDs + "/" + restId;
-            saveToFile("", restIDs, 1);
         }
         return true;
     }
 
     public static boolean addRestId(String Id) {
         return modifyData(Id, 0);
+    }
+
+    public static boolean addResId(String Id) {
+        return modifyData(Id, 1);
     }
 
     public static boolean addUser(User user) {

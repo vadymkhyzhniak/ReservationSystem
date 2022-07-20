@@ -33,7 +33,7 @@ public class Reservation implements Comparable<Reservation> {
         this.confirmed = false;
         this.resFile = new File("src/server/resources/Reservations/" + id + ".dat");
         this.resInfo = "<<RES><ID:" + id +
-                "><RID:" + restaurant.getId() +
+                "><RID:" + restaurant.getRestaurantFile().getName().replace(".dat", "") +
                 "><TAB:" + this.table.getId() +
                 "><PID:" + reservedBy +
                 "><RS:" + reservationStart.toString() +
@@ -43,6 +43,7 @@ public class Reservation implements Comparable<Reservation> {
                 "></RES>>";
         if (!resFile.exists() || DataHandler.readFile(resFile).isEmpty())
             Saver.saveToFile(resFile.getPath(), resInfo, 0);
+        Saver.addResId(resFile.getName().replace(".dat", "") + ",");
     }
 
     // DONT DELETE
@@ -113,4 +114,6 @@ public class Reservation implements Comparable<Reservation> {
             return -1;
         return this.toString().compareTo(reservation.toString());
     }
+
+
 }

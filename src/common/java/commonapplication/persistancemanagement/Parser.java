@@ -31,6 +31,14 @@ public class Parser {
         String location = components[9].substring(4);
         Restaurant restaurant = new Restaurant(id, name, openedFrom, openedTo, stars, price, speciality, location);
         restaurant.setTableSchema(tableSchema);
+        int tsl = restaurant.getTableSchema().length();
+        Table[] tables = new Table[tsl];
+        for (int i = 0; i < tsl; i++) {
+            if (tableSchema.charAt(i) == '1') {
+                tables[i] = new Table(i, restaurant);
+            }
+        }
+        restaurant.setTables(tables);
         List<Reservation> reservationList = getReservationListFromFile(restaurant);
         restaurant.setRestaurantFile(file);
         restaurant.setReservationList(reservationList);
@@ -48,7 +56,7 @@ public class Parser {
                 return temp[1];
             }
         }.toString());
-        if (reservationData.length() == 0) {
+        if (reservationData == null || reservationData.length() == 0) {
             //No reservations have been made in this Restaurant
             return new ArrayList<Reservation>();
         } else {

@@ -50,17 +50,30 @@ public class dataTesting {
     public static void main(String[] args) {
         User user0 = new User("Test0-46544128", "********".hashCode());
         Restaurant restaurant = new Restaurant(1L, "X", LocalTime.NOON, LocalTime.MIDNIGHT, 5, 5, Speciality.Pizza, "X");
-        Restaurant restaurant2 = new Restaurant(2L, "X", LocalTime.NOON, LocalTime.MIDNIGHT, 5, 5, Speciality.Pizza, "X");
+        //Restaurant restaurant2 = new Restaurant(2L, "X", LocalTime.NOON, LocalTime.MIDNIGHT, 5, 5, Speciality.Pizza, "X");
+        /*
         for (Restaurant rest : Parser.getAllRestaurants()) {
             System.out.println(rest.toString());
         }
-      /*  Reservation reservation = new Reservation(LocalTime.MIN,
+        */
+        restaurant = Parser.getRestaurantById("668822760");
+
+        /*Reservation reservation = new Reservation(LocalTime.MIN,
                 LocalTime.MAX,
                 user0.getUsername(),
                 restaurant,
-                restaurant.getTables()[0],
-                LocalDate.MAX);*/
-        //   Saver.confirmReservation(reservation);
+                restaurant.getTables()[1],
+                LocalDate.MAX);
+*/
+        //Saver.addUser(user0);
+
+        Reservation reservation = Parser.getReservationById("405201220", restaurant);
+        //restaurant.makeReservation(reservation);
+        //Saver.confirmReservation(reservation);
+        //System.out.println(reservation.isConfirmed());
+        Saver.removeReservation(reservation);
+        //Saver.deleteUser(user0);
+        System.out.println("Res Start time : " + reservation.getReservationStart().toString());
     }
 
     //
