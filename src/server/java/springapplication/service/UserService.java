@@ -4,6 +4,7 @@ import commonapplication.models.Reservation;
 import commonapplication.models.User;
 import commonapplication.persistancemanagement.Parser;
 import commonapplication.persistancemanagement.Saver;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -61,5 +62,9 @@ private final List<User> users;
         users.add(user);
 
         return Optional.of(user);
+    }
+
+    public List<User> getAllUsers() {
+        return Parser.getAllUsers();
     }
 }
