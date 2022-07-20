@@ -2,6 +2,8 @@ package commonapplication.models;
 
 import commonapplication.persistancemanagement.Saver;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -62,11 +64,11 @@ public class User {
         if (this.reservationList.isEmpty()) {
             return userInfo;
         } else {
-            String temp = userInfo;
+            final String[] temp = {userInfo};
             reservationList.forEach(res -> {
-                temp.concat(res.toString());
+                temp[0] += "<RES:" + res.getId() + ">";
             });
-            return temp;
+            return temp[0];
         }
     }
 
@@ -99,5 +101,16 @@ public class User {
         Saver.modifyUser(this);
     }
 
+    public static void main(String[] args) {
+        User user = new User("TestUbahn", "TestUbahn".hashCode());
+        Saver.addUser(user);
+        Restaurant restaurant = new Restaurant(1L, "SomeRestaurant", LocalTime.NOON,
+                LocalTime.MIDNIGHT, 5, 10, Speciality.Pizza, "Somewhere");
+        Reservation reservation = new Reservation(LocalTime.MIN, LocalTime.MAX, user.getUsername(),
+                restaurant, new Table(1L, restaurant), LocalDate.MAX);
+        //restaurant.makeReservation(reservation);
+        restaurant.cancelReservation(reservation);
+        Saver.deleteUser(user);
+    }
 
 }
