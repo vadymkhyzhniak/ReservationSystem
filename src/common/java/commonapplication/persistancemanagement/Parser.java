@@ -31,15 +31,15 @@ public class Parser {
         String location = components[9].substring(4);
         Restaurant restaurant = new Restaurant(id, name, openedFrom, openedTo, stars, price, speciality, location);
         restaurant.setTableSchema(tableSchema);
-        List<Reservation> reservationList = getReservationListFromFile(file, restaurant);
+        List<Reservation> reservationList = getReservationListFromFile(restaurant);
         restaurant.setRestaurantFile(file);
         restaurant.setReservationList(reservationList);
         return restaurant;
     }
 
     @NotNull
-    public static List<Reservation> getReservationListFromFile(@NotNull File file, Restaurant restaurant) {
-        String restaurantData = DataHandler.readFile(file);
+    public static List<Reservation> getReservationListFromFile(Restaurant restaurant) {
+        String restaurantData = DataHandler.readFile(restaurant.getRestaurantFile());
         String reservationData = (new Object() { // Anonymous function that returns a string with all reservations
             @Override
             public String toString() {
@@ -71,15 +71,16 @@ public class Parser {
             LocalTime reservationStart = LocalTime.parse(components[4].substring(3));
             LocalTime reservationEnd = LocalTime.parse(components[5].substring(3));
             LocalDate reservationDate = LocalDate.parse(components[6].substring(3));
-            return new Reservation(reservationStart, reservationEnd, username, restaurant, table, reservationDate);
+            boolean confirmed = Boolean.parseBoolean(components[7].substring(2));
+            Reservation reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, reservationDate);
+            reservation.setConfirmed(confirmed);
+            return reservation;
         }
 
     }
 
 
-    public static List<Restaurant> getRestaurantListBy() {
-        return null;
-    }
+
 
     // returns a list of all users, an empty list if no users are registered
     public static List<User> getAllUsers() {
@@ -94,10 +95,6 @@ public class Parser {
         return userList;
     }
 
-    //Returns a list of all users with a Reservation for the next day
-    /*public static List<User> getAllUsersWithRes(){
-
-    }*/
 
 
     //if no user exists with a given username, null is returned,
@@ -183,6 +180,7 @@ public class Parser {
         return getRestaurantFromFile(file);
     }
 
+
     public static List<Restaurant> getAllRestaurants() {
         File file = new File("src/server/resources/RestaurantIDs.dat");
         List<Restaurant> restaurantList = new ArrayList<>();
@@ -192,7 +190,7 @@ public class Parser {
         String restaurantIDs = DataHandler.readFile(file);
         String[] idArray = restaurantIDs.split(",");
         for (String id : idArray) {
-            File tempFile = new File("src/server/resources/Restaurants/" + id + ".dat");
+            File tempFile = new File("src/server/resources/Restaurants/" + id.replaceFirst("/", "") + ".dat");
             if (!tempFile.exists()) {
                 continue;
             }
