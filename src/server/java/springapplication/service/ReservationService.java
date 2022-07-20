@@ -24,7 +24,31 @@ public class ReservationService {
     /**
      * Deletes a reservation from our internal representation
      */
-    public void deleteReservation(int reservationId) {
-        // TODO: Delete Reservation
+    public boolean deleteReservation(String reservationId) {
+        Restaurant restaurant = Parser.getRestaurantById(Parser.getRestaurantIdFromReservationId(reservationId));
+        if(restaurant == null){
+            return false;
+        }
+
+        Reservation reservation = Parser.getReservationById(reservationId, restaurant);
+        if(reservation == null){
+            return false;
+        }
+
+        return Saver.removeReservation(reservation);
+    }
+
+    public boolean confirmReservation(String reservationId) {
+        Restaurant restaurant = Parser.getRestaurantById(Parser.getRestaurantIdFromReservationId(reservationId));
+        if(restaurant == null){
+            return false;
+        }
+
+        Reservation reservation = Parser.getReservationById(reservationId, restaurant);
+        if(reservation == null){
+            return false;
+        }
+
+        return Saver.confirmReservation(reservation);
     }
 }
