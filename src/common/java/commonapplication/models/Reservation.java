@@ -23,6 +23,11 @@ public class Reservation {
         this.id = Generator.generateUniqueId(reservationStart.toString(), reservationEnd.toString(), reservedBy, reservationDate.toString());
     }
 
+    // DONT DELETE
+    public Reservation() {
+    }
+
+
     public LocalTime getReservationEnd() {
         return reservationEnd;
     }

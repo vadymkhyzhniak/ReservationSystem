@@ -12,6 +12,12 @@ public class Table {
         this.restaurant = restaurant;
     }
 
+    // DONT DELETE
+    public Table() {
+    }
+
+
+
     public long getId() {
         return id;
     }
