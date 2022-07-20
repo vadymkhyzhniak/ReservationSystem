@@ -25,13 +25,15 @@ public class ReservationResource {
         this.reservationService = reservationService;
     }
 
+    /* RESERVATIONS ARE RETRIEVED VIA A GET ON THE USER * /
+
     /**
      * Add a reservation
      * Returns true if it was successful, false otherwise
      */
     @PostMapping()
     public ResponseEntity<Boolean> addReservation(@RequestBody Reservation reservation) {
-        if (reservation.getId() != null) {
+        if (reservation.getId() == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(reservationService.addReservation(reservation));

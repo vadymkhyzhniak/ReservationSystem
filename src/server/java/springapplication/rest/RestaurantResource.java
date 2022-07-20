@@ -30,7 +30,7 @@ public class RestaurantResource {
      * This function can be used to search for a specific restaurant and get its reservation etc.
      * If no filters are set we return all restaurants
      */
-    @GetMapping
+    @GetMapping(consumes = {MediaType.ALL_VALUE})
     public ResponseEntity<List<Restaurant>> getRestaurants(@RequestParam(required = false, name = "stars", defaultValue = "-1") int stars,
                                                            @RequestParam(required = false, name = "priceRange", defaultValue = "-1") int priceRange,
                                                            @RequestParam(required = false, name = "currentlyOpen", defaultValue = "false") boolean currentlyOpen,

@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 
 public class RestaurantController {
     private final WebClient webClient;
-    private final List<Restaurant> restaurants;
 
     public RestaurantController() {
         this.webClient = WebClient.builder()
@@ -24,43 +23,43 @@ public class RestaurantController {
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
-        this.restaurants = new ArrayList<>();
     }
 
-    public void addRestaurant(Restaurant restaurant, Consumer<List<Restaurant>> restaurantConsumer) {
-        webClient.post()
-                .uri("restaurant/")
-                .bodyValue(restaurant)
-                .retrieve()
-                .bodyToMono(Restaurant.class)
-                .onErrorStop()
-                .subscribe(newRestaurant -> {
-                    restaurants.add(newRestaurant);
-                    restaurantConsumer.accept(restaurants);
-                });
-    }
+//    public void addRestaurant(Restaurant restaurant, Consumer<List<Restaurant>> restaurantConsumer) {
+//        webClient.post()
+//                .uri("restaurant/")
+//                .bodyValue(restaurant)
+//                .retrieve()
+//                .bodyToMono(Restaurant.class)
+//                .onErrorStop()
+//                .subscribe(newRestaurant -> {
+//                    restaurants.add(newRestaurant);
+//                    restaurantConsumer.accept(restaurants);
+//                });
+//    }
 
     /**
     sends a request to the server to get all the restaurants according to the filter being set
      through the restaurant object's attributes, if no filter is chosen then returns all restaurants
      */
 
-    public void getAllRestaurants(Restaurant r,Consumer<List<Restaurant>> restaurantConsumer) {
+    public void getAllRestaurants(Consumer<List<Restaurant>> restaurantConsumer) {
+        getAllRestaurantsFilter(-1,-1,false, Speciality.Unbekannt, restaurantConsumer);
+    }
 
+    public void getAllRestaurantsFilter(int stars, int priceRange, boolean openNow, Speciality speciality,Consumer<List<Restaurant>> restaurantConsumer) {
         webClient.get().uri(uriBuilder -> uriBuilder.path("restaurant")
-                        .queryParam("stars",r.getStars())
-                        .queryParam("priceRange",r.getPriceRange())
-                        .queryParam("currentlyOpen",r.isOpenNow())
-                        .queryParam("speciality", r.getSpeciality())
+                        .queryParam("stars",stars)
+                        .queryParam("priceRange",priceRange)
+                        .queryParam("currentlyOpen",openNow)
+                        .queryParam("speciality", speciality)
                         .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Restaurant>>() {
                 })
                 .onErrorStop()
-                .subscribe(newRestaurant -> {
-                    restaurants.clear();
-                    restaurants.addAll(newRestaurant);
-                    restaurantConsumer.accept(restaurants);
+                .subscribe(newRestaurants -> {
+                    restaurantConsumer.accept(newRestaurants);
                 });
     }
 

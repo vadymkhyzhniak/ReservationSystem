@@ -1,7 +1,5 @@
 package javafxapplication.controller;
-import commonapplication.models.Restaurant;
-import commonapplication.models.Speciality;
-import commonapplication.models.User;
+import commonapplication.models.*;
 import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -27,6 +25,8 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -63,7 +63,6 @@ private ListView<String> listView;
     private final RestaurantController controller;
 
     private final ObservableList<Restaurant> list;
-    private final Restaurant r;
     private final String[] filters;
 
 
@@ -71,14 +70,15 @@ private ListView<String> listView;
 
         this.list= FXCollections.observableArrayList();
         this.controller =  new RestaurantController();
-        r= new Restaurant(Speciality.Unbekannt,-1,-1,false);
-        controller.getAllRestaurants(r,this::setRestaurantList);
+        controller.getAllRestaurants(this::setRestaurantList);
         filters= new String[]
         {"$", "$$", "$$$", "★", "★★","★★★","★★★★","★★★★★", "open now",
                 Speciality.Vietnamesisch.name(),Speciality.Deutsch.name(),Speciality.Japanisch.name(),
         Speciality.Italienisch.name(),Speciality.Thailändisch.name(),Speciality.Sushi.name(),Speciality.Hamburger.name()
         ,Speciality.Mexikanisch.name(),Speciality.Döner.name(),Speciality.Türkisch.name(),Speciality.Griechisch.name(),
         Speciality.Pizza.name(),Speciality.Pizza.name(),Speciality.Indisch.name(),Speciality.Chinesisch.name(),Speciality.Spanisch.name()};
+
+
     }
 
     private List<String> toStringList(ObservableList<Restaurant> list) {
@@ -97,8 +97,6 @@ private ListView<String> listView;
         filterBox.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                         -> filter(newValue));
-
-
     }
 public void search(ActionEvent e){
         if (e.getSource()==search){
@@ -125,74 +123,59 @@ private List<String> searchList(String words, List<String> list){
  filters the search through the value chosen by the user in the ChoiceBox
      */
     private void filter(String value) {
+        int stars = -1;
+        int priceRange = -1;
+        boolean openNow = false;
+        Speciality speciality = Speciality.Unbekannt;
 
-        for (int i = 0; i < filters.length; i++) {
-            if (value.equals("$")) {
-                r.setPriceRange(1);
-                break;
-            }
-            if (value.equals("$$")) {
-                r.setPriceRange(2);
-                break;
-            }
-            if (value.equals("$$$")) {
-                r.setPriceRange(3);
-                break;
-            }
-            if (value.equals("open now")) {
-                r.setOpenNow(true);
-                break;
-            }
-            if (value.equals("★")) {
-                r.setStars(1);
-                break;
-            }
-            if (value.equals("★★")) {
-                r.setStars(2);
-                break;
-            }
-            if (value.equals("★★★")) {
-                r.setStars(3);
-                break;
-            }
-            if (value.equals("★★★★")) {
-                r.setStars(4);
-                break;
-            }
-            if (value.equals("★★★★★")) {
-                r.setStars(5);
-                break;
-            }
-            if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
-                r.setSpeciality(Speciality.valueOf(value));
-                break;
-            }
+
+        if (value.equals("$")) {
+            priceRange = 1;
+        }
+        if (value.equals("$$")) {
+            priceRange = 2;
+        }
+        if (value.equals("$$$")) {
+            priceRange = 3;
+        }
+        if (value.equals("open now")) {
+            openNow = true;
+        }
+        if (value.equals("★")) {
+            stars = 1;
+        }
+        if (value.equals("★★")) {
+            stars = 2;
+        }
+        if (value.equals("★★★")) {
+            stars = 3;
+        }
+        if (value.equals("★★★★")) {
+            stars = 4;
+        }
+        if (value.equals("★★★★★")) {
+            stars = 5;
+        }
+        if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
+            speciality = Speciality.valueOf(value);
         }
 
-        controller.getAllRestaurants(r, this::setRestaurantList);
-        listView.getItems().clear();
-        listView.getItems().addAll(toStringList(list));
-
-
-
+        controller.getAllRestaurantsFilter(stars, priceRange, openNow, speciality, this::setRestaurantList);
 }
     private void setRestaurantList(List<Restaurant> restaurants) {
         Platform.runLater(()-> {
+            list.clear();
+            listView.getItems().clear();
             list.setAll(restaurants);
             listView.getItems().addAll(toStringList(list));
-            filterBox.getItems().addAll(filters);
-            filterBox.getSelectionModel().selectedItemProperty()
-                    .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                            -> filter(newValue));
         });
     }
+
     public void makeReservation(ActionEvent e) throws IOException {
         if (e.getSource()==reserve){
             listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
                 String selectedItem = listView.getSelectionModel().getSelectedItem();
-          Restaurant r= (Restaurant) list.stream().map(x-> x.getName().equals(selectedItem)? x : null);
-
-                controller.addRestaurant(r,this::setRestaurantList);
+                Restaurant r = (Restaurant) list.stream().map(x-> x.getName().equals(selectedItem)? x : null);
             });
 
             goToReservation();

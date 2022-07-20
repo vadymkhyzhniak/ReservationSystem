@@ -53,7 +53,7 @@ public class RestaurantService {
             filter = (filter == null ? r -> r.getStars() == stars : filter.and(r -> r.getStars() == stars));
         }
 
-        if(priceRange >= 1 && priceRange <= 5){
+        if(priceRange >= 1 && priceRange <= 3){
             filter = (filter == null ? r -> r.getPriceRange() == priceRange : filter.and(r -> r.getPriceRange() == priceRange));
         }
 
