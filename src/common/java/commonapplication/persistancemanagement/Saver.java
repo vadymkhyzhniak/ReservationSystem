@@ -21,7 +21,7 @@ public class Saver {
         String str = "";
         switch (config) {
             case 0 -> str = path;
-            case 1 -> str = "src/server/resources/Restaurants.dat";
+            case 1 -> str = "src/server/resources/RestaurantIDs.dat";
             case 2 -> str = "src/server/resources/Users.dat";
             case 3 -> str = "src/server/resources/Usernames.dat";
         }
@@ -80,10 +80,24 @@ public class Saver {
                     pw.flush();
                     pw.close();
                 }
+            } else if (object instanceof Reservation) {
+                Reservation reservation = (Reservation) object;
+                if (config == 0 || config == 2) {
+                    pw = new PrintWriter("src/server/resources/Reservations/" + reservation.getId() + ".dat");
+                    pw.println(reservation.toString());
+                    pw.flush();
+                    pw.close();
+                }
+                if (config == 1 || config == 2) {
+                    pw = new PrintWriter("src/server/resources/ReservationIDs.dat");
+                    pw.println(reservation.getId() + ",");
+                    pw.flush();
+                    pw.close();
+                }
             }
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
@@ -95,32 +109,47 @@ public class Saver {
         return modifyData(reservation, 1);
     }
 
+    public static boolean confirmReservation(Reservation reservation) {
+        return modifyData(reservation, 9);
+    }
+
+
     private static boolean modifyData(Object object, int config) {
         if (object instanceof Reservation) {
             Reservation reservation = (Reservation) object;
             File restFile = reservation.getRestaurant().getRestaurantFile();
             File usersFile = new File("src/server/resources/Users.dat");
+            File resFile = new File("src/server/resources/Reservations/" + reservation.getId() + ".dat");
             String usersData = DataHandler.readFile(usersFile);
             if (restFile != null && !restFile.exists()) { //This shouldn't really happen, since we call this method on a restaurant,
                 // and so we already assume that the restaurant file exists, as it was created upon the instantiation of the restaurant.
                 createNewFile(reservation.getRestaurant(), 2);
                 return false;
             }
+            if (resFile != null && !resFile.exists()) {
+                createNewFile(reservation, 2);
+                return false;
+            }
             String restaurantData = DataHandler.readFile(restFile);
             String reservationData = reservation.toString();
             User reservedBy = Parser.getUserByUsername(reservation.getReservedBy());
             Restaurant restaurant = reservation.getRestaurant();
-            if (config == 1) {
-                restaurantData = restaurantData.replaceFirst(reservationData, "");
+            String resId = "<RES:" + reservation.getId() + ">";
+            if (config == 1) { // for deleting and cancelling a reservation
+                restaurantData = restaurantData.replaceFirst(resId, "");
                 reservedBy.getReservationList().remove(reservation);
-                usersData = usersData.replaceFirst(reservation.toString(), "");
+                usersData = usersData.replaceFirst(resId, "");
                 restaurant.getReservationList().remove(reservation);
+            } else if (config == 9) { //for confirming a reservation
+                String confirmedRes = reservationData.replaceFirst("<C:false>", "<C:true>");
+                saveToFile(reservation.getResFile().getPath(), confirmedRes, 0);
+                return true;
             } else {
-                if (!restaurantData.contains(reservationData)) {
-                    restaurantData = restaurantData.concat(reservationData);
+                if (!restaurantData.contains("<RES:" + reservation.getId() + ">")) {
+                    restaurantData = restaurantData.concat(reservation.getId());
                     restaurant.getReservationList().add(reservation);
                 }
-                if (!usersData.contains(reservationData)) {
+                if (!usersData.contains("<RES:" + reservation.getId() + ">")) {
                     reservedBy.addReservation(reservation);
                     String reserverInfo = reservedBy.getUserInfo();
                     usersData = usersData.replaceFirst(reserverInfo, reserverInfo + reservation.toString());
@@ -176,7 +205,10 @@ public class Saver {
                         // but is as good as deleted because the files don't exist anyway
                     } else if (!f1e) {
                         String usersData = DataHandler.readFile(file2);
-                        usersData = usersData.replaceFirst(user.toString(), "");
+                        usersData = usersData.replaceFirst(user.getUserInfo(), "");
+                        for (Reservation userRes : user.getReservationList()) {
+                            usersData = usersData.replaceFirst(userRes.toString(), "");
+                        }
                         saveToFile("", usersData, 2);
                     } else {
                         String usernames = DataHandler.readFile(file1);
@@ -184,11 +216,19 @@ public class Saver {
                         saveToFile("", usernames, 3);
                     }
                 } else {
-                    String userData = DataHandler.readFile(file2);
+                    String usersData = DataHandler.readFile(file2);
                     String usernames = DataHandler.readFile(file1);
-                    userData = userData.replaceFirst(user.toString(), "");
+                    for (Reservation userRes : user.getReservationList()) {
+                        System.out.println("UserRes before del " + userRes.toString());
+                        usersData = usersData.replaceFirst(userRes.getId(), "");
+                        System.out.println("UserRes after del " + userRes.toString());
+                    }
+                    System.out.println("usersData before user deletion :" + usersData);
+                    usersData = usersData.replaceFirst(user.getUserInfo(), "");
+                    System.out.println("usersData after user deletion :" + usersData);
+                    System.out.println();
                     usernames = usernames.replaceFirst("/" + user.getUsername() + ",", "");
-                    saveToFile("", userData, 2);
+                    saveToFile("", usersData, 2);
                     saveToFile("", usernames, 3);
                 }
                 return true;
@@ -214,10 +254,21 @@ public class Saver {
                     return true;
                 }
             }
+        } else if (object instanceof String) {
+            String restId = (String) object;
+            String restIDs = DataHandler.readFile(new File("src/server/resources/RestaurantIDs.dat"));
+            if (restIDs.contains("/" + restId)) {
+                return false;
+            }
+            restIDs = restIDs + "/" + restId;
+            saveToFile("", restIDs, 1);
         }
         return true;
     }
 
+    public static boolean addRestId(String Id) {
+        return modifyData(Id, 0);
+    }
 
     public static boolean addUser(User user) {
         return modifyData(user, 0);

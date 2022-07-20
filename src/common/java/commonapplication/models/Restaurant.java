@@ -4,7 +4,6 @@ import commonapplication.persistancemanagement.DataHandler;
 import commonapplication.persistancemanagement.Saver;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,8 +90,10 @@ public class Restaurant {
                 "<OF:" + openedFrom + "><OT:" + openedTo + ">" +
                 "<PRICE:" + priceRange + "><STARS:" + stars + ">" +
                 "<SPEC:" + speciality + "><LOC:" + location + "></REST>>";
-        if (!restaurantFile.exists() || DataHandler.readFile(restaurantFile).isEmpty())
+        if (!restaurantFile.exists() || DataHandler.readFile(restaurantFile).isEmpty()) {
             Saver.saveToFile(restaurantFile.getPath(), restInfo, 0);
+        }
+        Saver.addRestId(restaurantFile.getName().replace(".dat", "") + ",");
     }
 
     public long getId() {
@@ -180,8 +181,19 @@ public class Restaurant {
     }
 
     public boolean cancelReservation(Reservation reservation) {
+        if (reservation.isConfirmed()) {
+            return false;
+        }
         return Saver.removeReservation(reservation);
     }
+
+    /*
+    public void notifyUsers () {
+        for ( Reservation reservation : reservationList ) {
+            if ( !reservation.isConfirmed() && reservation.getReservationDate())
+        }
+    }
+*/
 
     @Override
     public String toString() {
@@ -189,11 +201,11 @@ public class Restaurant {
         if (reservationList.isEmpty()) {
             return restInfo;
         } else {
-            String temp = restInfo;
+            final String[] temp = {restInfo};
             reservationList.forEach(res -> {
-                temp.concat(res.toString());
+                temp[0] += res.toString();
             });
-            return temp;
+            return temp[0];
         }
 
     }
