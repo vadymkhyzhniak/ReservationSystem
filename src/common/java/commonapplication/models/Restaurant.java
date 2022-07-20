@@ -34,6 +34,12 @@ public class Restaurant {
         this.openNow = openNow;
     }
 
+    // DONT DELETE
+    public Restaurant() {
+    }
+
+
+
     public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
     }

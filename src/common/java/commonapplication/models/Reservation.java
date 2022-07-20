@@ -45,6 +45,11 @@ public class Reservation implements Comparable<Reservation> {
             Saver.saveToFile(resFile.getPath(), resInfo, 0);
     }
 
+    // DONT DELETE
+    public Reservation() {
+    }
+
+
     public LocalTime getReservationEnd() {
         return reservationEnd;
     }

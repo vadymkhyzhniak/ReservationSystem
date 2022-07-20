@@ -1,6 +1,7 @@
 package javafxapplication.controller;
 
 import commonapplication.models.User;
+import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,8 +53,7 @@ public class LoginController {
     private PasswordField passTxt;
     @FXML
     private Button register;
-private  ActionEvent e;
-
+private Boolean authenticate;
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
@@ -68,7 +68,14 @@ private  ActionEvent e;
      if (e.getSource()==register){
 
          var newUser = new User(userTxt.getText(), passTxt.getText().hashCode());
+         if (Parser.userExists(userTxt.getText())){
+             loginLabel.setText("User already exists, please login");
+         }
+         else{
              controller.addUser(newUser,this::setUserList);
+         }
+
+
 
           userTxt.setText("");
           passTxt.setText("");
@@ -85,7 +92,8 @@ private  ActionEvent e;
                 loginLabel.setText("Please enter username and password");
             }
           else {
-                controller.authenticateUser(newUser, e, this::setAuthenticate);
+                  controller.authenticateUser(newUser, e, this::setAuthenticate);
+
             }
 
         }
@@ -98,12 +106,7 @@ private  ActionEvent e;
 
     public void setAuthenticate(Boolean authenticate, ActionEvent e) {
         if(authenticate){
-            try{
-                changeToMainScene(e);
-            }
-            catch (IOException ignored){
-
-            }
+            changeToMainScene(e);
         }
     }
 
@@ -116,18 +119,26 @@ private  ActionEvent e;
 
 
 
-    private void changeToMainScene(ActionEvent e) throws IOException {
+    private void changeToMainScene(ActionEvent e)  {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
-        Parent root = loader.load();
+        Parent root=null;
+try{
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
+    root = loader.load();
 
-        stage= (Stage) ((Node)e.getSource()).getScene().getWindow();
-        stage.setWidth(600);
-        stage.setHeight(400);
-        Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+}
+
+         catch (IOException ignored){
+
+         }
+            stage= (Stage) ((Node)e.getSource()).getScene().getWindow();
+            stage.setWidth(600);
+            stage.setHeight(400);
+            Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
+
 
     }
  private boolean parseMatch(String username)  {
