@@ -214,5 +214,11 @@ public class Restaurant {
             return temp[0];
         }
 
+
+    }
+
+    public static void main(String[] args) {
+        Restaurant r=new Restaurant(1,"gf",null,null,0,0,null,null);
+        System.out.println(r.getTableSchema()) ;
     }
 }

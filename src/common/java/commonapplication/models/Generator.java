@@ -13,7 +13,7 @@ public class Generator {
 
     public static String generateRandomTableSchema() {
         String str = "";
-        int randomLength = (int) Math.pow((double) (new Random().nextInt(MAX - MIN) + MIN), 2);
+      int randomLength = (int) Math.pow((double) (new Random().nextInt(MAX - MIN) + MIN), 2);
         for (int i = 0; i < randomLength; i++) {
             str += Integer.toString(new Random().nextInt(2)); //appends 0's and 1's randomly to str
         }
@@ -42,4 +42,5 @@ public class Generator {
         String uId = Integer.toString(Math.abs(temp.hashCode()));
         return uId;
     }
+
 }

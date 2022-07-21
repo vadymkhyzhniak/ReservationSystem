@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -23,41 +22,79 @@
                </font>
             </Label>
             <Button fx:id="home" layoutX="165.0" layoutY="344.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="65.0" text="Home" AnchorPane.bottomAnchor="31.0" />
-            <Button fx:id="reserve" layoutX="32.0" layoutY="342.0" mnemonicParsing="false" onAction="#makeReservation" prefHeight="27.0" prefWidth="121.0" text="make Reservation" AnchorPane.bottomAnchor="31.0" />
-            <DatePicker fx:id="calender" layoutX="6.0" layoutY="33.0" onAction="#chooseDate" prefHeight="25.0" prefWidth="250.0" promptText="enter a date" />
-            <TextField fx:id="end" layoutX="147.0" layoutY="91.0" prefHeight="38.0" prefWidth="101.0" promptText="reservation end" />
-            <TextField fx:id="start" layoutX="14.0" layoutY="91.0" prefHeight="38.0" prefWidth="108.0" promptText="reservation start" />
-            <BorderPane layoutX="15.0" layoutY="148.0" prefHeight="105.0" prefWidth="236.0">
-               <left>
-                  <ChoiceBox prefHeight="26.0" prefWidth="49.0" BorderPane.alignment="CENTER" />
-               </left>
-               <top>
+            <Button fx:id="makeReservation" layoutX="26.0" layoutY="342.0" mnemonicParsing="false" onAction="#makeReservation" prefHeight="27.0" prefWidth="127.0" text="Confirm Reservation" AnchorPane.bottomAnchor="31.0" />
+            <DatePicker fx:id="calender" layoutX="8.0" layoutY="111.0" onAction="#chooseDate" prefHeight="25.0" prefWidth="250.0" promptText="enter a date" />
+            <BorderPane layoutX="53.0" layoutY="250.0" prefHeight="47.0" prefWidth="159.0">
+               <bottom>
+                  <Spinner fx:id="guests" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
                   <Label prefHeight="43.0" prefWidth="180.0" text="Select number of guests" textFill="#f8f5f5" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
-               </top>
-               <center>
-                  <Slider prefHeight="14.0" prefWidth="146.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
+            <ComboBox fx:id="start" layoutX="-7.0" layoutY="147.0" onAction="#pickTime" prefHeight="34.0" prefWidth="131.0" promptText="reservation start" />
+            <ComboBox fx:id="end" layoutX="133.0" layoutY="147.0" onAction="#pickTime" prefHeight="33.0" prefWidth="129.0" promptText="reservation end" />
+            <Label fx:id="prompt" layoutX="20.0" layoutY="183.0" prefHeight="35.0" prefWidth="225.0" textFill="#f80202">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="availableTables" layoutX="58.0" layoutY="308.0" mnemonicParsing="false" onAction="#generateSchema" prefHeight="25.0" prefWidth="153.0" text="See Availability" />
+            <Button fx:id="confirmDate" layoutX="39.0" layoutY="218.0" mnemonicParsing="false" onAction="#pickTime" prefHeight="25.0" prefWidth="192.0" text="Confirm Date" />
+            <Label fx:id="info" alignment="CENTER" layoutX="17.0" layoutY="14.0" prefHeight="65.0" prefWidth="232.0" textFill="#f2f2f2">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </left>
-   <right>
-      <GridPane fx:id="tableScheme" prefHeight="407.0" prefWidth="335.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-   </right>
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="334.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane fx:id="tableScheme" layoutX="-60.0" prefHeight="400.0" prefWidth="334.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="t14" mnemonicParsing="false" prefHeight="63.0" prefWidth="48.0" text="14" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                  <Button fx:id="t13" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="13" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                  <Button fx:id="t12" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="12" GridPane.rowIndex="6" />
+                  <Button fx:id="t8" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="8" GridPane.rowIndex="4" />
+                  <Button fx:id="t4" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="4" GridPane.rowIndex="2" />
+                  <Button fx:id="t3" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="3" GridPane.columnIndex="6" />
+                  <Button fx:id="t2" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="2" GridPane.columnIndex="4" />
+                  <Button fx:id="t1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="1" GridPane.columnIndex="2" />
+                  <Button fx:id="t10" layoutX="202.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="10" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                  <Button fx:id="t5" layoutX="202.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="5" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button fx:id="t6" layoutX="202.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="6" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <Button fx:id="t15" layoutX="202.0" layoutY="10.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="48.0" text="15" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+                  <Button fx:id="t11" layoutX="202.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="11" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                  <Button fx:id="t7" layoutX="202.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="7" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                  <Button fx:id="t0" layoutX="106.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="0" />
+                  <Button fx:id="t9" layoutX="106.0" layoutY="10.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="48.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>

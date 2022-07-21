@@ -24,7 +24,7 @@ public class ReservationController {
     }
 
     /**
-     sends a request to add a user to the server's database when invoking the register method in LoginController
+     sends a request to add a reservation to the server's database when invoking the makeReservation method in ReservationController
      */
     public void addReservation(Reservation reservation, Consumer<List<Reservation>> reservationConsumer) {
         webClient.post()

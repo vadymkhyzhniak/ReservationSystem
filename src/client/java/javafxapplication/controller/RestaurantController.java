@@ -25,18 +25,13 @@ public class RestaurantController {
                 .build();
     }
 
-//    public void addRestaurant(Restaurant restaurant, Consumer<List<Restaurant>> restaurantConsumer) {
-//        webClient.post()
-//                .uri("restaurant/")
-//                .bodyValue(restaurant)
-//                .retrieve()
-//                .bodyToMono(Restaurant.class)
-//                .onErrorStop()
-//                .subscribe(newRestaurant -> {
-//                    restaurants.add(newRestaurant);
-//                    restaurantConsumer.accept(restaurants);
-//                });
-//    }
+  public void getRestaurant(String restaurantName, Consumer<Restaurant> restaurantConsumer) {
+       webClient.get()
+                .uri("restaurant/"+restaurantName)
+               .retrieve().bodyToMono(Restaurant.class)
+               .onErrorStop()
+               .subscribe(restaurantConsumer::accept);
+   }
 
     /**
     sends a request to the server to get all the restaurants according to the filter being set
@@ -58,9 +53,7 @@ public class RestaurantController {
                 .bodyToMono(new ParameterizedTypeReference<List<Restaurant>>() {
                 })
                 .onErrorStop()
-                .subscribe(newRestaurants -> {
-                    restaurantConsumer.accept(newRestaurants);
-                });
+                .subscribe(restaurantConsumer::accept);
     }
 
 }

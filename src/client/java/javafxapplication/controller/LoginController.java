@@ -30,13 +30,9 @@ import java.util.List;
 public class LoginController {
 
     private Stage stage;
-    private Scene scene;
     private Parent root;
     private final ObservableList<User> userList;
-    public List<User> getUserList() {
-        return userList;
-    }
-
+    private String username;
     private final File file= new File("src/server/resources/Users.dat");
     private final UserController controller;
     @FXML
@@ -53,7 +49,12 @@ public class LoginController {
     private PasswordField passTxt;
     @FXML
     private Button register;
-private Boolean authenticate;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private Boolean authenticate;
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
@@ -87,28 +88,33 @@ private Boolean authenticate;
         if (e.getSource() == login) {
             String user = userTxt.getText();
             String pass = passTxt.getText();
-         var newUser= new User(user,pass.hashCode());
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
             }
-          else {
-                  controller.authenticateUser(newUser, e, this::setAuthenticate);
+          else if (Parser.userExists(user)){
+              //    controller.authenticateUser(newUser, e, this::setAuthenticate);
 
+                  setUsername(user);
+                  changeToMainScene(e);
+            }
+          else {
+              loginLabel.setText("User does not exist, please register");
             }
 
         }
         else if (e.getSource()==loginGuest){
+            setUsername( "SomePinguin");
             changeToMainScene(e);
         }
 
 
     }
 
-    public void setAuthenticate(Boolean authenticate, ActionEvent e) {
+ /*   public void setAuthenticate(Boolean authenticate, ActionEvent e) {
         if(authenticate){
             changeToMainScene(e);
         }
-    }
+    }*/
 
     private void setUserList(List<User> users) {
         Platform.runLater(()-> {
@@ -119,19 +125,16 @@ private Boolean authenticate;
 
 
 
-    private void changeToMainScene(ActionEvent e)  {
+    private void changeToMainScene(ActionEvent e) throws IOException {
+
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-        Parent root=null;
-try{
+
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
-    root = loader.load();
-
-}
-
-         catch (IOException ignored){
-
-         }
+       root = loader.load();
+HomeController controller1 = loader.getController();
+controller1.showName(username);
             stage= (Stage) ((Node)e.getSource()).getScene().getWindow();
+
             stage.setWidth(600);
             stage.setHeight(400);
             Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
@@ -141,34 +144,7 @@ try{
 
 
     }
- private boolean parseMatch(String username)  {
-        StringBuilder parser= new StringBuilder();
-        try{
-            BufferedReader r= new BufferedReader(new FileReader(this.file));
-            String line=r.readLine();
-            while(line!=null){
-                parser.append(line).append("\n");
-                line = r.readLine();
-            }
-            r.close();
-           if (!parser.isEmpty()){
-               String [] s= parser.toString().split("\\R");
-             return Arrays.asList(s).contains(username);
-           }
-           else {
-               return false;
-           }
-        }
-       catch(Exception ignored){
 
-       }
-        return false;
-    }
 
-    public static void main(String[] args) throws IOException {
-      LoginController controller =new LoginController();
-   // controller.register();
-       controller.userList.forEach(System.out::println);
-    }
 }
 

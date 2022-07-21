@@ -25,8 +25,6 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -48,28 +46,31 @@ public class HomeController implements Initializable {
     private ChoiceBox<String> filterBox;
 @FXML
 private Button reserve;
-
-//TODO : get restaurants from database, connection is yet to be tested
-    public void setListView(ListView<String> listView) {
-        this.listView = listView;
-    }
-
+@FXML
+private Label welcome;
     @FXML
 private ListView<String> listView;
     private Stage stage;
-    private Scene scene;
     private Parent root;
+
 
     private final RestaurantController controller;
 
     private final ObservableList<Restaurant> list;
+    private  Restaurant r;
     private final String[] filters;
-
+private String name;
+private String restaurant;
+    public void showName(String name) {
+       welcome.setText("Welcome "+name);
+       this.name= welcome.getText().substring(7);
+    }
 
     public HomeController() {
 
         this.list= FXCollections.observableArrayList();
         this.controller =  new RestaurantController();
+        r= new Restaurant(Speciality.Unbekannt,-1,-1,false);
         controller.getAllRestaurants(this::setRestaurantList);
         filters= new String[]
         {"$", "$$", "$$$", "★", "★★","★★★","★★★★","★★★★★", "open now",
@@ -78,7 +79,10 @@ private ListView<String> listView;
         ,Speciality.Mexikanisch.name(),Speciality.Döner.name(),Speciality.Türkisch.name(),Speciality.Griechisch.name(),
         Speciality.Pizza.name(),Speciality.Pizza.name(),Speciality.Indisch.name(),Speciality.Chinesisch.name(),Speciality.Spanisch.name()};
 
+    }
 
+    public void setR(Restaurant r) {
+        this.r = r;
     }
 
     private List<String> toStringList(ObservableList<Restaurant> list) {
@@ -97,6 +101,8 @@ private ListView<String> listView;
         filterBox.getSelectionModel().selectedItemProperty()
                 .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                         -> filter(newValue));
+
+
     }
 public void search(ActionEvent e){
         if (e.getSource()==search){
@@ -123,61 +129,77 @@ private List<String> searchList(String words, List<String> list){
  filters the search through the value chosen by the user in the ChoiceBox
      */
     private void filter(String value) {
-        int stars = -1;
-        int priceRange = -1;
-        boolean openNow = false;
-        Speciality speciality = Speciality.Unbekannt;
+
+        for (int i = 0; i < filters.length; i++) {
+            if (value.equals("$")) {
+                r.setPriceRange(1);
+                break;
+            }
+            if (value.equals("$$")) {
+                r.setPriceRange(2);
+                break;
+            }
+            if (value.equals("$$$")) {
+                r.setPriceRange(3);
+                break;
+            }
+            if (value.equals("open now")) {
+                r.setOpenNow(true);
+                break;
+            }
+            if (value.equals("★")) {
+                r.setStars(1);
+                break;
+            }
+            if (value.equals("★★")) {
+                r.setStars(2);
+                break;
+            }
+            if (value.equals("★★★")) {
+                r.setStars(3);
+                break;
+            }
+            if (value.equals("★★★★")) {
+                r.setStars(4);
+                break;
+            }
+            if (value.equals("★★★★★")) {
+                r.setStars(5);
+                break;
+            }
+            if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
+                r.setSpeciality(Speciality.valueOf(value));
+                break;
+            }
+        }
+
+        controller.getAllRestaurants( this::setRestaurantList);
+        listView.getItems().clear();
+        listView.getItems().addAll(toStringList(list));
 
 
-        if (value.equals("$")) {
-            priceRange = 1;
-        }
-        if (value.equals("$$")) {
-            priceRange = 2;
-        }
-        if (value.equals("$$$")) {
-            priceRange = 3;
-        }
-        if (value.equals("open now")) {
-            openNow = true;
-        }
-        if (value.equals("★")) {
-            stars = 1;
-        }
-        if (value.equals("★★")) {
-            stars = 2;
-        }
-        if (value.equals("★★★")) {
-            stars = 3;
-        }
-        if (value.equals("★★★★")) {
-            stars = 4;
-        }
-        if (value.equals("★★★★★")) {
-            stars = 5;
-        }
-        if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
-            speciality = Speciality.valueOf(value);
-        }
 
-        controller.getAllRestaurantsFilter(stars, priceRange, openNow, speciality, this::setRestaurantList);
 }
-    private void setRestaurantList(List<Restaurant> restaurants) {
-        Platform.runLater(()-> {
-            list.clear();
-            listView.getItems().clear();
-            list.setAll(restaurants);
-            listView.getItems().addAll(toStringList(list));
-        });
+
+    public void setRestaurant(String restaurant) {
+        this.restaurant = restaurant;
     }
 
+    private void setRestaurantList(List<Restaurant> restaurants) {
+        Platform.runLater(()-> {
+            list.setAll(restaurants);
+            listView.getItems().addAll(toStringList(list));
+            filterBox.getItems().clear();
+            filterBox.getItems().addAll(filters);
+            filterBox.getSelectionModel().selectedItemProperty()
+                    .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                            -> filter(newValue));
+        });
+    }
     public void makeReservation(ActionEvent e) throws IOException {
         if (e.getSource()==reserve){
-            listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-                String selectedItem = listView.getSelectionModel().getSelectedItem();
-                Restaurant r = (Restaurant) list.stream().map(x-> x.getName().equals(selectedItem)? x : null);
-            });
 
+             setRestaurant(listView.getSelectionModel().getSelectedItem());
             goToReservation();
         }
 
@@ -195,11 +217,14 @@ private List<String> searchList(String words, List<String> list){
     public void exit() throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        Parent root = loader.load();
+        root = loader.load();
+
 
         stage= (Stage) exit.getScene().getWindow();
-        stage.setWidth(600);
+
         stage.setHeight(400);
+        stage.setWidth(600);
+
         Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
         stage.setScene(scene);
         stage.centerOnScreen();
@@ -209,7 +234,9 @@ private List<String> searchList(String words, List<String> list){
 
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation.fxml"));
-        Parent root = loader.load();
+      root = loader.load();
+ReservationSceneController controller= loader.getController();
+controller.displayInfo(name,restaurant);
 
         stage= (Stage) exit.getScene().getWindow();
         stage.setWidth(600);
