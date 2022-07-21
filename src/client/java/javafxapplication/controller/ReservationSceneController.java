@@ -91,7 +91,7 @@ private Restaurant restaurant;
 private String username;
 @FXML
 private Label info;
-
+private boolean confirm= false;
 
 
     public ReservationSceneController()  {
@@ -99,7 +99,7 @@ private Label info;
         this.restaurantController= new RestaurantController();
         this.reservationList= FXCollections.observableArrayList();
      buttons= new Button[]{t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15};
-        for (int i = 0; i < 24; i++) {
+        for (int i = 8; i < 23; i++) {
             for(int j = 0; j < 4; j++) {
                 String[] minutes = {"00", "15", "30", "45"};
                 String time = i + ":" + minutes[j];
@@ -127,7 +127,7 @@ private Label info;
     }
 public void chooseDate(ActionEvent e ){
   date= calender.getValue();
- verif= true;
+    confirm= !date.toString().isBlank();
 
 }
 public void pickTime(ActionEvent e){
@@ -140,7 +140,8 @@ public void pickTime(ActionEvent e){
             this.reservationEnd= LocalTime.parse(end.getValue());
 
     if (reservationStart.isBefore(reservationEnd)){
-        this.verif=true;
+
+            this.verif=true;
 
     }
     else {
@@ -150,43 +151,58 @@ this.verif= false;
 }
 }
 public void makeReservation(ActionEvent e){
-    if (verif && e.getSource().equals(makeReservation)){
-        Random rand= new Random();
-this.table= restaurant.getTables()[rand.nextInt(0,restaurant.getTables().length)];
-        Reservation   reservation = new Reservation(reservationStart,reservationEnd,username,restaurant,table,date);
-        info.setText(info.getText() +"\nTable is booked on "+date.toString()+"\n from: "+reservationStart.toString()+" to "+reservationEnd.toString());
-controller.addReservation(reservation,this::setReservationList);
+    if ( e.getSource().equals(makeReservation)){
+        if (verif && confirm){
+            Random rand= new Random();
+            if (restaurant.getTables().length>0){
+                this.table= restaurant.getTables()[rand.nextInt(0,restaurant.getTables().length)];
+            }
+            else {
+                this.table= new Table();
+            }
+            Reservation   reservation = new Reservation(reservationStart,reservationEnd,username,restaurant,table,date);
+            info.setText(info.getText() +"\nTable is booked on "+date.toString()+"\n from: "+reservationStart.toString()+" to "+reservationEnd.toString());
+            controller.addReservation(reservation,this::setReservationList);
+        }
+   else {
+       prompt.setText("failed to make a reservation, please choose a table before proceeding");
+        }
     }
 
 }
 @FXML
 public void generateSchema(ActionEvent e){
-
+if (e.getSource().equals(availableTables)){
     String schema= restaurant.getTableSchema();
+    int j= schema.length();
+if (schema.length()>0){
+    int i=0;
 
+    while (i< j && i< buttons.length) {
 
-        int i=0;
-        int j= restaurant.getTableSchema().length();
-        while (i<= j && i< buttons.length) {
+        if (schema.charAt(i)=='0'){
 
-            if (schema.charAt(i)=='0'){
-
-                buttons[i].setStyle("-fx-background-color: #3eb516;");
-            }
-            else if(schema.charAt(i)=='1') {
-
-                buttons[i].setStyle("-fx-background-color: #c90b04;");
-                buttons[i].setDisable(true);
-            }
-            i++;
-
+            buttons[i].setStyle("-fx-background-color: #3eb516;");
         }
+        else if(schema.charAt(i)=='1') {
+
+            buttons[i].setStyle("-fx-background-color: #c90b04;");
+            buttons[i].setDisable(true);
+        }
+        i++;
+
+    }
+}
+
 
     while (j<buttons.length) {
         buttons[j].setStyle("-fx-background-color: #c90b04;");
         buttons[j].setDisable(true);
 
     }
+}
+
+
 
 
 }
@@ -194,12 +210,12 @@ public void exit(ActionEvent e) throws IOException {
         Stage stage;
     Rectangle2D visualBounds ;
     visualBounds= Screen.getPrimary().getVisualBounds();
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
     Parent root = loader.load();
 
     stage= (Stage) home.getScene().getWindow();
-    stage.setWidth(600);
-    stage.setHeight(400);
+    stage.setWidth(700);
+    stage.setHeight(500);
     Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
     stage.setScene(scene);
     stage.centerOnScreen();
@@ -213,20 +229,34 @@ public void exit(ActionEvent e) throws IOException {
 
         });
     }
-
+    public void setPrompt(String text){
+        prompt.setText("table n°"+text+" is reserved, please confirm reservation");
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         buttons= new Button[]{t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15};
         for (Button button: buttons){
             button= new Button();
-            Button finalButton = button;
-            button.setOnAction(e->{
-                finalButton.setDisable(true);
-            this.table= restaurant.getTables()[Integer.parseInt(finalButton.getText())];
-            } );
+            String text = button.getText();
+            button.setOnAction(e->setPrompt(text));
         }
 
-        availableTables.setOnAction(this::generateSchema);
+     /*   t0.setOnAction(e->setPrompt(t0.getText()));
+        t1.setOnAction(e->setPrompt(t1.getText()));
+        t2.setOnAction(e->setPrompt(t2.getText()));
+        t3.setOnAction(e->setPrompt(t3.getText()));
+        t4.setOnAction(e->setPrompt(t4.getText()));
+        t5.setOnAction(e->setPrompt(t5.getText()));
+        t6.setOnAction(e->setPrompt(t6.getText()));
+        t7.setOnAction(e->setPrompt(t7.getText()));
+        t9.setOnAction(e->setPrompt(t9.getText()));
+        t10.setOnAction(e->setPrompt(t10.getText()));
+        t11.setOnAction(e->setPrompt(t11.getText()));
+        t12.setOnAction(e->setPrompt(t12.getText()));
+        t13.setOnAction(e->setPrompt(t13.getText()));
+        t14.setOnAction(e->setPrompt(t14.getText()));
+        t15.setOnAction(e->setPrompt(t15.getText()));*/
+
 SpinnerValueFactory<Integer> valueFactory= new
         SpinnerValueFactory.IntegerSpinnerValueFactory(0,20);
 valueFactory.setValue(0);

@@ -49,7 +49,7 @@
                         <Font name="Calibri Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="register" layoutX="82.0" layoutY="324.0" mnemonicParsing="false" onAction="#register" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #4d9ae0;" text="register" textFill="#f6f3f3">
+                <Button fx:id="register" layoutX="82.0" layoutY="324.0" mnemonicParsing="false" onAction="#register" prefHeight="25.0" prefWidth="101.0" style="-fx-background-color: #4d9ae0;" text="Register" textFill="#f6f3f3">
                     <font>
                         <Font name="Calibri Bold" size="13.0" />
                     </font>

@@ -198,7 +198,9 @@ private List<String> searchList(String words, List<String> list){
     }
     public void makeReservation(ActionEvent e) throws IOException {
         if (e.getSource()==reserve){
-
+if (name.isEmpty()){
+    welcome.setText("please log in to proceed");
+}
              setRestaurant(listView.getSelectionModel().getSelectedItem());
             goToReservation();
         }
@@ -222,8 +224,8 @@ private List<String> searchList(String words, List<String> list){
 
         stage= (Stage) exit.getScene().getWindow();
 
-        stage.setHeight(400);
-        stage.setWidth(600);
+        stage.setHeight(500);
+        stage.setWidth(700);
 
         Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
         stage.setScene(scene);
@@ -239,8 +241,8 @@ ReservationSceneController controller= loader.getController();
 controller.displayInfo(name,restaurant);
 
         stage= (Stage) exit.getScene().getWindow();
-        stage.setWidth(600);
-        stage.setHeight(400);
+        stage.setWidth(700);
+        stage.setHeight(500);
         Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
         stage.setScene(scene);
         stage.centerOnScreen();
