@@ -25,7 +25,9 @@ public class ReservationResource {
         this.reservationService = reservationService;
     }
 
-    /* RESERVATIONS ARE RETRIEVED VIA A GET ON THE USER * /
+    /**
+     * RESERVATIONS ARE RETRIEVED VIA A GET ON THE USER
+     * **/
 
     /**
      * Add a reservation
@@ -41,10 +43,23 @@ public class ReservationResource {
 
     /**
      * Delete a reservation
+     * This takes the reservationId of a reservation as String
      */
     @DeleteMapping("{reservationId}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable("reservationId") int reservationId) {
-        reservationService.deleteReservation(reservationId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteReservation(@PathVariable("reservationId") String reservationId) {
+        if(reservationService.deleteReservation(reservationId)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+
+    /**
+     * Confirm a reservation
+     * This takes the reservationId of a reservation as String
+     */
+    @GetMapping("{reservationId}")
+    public ResponseEntity<Boolean> confirmReservation(@PathVariable("reservationId") String reservationId) {
+        return ResponseEntity.ok(reservationService.confirmReservation(reservationId));
     }
 }

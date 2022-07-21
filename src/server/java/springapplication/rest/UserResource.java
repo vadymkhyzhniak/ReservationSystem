@@ -32,6 +32,15 @@ public class UserResource {
     }
 
     /**
+     * Returns all existing users
+     */
+    @GetMapping()
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+
+    /**
      * Return a specific User if it exists otherwise empty
      */
     @GetMapping("{username}")
