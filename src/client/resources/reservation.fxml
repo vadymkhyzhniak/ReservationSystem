@@ -12,44 +12,45 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication.controller.ReservationSceneController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication.controller.ReservationSceneController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="265.0" style="-fx-background-color: #4d9ae0;">
+      <AnchorPane prefHeight="400.0" prefWidth="327.0" style="-fx-background-color: #4d9ae0;">
          <children>
-            <Label alignment="CENTER" layoutX="1.0" layoutY="377.0" prefHeight="17.0" prefWidth="263.0" text="Copyright(c).All Rights Reserved" textFill="#efebeb" AnchorPane.bottomAnchor="5.666666666666686">
+            <Label alignment="CENTER" layoutX="14.0" layoutY="377.0" prefHeight="17.0" prefWidth="289.0" text="Copyright(c).All Rights Reserved" textFill="#efebeb" AnchorPane.bottomAnchor="6.0">
                <font>
                   <Font name="Calibri" size="11.0" />
                </font>
             </Label>
-            <Button fx:id="home" layoutX="165.0" layoutY="344.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="65.0" text="Home" AnchorPane.bottomAnchor="31.0" />
-            <Button fx:id="makeReservation" layoutX="26.0" layoutY="342.0" mnemonicParsing="false" onAction="#makeReservation" prefHeight="27.0" prefWidth="127.0" text="Confirm Reservation" AnchorPane.bottomAnchor="31.0" />
-            <DatePicker fx:id="calender" layoutX="8.0" layoutY="99.0" onAction="#chooseDate" prefHeight="25.0" prefWidth="250.0" promptText="enter a date" />
-            <BorderPane layoutX="53.0" layoutY="250.0" prefHeight="47.0" prefWidth="159.0">
-               <bottom>
-                  <Spinner fx:id="guests" BorderPane.alignment="CENTER" />
-               </bottom>
+            <Button fx:id="home" layoutX="132.0" layoutY="335.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="65.0" text="Home" AnchorPane.bottomAnchor="40.0" />
+            <Button fx:id="makeReservation" layoutX="176.0" layoutY="275.0" mnemonicParsing="false" onAction="#makeReservation" prefHeight="25.0" prefWidth="127.0" text="Confirm Reservation" AnchorPane.bottomAnchor="100.0" />
+            <DatePicker fx:id="calender" layoutX="8.0" layoutY="88.0" onAction="#chooseDate" prefHeight="25.0" prefWidth="305.0" promptText="enter a date" />
+            <BorderPane layoutX="2.0" layoutY="204.0" prefHeight="34.0" prefWidth="203.0">
+               <right>
+                  <Spinner fx:id="guests" prefHeight="25.0" prefWidth="47.0" BorderPane.alignment="CENTER" />
+               </right>
                <center>
-                  <Label prefHeight="43.0" prefWidth="180.0" text="Select number of guests" textFill="#f8f5f5" BorderPane.alignment="CENTER">
+                  <Label prefHeight="34.0" prefWidth="159.0" text="Select number of guests" textFill="#f8f5f5" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
                   </Label>
                </center>
             </BorderPane>
-            <ComboBox fx:id="start" layoutX="1.0" layoutY="131.0" onAction="#pickTime" prefHeight="34.0" prefWidth="131.0" promptText="reservation start" />
-            <ComboBox fx:id="end" layoutX="133.0" layoutY="131.0" onAction="#pickTime" prefHeight="33.0" prefWidth="129.0" promptText="reservation end" />
-            <Label fx:id="prompt" layoutX="4.0" layoutY="170.0" prefHeight="48.0" prefWidth="258.0" textFill="#f80202">
+            <ComboBox fx:id="start" layoutX="14.0" layoutY="121.0" onAction="#pickTime" prefHeight="34.0" prefWidth="148.0" promptText="reservation start" />
+            <ComboBox fx:id="end" layoutX="164.0" layoutY="121.0" onAction="#pickTime" prefHeight="33.0" prefWidth="150.0" promptText="reservation end" />
+            <Label fx:id="prompt" layoutX="-9.0" layoutY="159.0" prefHeight="47.0" prefWidth="225.0" textFill="#f80202">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="availableTables" layoutX="58.0" layoutY="308.0" mnemonicParsing="false" onAction="#generateSchema" prefHeight="25.0" prefWidth="153.0" text="See Availability" />
-            <Button fx:id="confirmDate" layoutX="39.0" layoutY="218.0" mnemonicParsing="false" onAction="#pickTime" prefHeight="25.0" prefWidth="192.0" text="Confirm Date" />
-            <Label fx:id="info" alignment="CENTER" layoutX="9.0" layoutY="6.0" prefHeight="85.0" prefWidth="247.0" textFill="#f2f2f2">
+            <Button fx:id="availableTables" layoutX="217.0" layoutY="208.0" mnemonicParsing="false" onAction="#generateSchema" prefHeight="25.0" prefWidth="102.0" text="See Availability" />
+            <Button fx:id="confirmDate" layoutX="216.0" layoutY="170.0" mnemonicParsing="false" onAction="#pickTime" prefHeight="25.0" prefWidth="97.0" text="Confirm Date" />
+            <Label fx:id="info" alignment="CENTER" layoutX="7.0" layoutY="14.0" prefHeight="65.0" prefWidth="312.0" textFill="#f2f2f2">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
+            <Button fx:id="cancel" layoutX="26.0" layoutY="275.0" mnemonicParsing="false" onAction="#deleteReservation" prefHeight="25.0" prefWidth="125.0" text="Delete Reservation" AnchorPane.bottomAnchor="100.0" />
          </children>
       </AnchorPane>
    </left>
