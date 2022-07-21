@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ReservationSceneController implements Initializable {
 
@@ -154,9 +151,10 @@ this.verif= false;
 }
 public void makeReservation(ActionEvent e){
     if (verif && e.getSource().equals(makeReservation)){
-
+        Random rand= new Random();
+this.table= restaurant.getTables()[rand.nextInt(0,restaurant.getTables().length)];
         Reservation   reservation = new Reservation(reservationStart,reservationEnd,username,restaurant,table,date);
-        info.setText(info.getText() +"\nTable n°"+String.valueOf(table.getId())+" is booked on "+date.toString()+"\n from: "+reservationStart.toString()+" to "+reservationEnd.toString());
+        info.setText(info.getText() +"\nTable is booked on "+date.toString()+"\n from: "+reservationStart.toString()+" to "+reservationEnd.toString());
 controller.addReservation(reservation,this::setReservationList);
     }
 
