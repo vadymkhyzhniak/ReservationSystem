@@ -155,7 +155,9 @@ public void makeReservation(ActionEvent e){
         if (verif && confirm){
             Random rand= new Random();
             if (restaurant.getTables().length>0){
-                this.table= restaurant.getTables()[rand.nextInt(0,restaurant.getTables().length)];
+                while(this.table == null){
+                    this.table= restaurant.getTables()[rand.nextInt(0,restaurant.getTables().length)];
+                }
             }
             else {
                 this.table= new Table();
