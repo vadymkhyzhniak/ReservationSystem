@@ -50,7 +50,7 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="cancel" layoutX="26.0" layoutY="275.0" mnemonicParsing="false" onAction="#deleteReservation" prefHeight="25.0" prefWidth="125.0" text="Delete Reservation" AnchorPane.bottomAnchor="100.0" />
+            <Button fx:id="cancel" layoutX="26.0" layoutY="275.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Delete Reservation" AnchorPane.bottomAnchor="100.0" />
          </children>
       </AnchorPane>
    </left>

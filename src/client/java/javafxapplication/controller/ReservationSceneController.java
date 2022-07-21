@@ -115,8 +115,8 @@ private boolean confirm= false;
     public void displayInfo(String name,String restaurant){
         String s="Welcome "+name+"\n Restaurant: "+restaurant;
         info.setText(s);
-      restaurantController.getRestaurant(info.getText().substring(22+name.length()),this::setRestaurant);
-        setUsername(info.getText().substring(7));
+        restaurantController.getRestaurant(info.getText().substring(22+name.length()),this::setRestaurant);
+        setUsername(name.trim());
     }
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
@@ -222,11 +222,11 @@ public void exit(ActionEvent e) throws IOException {
     stage.show();
 }
 
-    private void setReservationList(List<Reservation> reservations) {
+    private void setReservationList(Boolean success, Reservation reservations) {
         Platform.runLater(()-> {
-            reservationList.setAll(reservations);
-
-
+            if(success){
+                reservationList.add(reservations);
+            }
         });
     }
     public void setPrompt(String text){

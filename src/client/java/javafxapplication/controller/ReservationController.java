@@ -8,11 +8,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ReservationController {
     private final WebClient webClient;
-    private final List<Reservation> reservations;
 
     public ReservationController() {
         this.webClient = WebClient.builder()
@@ -20,22 +20,20 @@ public class ReservationController {
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
-        this.reservations = new ArrayList<>();
     }
 
     /**
      sends a request to add a reservation to the server's database when invoking the makeReservation method in ReservationController
      */
-    public void addReservation(Reservation reservation, Consumer<List<Reservation>> reservationConsumer) {
+    public void addReservation(Reservation reservation, BiConsumer<Boolean, Reservation> reservationConsumer) {
         webClient.post()
                 .uri("reservation/")
                 .bodyValue(reservation)
                 .retrieve()
-                .bodyToMono(Reservation.class)
+                .bodyToMono(Boolean.class)
                 .onErrorStop()
-                .subscribe(newReservation -> {
-                    reservations.add(newReservation);
-                    reservationConsumer.accept(reservations);
+                .subscribe(success -> {
+                    reservationConsumer.accept(success, reservation);
                 });
     }
 }

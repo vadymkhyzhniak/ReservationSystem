@@ -233,7 +233,6 @@ if (name.isEmpty()){
         stage.show();
     }
     public void goToReservation() throws IOException{
-
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation.fxml"));
       root = loader.load();
