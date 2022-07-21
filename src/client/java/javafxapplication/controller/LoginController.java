@@ -19,11 +19,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 // login as guest to view app, still working on client-server connection
@@ -33,7 +30,7 @@ public class LoginController {
     private Parent root;
     private final ObservableList<User> userList;
     private String username;
-    private final File file= new File("src/server/resources/Users.dat");
+    private final File file = new File("src/server/resources/Users.dat");
     private final UserController controller;
     @FXML
     private Button cancel;
@@ -55,55 +52,62 @@ public class LoginController {
     }
 
     private Boolean authenticate;
+
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
     }
-    public void exit(ActionEvent e){
-        stage= (Stage) cancel.getScene().getWindow();
+
+    public void exit(ActionEvent e) {
+        stage = (Stage) cancel.getScene().getWindow();
         stage.close();
     }
 
 
     public void register(ActionEvent e) throws IOException {
-     if (e.getSource()==register){
+        if (e.getSource() == register) {
 
-         var newUser = new User(userTxt.getText(), passTxt.getText().hashCode());
-         if (Parser.userExists(userTxt.getText())){
-             loginLabel.setText("User already exists, please login");
-         }
-         else{
-             controller.addUser(newUser,this::setUserList);
-         }
-
+            var newUser = new User(userTxt.getText(), passTxt.getText().hashCode());
+            if (Parser.userExists(userTxt.getText())) {
+                loginLabel.setText("User already exists, please login");
+            } else {
+                controller.addUser(newUser, this::setUserList);
+            }
 
 
-          userTxt.setText("");
-          passTxt.setText("");
-     }
-   }
+            userTxt.setText("");
+            passTxt.setText("");
+        }
+    }
+
     public void login(ActionEvent e) throws IOException {
-
 
         if (e.getSource() == login) {
             String user = userTxt.getText();
             String pass = passTxt.getText();
+            String passX = "";
+            if (user != null && user.length() > 0) {
+                User userX = Parser.getUserByUsername(user);
+                if (userX != null) {
+                    passX = String.valueOf(userX.getPasswordHash());
+                }
+            }
             if (user.isBlank() || pass.isBlank()) {
                 loginLabel.setText("Please enter username and password");
+            } else if (Parser.userExists(user)) {
+                //    controller.authenticateUser(newUser, e, this::setAuthenticate);
+                if (passX.equals(String.valueOf(pass.hashCode()))) {
+                    setUsername(user);
+                    changeToMainScene(e);
+                } else {
+                    loginLabel.setText("You have entered the wrong password! Try again!" + System.lineSeparator() + "Forgot your password? Sounds like a You problem..");
+                }
+            } else {
+                loginLabel.setText("User does not exist, please register");
             }
-          else if (Parser.userExists(user)){
-              //    controller.authenticateUser(newUser, e, this::setAuthenticate);
 
-                  setUsername(user);
-                  changeToMainScene(e);
-            }
-          else {
-              loginLabel.setText("User does not exist, please register");
-            }
-
-        }
-        else if (e.getSource()==loginGuest){
-            setUsername( "SomePinguin");
+        } else if (e.getSource() == loginGuest) {
+            setUsername("SomePinguin");
             changeToMainScene(e);
         }
 
@@ -117,30 +121,29 @@ public class LoginController {
     }*/
 
     private void setUserList(List<User> users) {
-        Platform.runLater(()-> {
+        Platform.runLater(() -> {
             userList.setAll(users);
 
         });
     }
 
 
-
     private void changeToMainScene(ActionEvent e) throws IOException {
 
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
-       root = loader.load();
-HomeController controller1 = loader.getController();
-controller1.showName(username);
-            stage= (Stage) ((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
+        root = loader.load();
+        HomeController controller1 = loader.getController();
+        controller1.showName(username);
+        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-            stage.setWidth(600);
-            stage.setHeight(400);
-            Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.show();
+        stage.setWidth(600);
+        stage.setHeight(400);
+        Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
 
 
     }
