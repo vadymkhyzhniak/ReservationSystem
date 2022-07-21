@@ -93,7 +93,7 @@ public class LoginController {
                 }
             }
             if (user.isBlank() || pass.isBlank()) {
-                loginLabel.setText("Please enter username and password");
+                loginLabel.setText("Please enter username and password"); //
             } else if (Parser.userExists(user)) {
                 //    controller.authenticateUser(newUser, e, this::setAuthenticate);
                 if (passX.equals(String.valueOf(pass.hashCode()))) {
