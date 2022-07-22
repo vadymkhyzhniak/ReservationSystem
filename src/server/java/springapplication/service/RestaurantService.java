@@ -21,14 +21,14 @@ public class RestaurantService {
     }
 
     /**
-     * Return all the restaurants we have in the DB
+     * Returns all the restaurants we have in the DB
      */
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }
 
     /**
-     * Return limit number of restaurants we have in the DB
+     * Returns limit number of restaurants we have in the DB
      */
     public List<Restaurant> getRestaurantsByLimit(int limit) {
         return restaurants.stream().limit(limit).collect(Collectors.toList());

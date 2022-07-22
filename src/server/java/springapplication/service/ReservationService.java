@@ -38,6 +38,12 @@ public class ReservationService {
         return Saver.removeReservation(reservation);
     }
 
+    /**
+     * Confirms a reservation
+     *
+     * @param reservationId
+     * @return
+     */
     public boolean confirmReservation(String reservationId) {
         Restaurant restaurant = Parser.getRestaurantById(Parser.getRestaurantIdFromReservationId(reservationId));
         if(restaurant == null){

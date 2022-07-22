@@ -29,7 +29,7 @@ private final List<User> users;
     }
 
     /**
-     * Return an Optional of a specific User
+     * Returns an Optional of a specific User
      */
     public Optional<User> getUser(String username) {
         User returnedUser = Parser.getUserByUsername(username);
@@ -40,7 +40,7 @@ private final List<User> users;
     }
 
     /**
-     * Return an Optional of the reservation List of a user
+     * Returns an Optional of the reservation List of a user
      */
     public Optional<List<Reservation>> getReservationsOfUser(String username) {
         User returnedUser = Parser.getUserByUsername(username);
