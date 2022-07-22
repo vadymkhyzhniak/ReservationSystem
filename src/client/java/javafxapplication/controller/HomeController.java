@@ -257,6 +257,10 @@ public class HomeController implements Initializable {
             if (name.isEmpty()) {
                 welcome.setText("please log in to proceed");
             }
+            if (listView.getSelectionModel().getSelectedItem() == null) {
+                welcome.setText("Please select a restaurant");
+                return;
+            }
             setRestaurant(listView.getSelectionModel().getSelectedItem());
             goToReservation();
         }
