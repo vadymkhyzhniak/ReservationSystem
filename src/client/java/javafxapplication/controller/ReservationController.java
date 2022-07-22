@@ -11,9 +11,17 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * Class is used to send reservation requests to the database
+ *
+ * @author Maha Marhag
+ */
 public class ReservationController {
     private final WebClient webClient;
 
+    /**
+     * Creates a ReservationController
+     */
     public ReservationController() {
         this.webClient = WebClient.builder()
                 .baseUrl("http://localhost:8080/api/v1/")
@@ -23,7 +31,10 @@ public class ReservationController {
     }
 
     /**
-     sends a request to add a reservation to the server's database when invoking the makeReservation method in ReservationSceneController
+     * Sends a request to add a reservation to the server's database when invoking the makeReservation method in ReservationController
+     *
+     * @param reservation The actual reservation
+     * @param reservationConsumer The Consumer to accept a successful reservation
      */
     public void addReservation(Reservation reservation, BiConsumer<Boolean, Reservation> reservationConsumer) {
         webClient.post()
