@@ -69,7 +69,7 @@ public class Parser {
         }
     }
 
-    private static Reservation getReservationFromString(@NotNull String data, Restaurant restaurant) {
+    public static Reservation getReservationFromString(@NotNull String data, Restaurant restaurant) {
         if (data.length() == 0) {
             return null;
         } else {
@@ -242,6 +242,27 @@ public class Parser {
             restaurantList.add(getRestaurantFromFile(tempFile));
         }
         return restaurantList;
+    }
+
+    public static List<String> getAllReservations() {
+        File file = new File("src/server/resources/ReservationIDs.dat");
+        List<String> reservationList = new ArrayList<>();
+        if (!file.exists()) {
+            return reservationList;
+        }
+        String reservationIDs = DataHandler.readFile(file);
+        String[] idArray = reservationIDs.split(",");
+        for (String id : idArray) {
+            File tempFile = new File("src/server/resources/Reservations/" + id.replaceFirst("/", "") + ".dat");
+            if (!tempFile.exists()) {
+                continue;
+            }
+            String reservationString = DataHandler.readFile(tempFile);
+            if (reservationString.length() > 0) {
+                reservationList.add(reservationString);
+            }
+        }
+        return reservationList;
     }
 
     public static void main(String[] args) {

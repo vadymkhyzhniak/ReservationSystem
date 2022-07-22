@@ -1,5 +1,6 @@
 package javafxapplication.controller;
 
+import commonapplication.models.Generator;
 import commonapplication.models.Reservation;
 import commonapplication.models.Restaurant;
 import commonapplication.models.Table;
@@ -168,18 +169,7 @@ public class ReservationSceneController implements Initializable {
         }
     }
 
-    public void makeReservation(ActionEvent e) {
-        if (e.getSource().equals(makeReservation)) {
-            if (verify && confirm) {
 
-                Reservation reservation = reserve();
-                info.setText("\nTable is booked on " + date.toString() + "\n from: " + reservationStart.toString() + " to " + reservationEnd.toString());
-                controller.addReservation(reservation, this::setReservationList);
-            } else {
-                prompt.setText("failed to make a reservation, please choose a table before proceeding");
-            }
-        }
-        }
 
 
 
@@ -196,12 +186,45 @@ public class ReservationSceneController implements Initializable {
         return reservation;
     }
 
+
+    public void makeReservation(ActionEvent e) {
+        if (e.getSource().equals(makeReservation)) {
+            if (verify && confirm) {
+                Random rand = new Random();
+                if (restaurant.getTables().length > 0) {
+                    while (this.table == null) {
+                        this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
+                    }
+                } else {
+                    this.table = new Table();
+                }
+                Reservation reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
+                info.setText("\nTable has been successfully booked on " + date.toString() + "\n from: " + reservationStart.toString() + " to " + reservationEnd.toString());
+                controller.addReservation(reservation, this::setReservationList);
+            } else {
+                prompt.setText("failed to make a reservation, please choose a table before proceeding");
+            }
+        }
+
+    }
+
     public void confirmReservation(ActionEvent e) {
         if (e.getSource().equals(confirmReservation)) {
             if (verify && confirm) {
-                Reservation reservation = reserve();
-                if (Parser.reservationExists(reservation.getId())) {
+                Random rand = new Random();
+                if (restaurant.getTables().length > 0) {
+                    while (this.table == null) {
+                        this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
+                    }
+                } else {
+                    this.table = new Table();
+                }
+                Reservation reservation;
+                if (Parser.reservationExists(Generator.generateUniqueId(reservationStart.toString(),
+                        reservationEnd.toString(), username, date.toString()))) {
+                    reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
                     Saver.confirmReservation(reservation);
+                    info.setText("Your reservation has been successfully confirmed");
                 } else {
                     info.setText("The reservation you are trying to confirm doesn't even exist.." + System.lineSeparator() + "Maybe make it first?");
                 }
@@ -216,8 +239,20 @@ public class ReservationSceneController implements Initializable {
     public void cancelReservation(ActionEvent e) {
         if (e.getSource().equals(cancelReservation)) {
             if (verify && confirm) {
-                Reservation reservation = reserve();
-                if (Parser.reservationExists(reservation.getId())) {
+                Random rand = new Random();
+                if (restaurant.getTables().length > 0) {
+                    while (this.table == null) {
+                        this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
+                    }
+                } else {
+                    this.table = new Table();
+                }
+                Reservation reservation;
+                if (Parser.reservationExists(Generator.generateUniqueId(reservationStart.toString(),
+                        reservationEnd.toString(), username, date.toString()))) {
+
+                    reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
+
                     if (Parser.isReservationConfirmed(reservation.getId())) {
                         info.setText("You have already confirmed your reservation.." + System.lineSeparator() + "it is INEVITABLE!");
                     } else {
@@ -228,12 +263,15 @@ public class ReservationSceneController implements Initializable {
                     info.setText("The reservation you are trying to cancel never existed in the first place.." + System.lineSeparator() +
                             "Maybe you could try making it first?");
                 }
+
+
             } else {
                 info.setText("Please first chose the details of the reservation you want to cancel.. or should i guess?");
             }
         }
 
     }
+
 
     @FXML
     public void generateSchema(ActionEvent e) {

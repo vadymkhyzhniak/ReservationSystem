@@ -1,13 +1,13 @@
 package javafxapplication.controller;
 
-import commonapplication.models.*;
+import commonapplication.models.Restaurant;
+import commonapplication.models.Speciality;
+import commonapplication.persistancemanagement.DataHandler;
 import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +16,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +37,10 @@ public class HomeController implements Initializable {
     private WebEngine engine;
     @FXML
     private Button exit;
+
+    @FXML
+    private Button calendar;
+
     @FXML
     private Button search;
     @FXML
@@ -60,7 +62,7 @@ public class HomeController implements Initializable {
     private final ObservableList<Restaurant> list;
     private Restaurant r;
     private final String[] filters;
-    private String name = "";
+    private String name;
     private String restaurant;
 
     public void showName(String name) {
@@ -254,5 +256,41 @@ public class HomeController implements Initializable {
     }
 
 
+    public void displayCalendar(ActionEvent e) {
+        if (e.getSource() == calendar) {
+            if (name == null || name.isBlank()) {
+                return;
+            }
+
+            if (name.trim().equals("SomePinguin")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Guests have no Calendars..");
+                alert.setContentText("Guests don't really have calendars, do they?" + System.lineSeparator() + "You need to be logged in for this functionality");
+                alert.setTitle("No Calendar for you..");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Calendar");
+                List<String> allReservations = Parser.getAllReservations();
+                alert.setHeaderText("Your Calendar is not organized.. just like me");
+                for (String res : allReservations) {
+                    if (res.contains("<PID:" + name.trim() + ">")) {
+                        String[] temp = res.split("RID:", 2);
+                        temp = temp[1].split("><");
+                        File restFile = new File("src/server/resources/Restaurants/" + temp[0] + ".dat");
+                        String restData = DataHandler.readFile(restFile);
+                        String[] temp1 = restData.split("NAME:", 2);
+                        temp1 = temp1[1].split("><", 2);
+
+                        String conf = temp[6].substring(2).equals("true") ? " And it is confirmed" : " But it is not confirmed";
+                        String resX = "Reservation in " + temp1[0] + " , on " + temp[5].substring(3)
+                                + " from " + temp[3].substring(3) + " to " + temp[4].substring(3) + conf;
+                        alert.setHeaderText(alert.getHeaderText() + System.lineSeparator() + System.lineSeparator() + resX);
+                    }
+                }
+                alert.showAndWait();
+            }
+        }
+    }
 }
 
