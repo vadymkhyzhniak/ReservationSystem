@@ -163,14 +163,11 @@ public class ReservationSceneController implements Initializable {
             if (reservationStart.isBefore(reservationEnd)) {
                 this.verify = true;
             } else {
-                prompt.setText("Starting time seems to be equal to or after ending time");
+                prompt.setText("Starting time seems to be equal to," + System.lineSeparator() + "or after ending time");
                 this.verify = false;
             }
         }
     }
-
-
-
 
 
     private Reservation reserve() {
@@ -202,7 +199,7 @@ public class ReservationSceneController implements Initializable {
                 info.setText("\nTable has been successfully booked on " + date.toString() + "\n from: " + reservationStart.toString() + " to " + reservationEnd.toString());
                 controller.addReservation(reservation, this::setReservationList);
             } else {
-                prompt.setText("failed to make a reservation, please choose a table before proceeding");
+                prompt.setText("failed to make a reservation," + System.lineSeparator() + "please choose a table before proceeding");
             }
         }
 
@@ -226,10 +223,10 @@ public class ReservationSceneController implements Initializable {
                     Saver.confirmReservation(reservation);
                     info.setText("Your reservation has been successfully confirmed");
                 } else {
-                    info.setText("The reservation you are trying to confirm doesn't even exist.." + System.lineSeparator() + "Maybe make it first?");
+                    info.setText("The reservation you are trying" + System.lineSeparator() + "to confirm doesn't even exist.." + System.lineSeparator() + System.lineSeparator() + "Maybe make it first?");
                 }
             } else {
-                prompt.setText("failed to confirm the reservation, please choose a table before proceeding");
+                prompt.setText("failed to confirm the reservation," + System.lineSeparator() + "please choose a table before proceeding");
             }
         }
 
@@ -260,13 +257,14 @@ public class ReservationSceneController implements Initializable {
                         Saver.removeReservation(reservation);
                     }
                 } else {
-                    info.setText("The reservation you are trying to cancel never existed in the first place.." + System.lineSeparator() +
+                    info.setText("The reservation you are trying to cancel" + System.lineSeparator() + "never existed in the first place.." + System.lineSeparator() + System.lineSeparator() +
                             "Maybe you could try making it first?");
                 }
 
 
             } else {
-                info.setText("Please first chose the details of the reservation you want to cancel.. or should i guess?");
+                prompt.setText("Please first chose the details" + System.lineSeparator() + "of the reservation you want to cancel.." +
+                        System.lineSeparator() + "or should i guess?");
             }
         }
 
