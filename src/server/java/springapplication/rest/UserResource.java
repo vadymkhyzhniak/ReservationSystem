@@ -12,6 +12,11 @@ import springapplication.service.UserService;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class is used to handle requests from the client side concerning the users
+ *
+ * @author Niklas Feuerstein
+ */
 @RestController
 @RequestMapping(path="api/v1/user/",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserResource {

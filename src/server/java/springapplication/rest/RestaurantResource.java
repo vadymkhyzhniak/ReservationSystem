@@ -12,6 +12,11 @@ import springapplication.service.RestaurantService;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class is used to handle requests from the client side concerning the restaurants
+ *
+ * @author Niklas Feuerstein
+ */
 @RestController
 @RequestMapping(path="api/v1/restaurant",consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class RestaurantResource {
