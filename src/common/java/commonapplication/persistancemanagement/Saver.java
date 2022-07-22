@@ -8,9 +8,22 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+
+/**
+ * Class represents a data saver, which saves information to the system
+ *
+ * @author Chiheb Bacha
+ */
+
 public class Saver {
 
-
+    /**
+     * Saves data to existing file
+     *
+     * @param path Path where to save data
+     * @param data Actual data
+     * @param config How to store the data
+     */
     //saves data to existing file, if it doesn't exist,
     // it creates a new one and writes the data to it
     // make sure to pass an id >= 0 if you want to modify
@@ -50,6 +63,12 @@ public class Saver {
         }
     }*/
 
+    /**
+     * Creates a new file
+     *
+     * @param object Instance, restaurant, user...
+     * @param config How to store the data
+     */
     public static void createNewFile(Object object, int config) {
         PrintWriter pw;
         try {
@@ -102,20 +121,44 @@ public class Saver {
         }
     }
 
+    /**
+     * Adds the reservation
+     *
+     * @param reservation Actual reservation
+     * @return boolean Status of the operation
+     */
     public static boolean addReservation(Reservation reservation) {
         return modifyData(reservation, 0);
     }
 
+    /**
+     * Removes the reservation
+     *
+     * @param reservation Actual reservation
+     * @return boolean Status of the operation
+     */
     public static boolean removeReservation(Reservation reservation) {
         return modifyData(reservation, 1);
     }
 
+    /**
+     * Confirms the reservation
+     *
+     * @param reservation Actual reservation
+     * @return boolean Status of the operation
+     */
     public static boolean confirmReservation(Reservation reservation) {
         reservation.setConfirmed(true);
         return modifyData(reservation, 9);
     }
 
-
+    /**
+     * Modifies the data
+     *
+     * @param object Object to modify
+     * @param config How to modify
+     * @return boolean Status of the operation
+     */
     private static boolean modifyData(Object object, int config) {
         if (object instanceof Reservation) {
             Reservation reservation = (Reservation) object;
@@ -276,18 +319,42 @@ public class Saver {
         return true;
     }
 
+    /**
+     * Adds restaurant id
+     *
+     * @param Id ID of the restaurant
+     * @return boolean Status of the operation
+     */
     public static boolean addRestId(String Id) {
         return modifyData(Id, 0);
     }
 
+    /**
+     * Adds reservation id
+     *
+     * @param Id ID of the reservation
+     * @return boolean Status of the operation
+     */
     public static boolean addResId(String Id) {
         return modifyData(Id, 1);
     }
 
+    /**
+     * Adds user
+     *
+     * @param user User to add
+     * @return boolean Status of the operation
+     */
     public static boolean addUser(User user) {
         return modifyData(user, 0);
     }
 
+    /**
+     * Deletes a user and all his reservations from the save files
+     *
+     * @param user User
+     * @return boolean Status of the operation
+     */
     // this deletes a user and all his reservations from the save files
     public static boolean deleteUser(User user) {
         // Some existence checks were omitted inside modifyData ,
@@ -296,6 +363,12 @@ public class Saver {
         return modifyData(user, -1);
     }
 
+    /**
+     * Modifies the user data
+     *
+     * @param user User
+     * @return boolean Status of the operation
+     */
     // This can only modify the Password. user.setPassword(String password) should be called which then modifies the password
     // on the user instance, setPassword() will then call this method and change the new password to the file
     public static boolean modifyUser(User user) {
