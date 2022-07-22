@@ -24,6 +24,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Controls the login scene
+ *
+ * @author Maha Marhag
+ * @author Chiheb Bacha
+ */
 public class LoginController {
 
     private Stage stage;
@@ -47,22 +53,40 @@ public class LoginController {
     @FXML
     private Button register;
 
+    /**
+     * Sets the username
+     *
+     * @param username The username to be set
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
 
+    /**
+     * Creates a LoginController
+     */
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
         this.controller = new UserController();
     }
 
+    /**
+     * Exits the login scene
+     *
+     * @param e ActionEvent
+     */
     public void exit(ActionEvent e) {
         stage = (Stage) cancel.getScene().getWindow();
         stage.close();
     }
 
-
+    /**
+     * Adds a new user or shows a corresponding text if the user already exists
+     *
+     * @param e ActionEvent
+     * @throws IOException
+     */
     public void register(ActionEvent e) throws IOException {
         if (e.getSource() == register) {
             loginLabel.setText("");
@@ -93,6 +117,13 @@ public class LoginController {
         }
     }
 
+    /**
+     * Authenticates the user, switches to the main scene if the process successful,
+     * shows corresponding text in case of failure
+     *
+     * @param e ActionEvent
+     * @throws IOException
+     */
     public void login(ActionEvent e) throws IOException {
 
         if (e.getSource() == login) {
@@ -127,8 +158,11 @@ public class LoginController {
 
     }
 
-
-
+    /**
+     * Sets the list of users
+     *
+     * @param users List of users to be set
+     */
     private void setUserList(List<User> users) {
         Platform.runLater(() -> {
             userList.setAll(users);
@@ -137,6 +171,12 @@ public class LoginController {
     }
 
 
+    /**
+     * Switches to the main scene (homepage)
+     *
+     * @param e ActionEvent
+     * @throws IOException
+     */
     private void changeToMainScene(ActionEvent e) throws IOException {
 
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
