@@ -313,6 +313,7 @@ public class ReservationSceneController implements Initializable {
         visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Homepage.fxml"));
         Parent root = loader.load();
+        ((HomeController) loader.getController()).showName(username);
 
         stage = (Stage) home.getScene().getWindow();
 
