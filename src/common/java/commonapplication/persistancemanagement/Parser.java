@@ -139,6 +139,17 @@ public class Parser {
         }
     }
 
+    public static boolean isReservationConfirmed(String id) {
+        File file = new File("src/server/resources/Reservations/" + id + ".dat");
+        if (!file.exists()) {
+            return false;
+        }
+        String reservation = DataHandler.readFile(file);
+        if (reservation == null || reservation.isBlank()) {
+            return false;
+        }
+        return reservation.contains("<C:true>");
+    }
 
     public static Reservation getReservationById(String id, Restaurant restaurant) {
         File file = new File("src/server/resources/Reservations/" + id + ".dat");
@@ -183,6 +194,25 @@ public class Parser {
         for (String str : temp) {
             if (("/" + username).equals(str))
                 return true;
+        }
+        return false;
+    }
+
+    // These 2 existence methods could be merged for better code, won't bother now ..
+    public static boolean reservationExists(String resId) {
+        File file = new File("src/server/resources/ReservationIDs.dat");
+        if (!file.exists()) {
+            return false;
+        }
+        String reservationIDs = DataHandler.readFile(file);
+        if (reservationIDs == null || reservationIDs.isBlank()) {
+            return false;
+        }
+        String[] temp = reservationIDs.split(",");
+        for (String str : temp) {
+            if (("/" + resId).equals(str)) {
+                return true;
+            }
         }
         return false;
     }

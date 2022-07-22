@@ -66,17 +66,27 @@ public class LoginController {
 
     public void register(ActionEvent e) throws IOException {
         if (e.getSource() == register) {
-
+            loginLabel.setText("");
+            register.setDisable(false);
             var newUser = new User(userTxt.getText(), passTxt.getText().hashCode());
-            if (Parser.userExists(userTxt.getText())) {
-                loginLabel.setText("User already exists, please login");
+            if (userTxt.getText().isBlank() == true || passTxt.getText().isBlank() == true) {
+                if (userTxt.getText().isBlank() == true && passTxt.getText().isBlank() == true) {
+                    loginLabel.setText("You do realise you need a username and a password, right?");
+                } else if (userTxt.getText().isBlank() == true) {
+                    loginLabel.setText("So.. How should we call you?");
+                } else {
+                    loginLabel.setText("Did you maybe forget something?");
+                }
             } else {
-                controller.addUser(newUser, this::setUserList);
+
+                if (Parser.userExists(userTxt.getText())) {
+                    loginLabel.setText("User already exists, please login");
+                } else {
+                    controller.addUser(newUser, this::setUserList);
+                }
+                passTxt.setText("");
+                loginLabel.setText("Registration successful!" + System.lineSeparator() + "Enter your password to log in");
             }
-
-
-            userTxt.setText("");
-            passTxt.setText("");
         }
     }
 

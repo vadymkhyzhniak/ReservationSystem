@@ -39,7 +39,6 @@ public class Restaurant {
     }
 
 
-
     public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
     }
@@ -80,9 +79,7 @@ public class Restaurant {
         int tsl = tableSchema.length();
         this.tables = new Table[tsl];
         for (int i = 0; i < tsl; i++) {
-            if (tableSchema.charAt(i) == '1') {
-                this.tables[i] = new Table(i, this);
-            }
+            this.tables[i] = new Table(i, this);
         }
         this.openedFrom = openedFrom;
         this.openedTo = openedTo;
@@ -218,7 +215,7 @@ public class Restaurant {
     }
 
     public static void main(String[] args) {
-        Restaurant r=new Restaurant(1,"gf",null,null,0,0,null,null);
-        System.out.println(r.getTableSchema()) ;
+        Restaurant r = new Restaurant(1, "gf", null, null, 0, 0, null, null);
+        System.out.println(r.getTableSchema());
     }
 }
