@@ -9,9 +9,19 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class represents a data parser, which gets information from files
+ *
+ * @author Chiheb Bacha
+ */
 public class Parser {
 
-
+    /**
+     * Parses a file (presumably not empty) and creates a Restaurant instance accordingly
+     *
+     * @param file File to be read from
+     * @return Restaurant
+     */
     // This parses a file (presumably not empty) and creates a Restaurant instance accordingly
     @NotNull
     public static Restaurant getRestaurantFromFile(@NotNull File file) {
@@ -45,6 +55,12 @@ public class Parser {
         return restaurant;
     }
 
+    /**
+     * Gets list of reservations in the restaurant from file
+     *
+     * @param restaurant Restaurant to take reservations from
+     * @return List<Reservation> list of reservations
+     */
     @NotNull
     public static List<Reservation> getReservationListFromFile(Restaurant restaurant) {
         String restaurantData = DataHandler.readFile(restaurant.getRestaurantFile());
@@ -69,6 +85,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Gets the reservation from data string
+     *
+     * @param data String to get reservation information from
+     * @param restaurant Actual restaurant where the reservation is
+     * @return Reservation reservation read from data
+     */
     public static Reservation getReservationFromString(@NotNull String data, Restaurant restaurant) {
         if (data.length() == 0) {
             return null;
@@ -87,9 +110,11 @@ public class Parser {
 
     }
 
-
-
-
+    /**
+     * Gets the list of users
+     *
+     * @return List<User> list of users
+     */
     // returns a list of all users, an empty list if no users are registered
     public static List<User> getAllUsers() {
         File file = new File("src/server/resources/Usernames.dat");
@@ -103,8 +128,12 @@ public class Parser {
         return userList;
     }
 
-
-
+    /**
+     * Gets the user by his name
+     *
+     * @param username User name
+     * @return User user found based on name
+     */
     //if no user exists with a given username, null is returned,
     // and client will be prompted to create a new User //TODO (PROMPT)
     public static User getUserByUsername(String username) {
@@ -120,7 +149,12 @@ public class Parser {
         return new User(username, passwordHash);
     }
 
-
+    /**
+     * Gets the user based on the string
+     *
+     * @param str String to get data for the search from
+     * @return User user found based on string
+     */
     public static User getUserFromString(String str) {
         if (!str.contains("<RES:")) { //in case user doesn't have reservations
             String[] temp = str.split("><", 3);
@@ -139,6 +173,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Checks if the reservation is confirmed
+     *
+     * @param id ID to look for
+     * @return boolean Status of the operation
+     */
     public static boolean isReservationConfirmed(String id) {
         File file = new File("src/server/resources/Reservations/" + id + ".dat");
         if (!file.exists()) {
@@ -151,12 +191,25 @@ public class Parser {
         return reservation.contains("<C:true>");
     }
 
+    /**
+     * Gets the reservation by id
+     *
+     * @param id ID to look for
+     * @param restaurant Restaurant in which the reservation was made
+     * @return Reservation the found reservation
+     */
     public static Reservation getReservationById(String id, Restaurant restaurant) {
         File file = new File("src/server/resources/Reservations/" + id + ".dat");
         String reservationData = DataHandler.readFile(file);
         return getReservationFromString(reservationData.substring(8), restaurant);
     }
 
+    /**
+     * Gets the restaurant id based on the reservation id
+     *
+     * @param id Reservation id
+     * @return String Restaurant id
+     */
     public static String getRestaurantIdFromReservationId(String id) {
         File file = new File("src/server/resources/Reservations/" + id + ".dat");
         String reservationData = DataHandler.readFile(file);
@@ -165,6 +218,12 @@ public class Parser {
         return temp[0];
     }
 
+    /**
+     * Returns the toString() of a user by Username from the Users file
+     *
+     * @param username User name
+     * @return String Representation of the user
+     */
     // Returns the toString() of a user by Username from the Users file
     // empty String if user doesn't exist
     public static String getUserInfoByUsername(String username) {
@@ -180,6 +239,12 @@ public class Parser {
         return "<<USER>" + temp[0] + "><" + temp[1] + "></USER>>";
     }
 
+    /**
+     * Checks if the user exists
+     *
+     * @param username User name
+     * @return boolean Status of the operation
+     */
     public static boolean userExists(String username) {
         File file = new File("src/server/resources/Usernames.dat");
         if (!file.exists()) {
@@ -198,6 +263,12 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Checks if the reservation exists
+     *
+     * @param resId ID of the reservation
+     * @return boolean Status of the operation
+     */
     // These 2 existence methods could be merged for better code, won't bother now ..
     public static boolean reservationExists(String resId) {
         File file = new File("src/server/resources/ReservationIDs.dat");
@@ -217,6 +288,12 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Gets the restaurant by id
+     *
+     * @param restId ID of the restaurant
+     * @return Restaurant restaurant found based on id
+     */
     public static Restaurant getRestaurantById(String restId) {
         File file = new File("src/server/resources/Restaurants/" + restId + ".dat");
         if (!file.exists()) {
@@ -225,7 +302,11 @@ public class Parser {
         return getRestaurantFromFile(file);
     }
 
-
+    /**
+     * Gets the List of the restaurants
+     *
+     * @return List<Restaurant> list of the restaurants
+     */
     public static List<Restaurant> getAllRestaurants() {
         File file = new File("src/server/resources/RestaurantIDs.dat");
         List<Restaurant> restaurantList = new ArrayList<>();
@@ -244,6 +325,11 @@ public class Parser {
         return restaurantList;
     }
 
+    /**
+     * Gets all reservations
+     *
+     * @return List<String> list of reservations
+     */
     public static List<String> getAllReservations() {
         File file = new File("src/server/resources/ReservationIDs.dat");
         List<String> reservationList = new ArrayList<>();
