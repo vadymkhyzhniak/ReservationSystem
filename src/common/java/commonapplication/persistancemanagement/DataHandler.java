@@ -2,8 +2,19 @@ package commonapplication.persistancemanagement;
 
 import java.io.*;
 
+/**
+ * Class is used for reading the data from files
+ *
+ * @author Chiheb Bacha
+ */
 public abstract class DataHandler {
 
+    /**
+     * Reads the file
+     *
+     * @param file File to be read
+     * @return String data from the file
+     */
     public static String readFile(File file) {
         if (file == null) {
             return "";
