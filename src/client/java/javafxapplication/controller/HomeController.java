@@ -29,7 +29,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-
+/**
+ * Controls the home scene
+ *
+ * @author Maha Marhag
+ */
 public class HomeController implements Initializable {
     @FXML
     private WebView webView;
@@ -65,11 +69,19 @@ public class HomeController implements Initializable {
     private String name;
     private String restaurant;
 
+    /**
+     * Greets the user
+     *
+     * @param name User name
+     */
     public void showName(String name) {
         welcome.setText("Welcome " + name);
         this.name = welcome.getText().substring(7);
     }
 
+    /**
+     * Creates a HomeController
+     */
     public HomeController() {
 
         this.list = FXCollections.observableArrayList();
@@ -85,18 +97,40 @@ public class HomeController implements Initializable {
 
     }
 
+    /**
+     * Sets the restaurant
+     *
+     * @param r Restaurant to be set
+     */
     public void setR(Restaurant r) {
         this.r = r;
     }
 
+    /**
+     * Transforms the ObservableList of restaurants into the List of restaurant names
+     *
+     * @param list An ObservableList of restaurants
+     * @return A List representing restaurant names
+     */
     private List<String> toStringList(ObservableList<Restaurant> list) {
         return list.stream().map(Restaurant::getName).collect(Collectors.toList());
     }
 
+    /**
+     * Gets the ObservableList of restaurants
+     *
+     * @return the ObservableList of restaurants
+     */
     public ObservableList<Restaurant> getList() {
         return list;
     }
 
+    /**
+     * Initializes the HomeController
+     *
+     * @param location
+     * @param resources
+     */
     public void initialize(URL location, ResourceBundle resources) {
         engine = webView.getEngine();
         listView.getItems().addAll(toStringList(list));
@@ -109,6 +143,12 @@ public class HomeController implements Initializable {
 
     }
 
+    /**
+     * Searches for the restaurant, if the search bar is empty, shows all restaurants,
+     * if text is present, calls searchList() method
+     *
+     * @param e ActionEvent
+     */
     public void search(ActionEvent e) {
         if (e.getSource() == search) {
             if (searchBar.getText().isBlank()) {
@@ -122,6 +162,13 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * Searches for the restaurant relevant for the typed text in the search bar
+     *
+     * @param words Text from the search bar
+     * @param list List of the restaurants to search through
+     * @return a List of relevant restaurants' names
+     */
     private List<String> searchList(String words, List<String> list) {
         List<String> wordsList = Arrays.asList(words.trim().split(" "));
         return list.stream()
@@ -131,7 +178,9 @@ public class HomeController implements Initializable {
 
 
     /**
-     * filters the search through the value chosen by the user in the ChoiceBox
+     * Filters the search through the value chosen by the user in the ChoiceBox
+     *
+     * @param value Filter parameter
      */
     private void filter(String value) {
         int stars = -1;
@@ -174,10 +223,20 @@ public class HomeController implements Initializable {
         controller.getAllRestaurantsFilter(stars, priceRange, openNow, speciality, this::setRestaurantList);
     }
 
+    /**
+     * Sets the restaurant
+     *
+     * @param restaurant Restaurant to be set
+     */
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;
     }
 
+    /**
+     * Sets the list of the restaurants
+     *
+     * @param restaurants List of the restaurants to be set
+     */
     private void setRestaurantList(List<Restaurant> restaurants) {
         Platform.runLater(()-> {
             list.clear();
@@ -187,6 +246,12 @@ public class HomeController implements Initializable {
         });
     }
 
+    /**
+     * Starts the reservation process on the selected restaurant in the menu
+     *
+     * @param e ActionEvent
+     * @throws IOException
+     */
     public void makeReservation(ActionEvent e) throws IOException {
         if (e.getSource() == reserve) {
             if (name.isEmpty()) {
@@ -199,6 +264,9 @@ public class HomeController implements Initializable {
 
     }
 
+    /**
+     * Loads the map
+     */
     // the map is now resizable
     public void loadPage() {
         File localMapLink = new File("src/client/resources/simple_map.html");
@@ -206,7 +274,9 @@ public class HomeController implements Initializable {
     }
 
     /**
-     * returns to login page
+     * Returns to the login page
+     *
+     * @throws IOException
      */
     public void exit() throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
@@ -225,6 +295,11 @@ public class HomeController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches to the reservation scene
+     *
+     * @throws IOException
+     */
     public void goToReservation() throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation.fxml"));
@@ -241,7 +316,11 @@ public class HomeController implements Initializable {
         stage.show();
     }
 
-
+    /**
+     * Displays the calendar
+     *
+     * @param e ActionEvent
+     */
     public void displayCalendar(ActionEvent e) {
         if (e.getSource() == calendar) {
             if (name == null || name.isBlank()) {

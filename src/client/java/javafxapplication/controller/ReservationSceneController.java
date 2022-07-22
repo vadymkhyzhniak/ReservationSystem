@@ -29,6 +29,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+/**
+ * Controls the reservation scene
+ *
+ * @author Maha Marhag
+ */
 public class ReservationSceneController implements Initializable {
 
     private ReservationController controller;
@@ -103,6 +108,9 @@ public class ReservationSceneController implements Initializable {
     private boolean confirm = false;
 
 
+    /**
+     * Creates a ReservationSceneController
+     */
     public ReservationSceneController() {
         this.controller = new ReservationController();
         this.restaurantController = new RestaurantController();
@@ -120,6 +128,12 @@ public class ReservationSceneController implements Initializable {
 
     }
 
+    /**
+     * Displays the name of the user and the restaurant
+     *
+     * @param name User name
+     * @param restaurant Restaurant for the reservation
+     */
     public void displayInfo(String name, String restaurant) {
         String s = "Welcome " + name + "\n Restaurant: " + restaurant;
         info.setText(s);
@@ -127,14 +141,29 @@ public class ReservationSceneController implements Initializable {
         setUsername(name.trim());
     }
 
+    /**
+     * Sets the restaurant
+     *
+     * @param restaurant Restaurant to be set
+     */
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 
+    /**
+     * Sets the username
+     *
+     * @param username User name to be set
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Method is used for choosing the date in the calendar
+     *
+     * @param e ActionEvent
+     */
     public void chooseDate(ActionEvent e) {
 
         date = calender.getValue();
@@ -147,6 +176,11 @@ public class ReservationSceneController implements Initializable {
 
     }
 
+    /**
+     * Method is used for picking the time in the choice box with time slots
+     *
+     * @param e ActionEvent
+     */
     public void pickTime(ActionEvent e) {
         if (e.getSource().equals(confirmDate)) {
             if (start == null || end == null) {
@@ -169,7 +203,11 @@ public class ReservationSceneController implements Initializable {
         }
     }
 
-
+    /**
+     * Creates an actual reservation
+     *
+      * @return Reservation reservation
+     */
     private Reservation reserve() {
         Random rand = new Random();
         if (restaurant.getTables().length > 0) {
@@ -184,6 +222,11 @@ public class ReservationSceneController implements Initializable {
     }
 
 
+    /**
+     * Adds the reservation to the system after verifying data
+     *
+     * @param e ActionEvent
+     */
     public void makeReservation(ActionEvent e) {
         if (e.getSource().equals(makeReservation)) {
             if (verify && confirm) {
@@ -205,6 +248,11 @@ public class ReservationSceneController implements Initializable {
 
     }
 
+    /**
+     * Confirms the reservation
+     *
+     * @param e ActionEvent
+     */
     public void confirmReservation(ActionEvent e) {
         if (e.getSource().equals(confirmReservation)) {
             if (verify && confirm) {
@@ -232,7 +280,11 @@ public class ReservationSceneController implements Initializable {
 
     }
 
-
+    /**
+     * Cancels the reservation
+     *
+     * @param e ActionEvent
+     */
     public void cancelReservation(ActionEvent e) {
         if (e.getSource().equals(cancelReservation)) {
             if (verify && confirm) {
@@ -271,6 +323,11 @@ public class ReservationSceneController implements Initializable {
     }
 
 
+    /**
+     * Generates a schema with tables
+     *
+     * @param e ActionEvent
+     */
     @FXML
     public void generateSchema(ActionEvent e) {
         if (e.getSource().equals(availableTables)) {
@@ -305,6 +362,12 @@ public class ReservationSceneController implements Initializable {
 
     }
 
+    /**
+     * Exits the reservation scene
+     *
+     * @param e ActionEvent
+     * @throws IOException
+     */
     public void exit(ActionEvent e) throws IOException {
         Stage stage;
         Rectangle2D visualBounds;
@@ -323,6 +386,12 @@ public class ReservationSceneController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Sets the list of reservations
+     *
+     * @param success Process status
+     * @param reservations Actual reservations to be added
+     */
     private void setReservationList(Boolean success, Reservation reservations) {
         Platform.runLater(() -> {
             if (success) {
@@ -331,10 +400,21 @@ public class ReservationSceneController implements Initializable {
         });
     }
 
+    /**
+     * Shows the text asking to confirm the reservation
+     *
+     * @param text Table number
+     */
     public void setPrompt(String text) {
         prompt.setText("table n°" + text + " is reserved, please confirm reservation");
     }
 
+    /**
+     * Initializes the ReservationSceneController
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         buttons = new Button[]{t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15};

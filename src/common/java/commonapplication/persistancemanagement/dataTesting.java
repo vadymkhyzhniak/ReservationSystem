@@ -13,6 +13,11 @@ import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class is used for testing the data operations
+ *
+ * @author Chiheb Bacha
+ */
 // You can actually write all your tests here
 @TestOnly
 public class dataTesting {
@@ -25,6 +30,11 @@ public class dataTesting {
     File usernamesFile = new File("src/server/resources/Usernames.dat");
     File usersFile = new File("src/server/resources/Users.dat");
 
+    /**
+     * Creates an array of users
+     *
+     * @return User[] array of users
+     */
     private static User[] createArr() {
         User[] userArr = new User[10000];
         for (int i = 0; i < 10000; i++) {
@@ -33,12 +43,18 @@ public class dataTesting {
         return userArr;
     }
 
+    /**
+     * Deletes users from saver
+     */
     private static void userCleanup() {
         for (int i = 0; i < 10000; i++) {
             Saver.deleteUser(new User(String.valueOf(i), "x".hashCode()));
         }
     }
 
+    /**
+     * Adds users to saver
+     */
     private static void userSetup() {
         User[] userArr = createArr();
         for (int i = 0; i < 10000; i++) {
