@@ -96,6 +96,9 @@ public class dataTesting {
     // Actual Tests
     //
 
+    /**
+     * Adds user for test
+     */
     @Test
     public void addUserTest() {
         // Deleting the users just in case they were already created
@@ -128,6 +131,9 @@ public class dataTesting {
         Saver.deleteUser(user1);
     }
 
+    /**
+     * Deletes user for test
+     */
     @Test
     public void deleteUserTest() {
         // Adding the users to the data files
