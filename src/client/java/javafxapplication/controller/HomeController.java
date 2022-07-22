@@ -134,55 +134,44 @@ public class HomeController implements Initializable {
      * filters the search through the value chosen by the user in the ChoiceBox
      */
     private void filter(String value) {
+        int stars = -1;
+        int priceRange = -1;
+        boolean openNow = false;
+        Speciality speciality = Speciality.Unbekannt;
 
-        for (int i = 0; i < filters.length; i++) {
-            if (value.equals("$")) {
-                r.setPriceRange(1);
-                break;
-            }
-            if (value.equals("$$")) {
-                r.setPriceRange(2);
-                break;
-            }
-            if (value.equals("$$$")) {
-                r.setPriceRange(3);
-                break;
-            }
-            if (value.equals("open now")) {
-                r.setOpenNow(true);
-                break;
-            }
-            if (value.equals("★")) {
-                r.setStars(1);
-                break;
-            }
-            if (value.equals("★★")) {
-                r.setStars(2);
-                break;
-            }
-            if (value.equals("★★★")) {
-                r.setStars(3);
-                break;
-            }
-            if (value.equals("★★★★")) {
-                r.setStars(4);
-                break;
-            }
-            if (value.equals("★★★★★")) {
-                r.setStars(5);
-                break;
-            }
-            if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
-                r.setSpeciality(Speciality.valueOf(value));
-                break;
-            }
+
+        if (value.equals("$")) {
+            priceRange = 1;
+        }
+        if (value.equals("$$")) {
+            priceRange = 2;
+        }
+        if (value.equals("$$$")) {
+            priceRange = 3;
+        }
+        if (value.equals("open now")) {
+            openNow = true;
+        }
+        if (value.equals("★")) {
+            stars = 1;
+        }
+        if (value.equals("★★")) {
+            stars = 2;
+        }
+        if (value.equals("★★★")) {
+            stars = 3;
+        }
+        if (value.equals("★★★★")) {
+            stars = 4;
+        }
+        if (value.equals("★★★★★")) {
+            stars = 5;
+        }
+        if (Arrays.stream(Speciality.values()).anyMatch(x -> x.name().equals(value))) {
+            speciality = Speciality.valueOf(value);
         }
 
-        controller.getAllRestaurants(this::setRestaurantList);
-        listView.getItems().clear();
-        listView.getItems().addAll(toStringList(list));
-
-
+        controller.getAllRestaurantsFilter(stars, priceRange, openNow, speciality, this::setRestaurantList);
     }
 
     public void setRestaurant(String restaurant) {
@@ -190,14 +179,11 @@ public class HomeController implements Initializable {
     }
 
     private void setRestaurantList(List<Restaurant> restaurants) {
-        Platform.runLater(() -> {
+        Platform.runLater(()-> {
+            list.clear();
+            listView.getItems().clear();
             list.setAll(restaurants);
             listView.getItems().addAll(toStringList(list));
-            filterBox.getItems().clear();
-            filterBox.getItems().addAll(filters);
-            filterBox.getSelectionModel().selectedItemProperty()
-                    .addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                            -> filter(newValue));
         });
     }
 
