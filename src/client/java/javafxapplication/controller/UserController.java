@@ -11,10 +11,18 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * Class is used to handle operations on users with the server side
+ *
+ * @author Maha Marhag
+ */
 public class UserController {
     private final WebClient webClient;
     private final List<User> users;
 
+    /**
+     * Creates a UserController
+     */
     public UserController() {
         this.webClient = WebClient.builder()
                 .baseUrl("http://localhost:8080/api/v1/")
@@ -25,7 +33,10 @@ public class UserController {
     }
 
     /**
-    sends a request to add a user to the server's database when invoking the register method in LoginController
+     * Sends a request to add a user to the server's database when invoking the register method in LoginController
+     *
+     * @param user Actual user
+     * @param userConsumer
      */
     public void addUser(User user, Consumer<List<User>> userConsumer) {
         webClient.post()
@@ -40,7 +51,12 @@ public class UserController {
                 });
     }
 
-
+    /**
+     * Sends a request to the server to authenticate a user
+     * @param u Actual user
+     * @param e ActionEvent
+     * @param userConsumer
+     */
     public void authenticateUser(User u, ActionEvent e, BiConsumer<Boolean, ActionEvent> userConsumer) {
         webClient.post()
                 .uri("user/authenticate")

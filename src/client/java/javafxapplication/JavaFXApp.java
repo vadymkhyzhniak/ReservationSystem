@@ -17,6 +17,13 @@ public class JavaFXApp extends Application{
 
     private static final String MAIN = "/main.fxml";
 
+    /**
+     * Starts the login scene
+     *
+     * @param primaryStage
+     * @throws IOException
+     * @author Maha Marhag
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
