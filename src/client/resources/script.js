@@ -52,10 +52,10 @@ function addMarker(props) {
 
     var infoWindow = new google.maps.InfoWindow({maxWidth: 400});
     google.maps.event.addListener(marker, 'click', function () {
-        var markerContent = "<h1 style='font-size: 55px'>" + name + "</h1>" +
-            "<h2 style='font-size: 40px'>" + address + "</h2>" +
-            "<img src='star.png' width='30' height='30' style='display: inline;'>" + "<h2 style='display: inline; font-size: 40px;'>" + " :" + rating + "</h2>" +
-            "<img src='dollarsign.png' width='30' height='30' style='display: inline; margin-left: 15px;'>" + "<h2 style='display: inline; font-size: 40px;'>" + " :" + price + "</h2>"
+        var markerContent = "<h1 style='font-size: 55px; margin-left: 10px'>" + name + "</h1>" +
+            "<h2 style='font-size: 40px; margin-left: 10px'>" + address + "</h2>" +
+            "<img src='star.png' width='30' height='30' style='display: inline; margin-left: 10px; vertical-align: middle'>" + "<h2 style='display: inline; font-size: 40px; vertical-align: middle; '>" + " :" + rating + "</h2>" +
+            "<img src='dollarsign.png' width='30' height='30' style='display: inline; margin-left: 15px; vertical-align: middle'>" + "<h2 style='display: inline; font-size: 40px; vertical-align: middle'>" + " :" + price + "</h2>"
         ;
         infoWindow.setContent(markerContent);
         infoWindow.open(map, marker)
