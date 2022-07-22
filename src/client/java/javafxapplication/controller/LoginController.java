@@ -110,9 +110,10 @@ public class LoginController {
                     loginLabel.setText("User already exists, please login");
                 } else {
                     controller.addUser(newUser, this::setUserList);
+                    loginLabel.setText("Registration successful!" + System.lineSeparator() + "Enter your password to log in");
                 }
                 passTxt.setText("");
-                loginLabel.setText("Registration successful!" + System.lineSeparator() + "Enter your password to log in");
+
             }
         }
     }
