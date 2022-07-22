@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 // login as guest to view app, still working on client-server connection
 public class LoginController {
@@ -67,15 +68,19 @@ public class LoginController {
     public void register(ActionEvent e) throws IOException {
         if (e.getSource() == register) {
             loginLabel.setText("");
-            register.setDisable(false);
             var newUser = new User(userTxt.getText(), passTxt.getText().hashCode());
-            if (userTxt.getText().isBlank() == true || passTxt.getText().isBlank() == true) {
+            if (userTxt.getText().isBlank() == true || passTxt.getText().isBlank() == true || userTxt.getText().contains(",") || userTxt.getText().contains("/")
+                    || userTxt.getText().contains(";") || userTxt.getText().contains("<") || userTxt.getText().contains(">") || userTxt.getText().contains(":")
+                    || userTxt.getText().toLowerCase(Locale.ROOT).contains("ö") || userTxt.getText().toLowerCase(Locale.ROOT).contains("ä")
+                    || userTxt.getText().toLowerCase(Locale.ROOT).contains("ü") || userTxt.getText().toLowerCase(Locale.ROOT).contains("ß")) {
                 if (userTxt.getText().isBlank() == true && passTxt.getText().isBlank() == true) {
                     loginLabel.setText("You do realise you need a username and a password, right?");
                 } else if (userTxt.getText().isBlank() == true) {
                     loginLabel.setText("So.. How should we call you?");
-                } else {
+                } else if (passTxt.getText().isBlank() == true) {
                     loginLabel.setText("Did you maybe forget something?");
+                } else {
+                    loginLabel.setText("Usernames must be a combination of " + System.lineSeparator() + "characters from the english alphabet,-,_ and numbers");
                 }
             } else {
 
