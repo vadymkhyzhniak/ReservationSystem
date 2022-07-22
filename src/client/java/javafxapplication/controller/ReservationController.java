@@ -23,7 +23,7 @@ public class ReservationController {
     }
 
     /**
-     sends a request to add a reservation to the server's database when invoking the makeReservation method in ReservationController
+     sends a request to add a reservation to the server's database when invoking the makeReservation method in ReservationSceneController
      */
     public void addReservation(Reservation reservation, BiConsumer<Boolean, Reservation> reservationConsumer) {
         webClient.post()

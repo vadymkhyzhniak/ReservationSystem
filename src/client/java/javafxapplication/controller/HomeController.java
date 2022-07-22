@@ -1,4 +1,5 @@
 package javafxapplication.controller;
+
 import commonapplication.models.*;
 import commonapplication.persistancemanagement.Parser;
 import javafx.application.Platform;
@@ -39,17 +40,17 @@ public class HomeController implements Initializable {
     @FXML
     private Button exit;
     @FXML
-    private Button search ;
+    private Button search;
     @FXML
     private TextField searchBar;
     @FXML
     private ChoiceBox<String> filterBox;
-@FXML
-private Button reserve;
-@FXML
-private Label welcome;
     @FXML
-private ListView<String> listView;
+    private Button reserve;
+    @FXML
+    private Label welcome;
+    @FXML
+    private ListView<String> listView;
     private Stage stage;
     private Parent root;
 
@@ -57,27 +58,28 @@ private ListView<String> listView;
     private final RestaurantController controller;
 
     private final ObservableList<Restaurant> list;
-    private  Restaurant r;
+    private Restaurant r;
     private final String[] filters;
-private String name;
-private String restaurant;
+    private String name = "";
+    private String restaurant;
+
     public void showName(String name) {
-       welcome.setText("Welcome "+name);
-       this.name= welcome.getText().substring(7);
+        welcome.setText("Welcome " + name);
+        this.name = welcome.getText().substring(7);
     }
 
     public HomeController() {
 
-        this.list= FXCollections.observableArrayList();
-        this.controller =  new RestaurantController();
-        r= new Restaurant(Speciality.Unbekannt,-1,-1,false);
+        this.list = FXCollections.observableArrayList();
+        this.controller = new RestaurantController();
+        r = new Restaurant(Speciality.Unbekannt, -1, -1, false);
         controller.getAllRestaurants(this::setRestaurantList);
-        filters= new String[]
-        {"$", "$$", "$$$", "★", "★★","★★★","★★★★","★★★★★", "open now",
-                Speciality.Vietnamesisch.name(),Speciality.Deutsch.name(),Speciality.Japanisch.name(),
-        Speciality.Italienisch.name(),Speciality.Thailändisch.name(),Speciality.Sushi.name(),Speciality.Hamburger.name()
-        ,Speciality.Mexikanisch.name(),Speciality.Döner.name(),Speciality.Türkisch.name(),Speciality.Griechisch.name(),
-        Speciality.Pizza.name(),Speciality.Pizza.name(),Speciality.Indisch.name(),Speciality.Chinesisch.name(),Speciality.Spanisch.name()};
+        filters = new String[]
+                {"$", "$$", "$$$", "★", "★★", "★★★", "★★★★", "★★★★★", "open now",
+                        Speciality.Vietnamesisch.name(), Speciality.Deutsch.name(), Speciality.Japanisch.name(),
+                        Speciality.Italienisch.name(), Speciality.Thailändisch.name(), Speciality.Sushi.name(), Speciality.Hamburger.name()
+                        , Speciality.Mexikanisch.name(), Speciality.Döner.name(), Speciality.Türkisch.name(), Speciality.Griechisch.name(),
+                        Speciality.Pizza.name(), Speciality.Pizza.name(), Speciality.Indisch.name(), Speciality.Chinesisch.name(), Speciality.Spanisch.name()};
 
     }
 
@@ -86,7 +88,7 @@ private String restaurant;
     }
 
     private List<String> toStringList(ObservableList<Restaurant> list) {
-        return  list.stream().map(Restaurant::getName).collect(Collectors.toList());
+        return list.stream().map(Restaurant::getName).collect(Collectors.toList());
     }
 
     public ObservableList<Restaurant> getList() {
@@ -104,29 +106,30 @@ private String restaurant;
 
 
     }
-public void search(ActionEvent e){
-        if (e.getSource()==search){
+
+    public void search(ActionEvent e) {
+        if (e.getSource() == search) {
             if (searchBar.getText().isBlank()) {
                 listView.getItems().clear();
                 listView.getItems().addAll(toStringList(list));
-            }
-            else{
+            } else {
                 listView.getItems().clear();
-                listView.getItems().addAll(searchList(searchBar.getText(),toStringList(list)));
+                listView.getItems().addAll(searchList(searchBar.getText(), toStringList(list)));
             }
 
         }
-}
-private List<String> searchList(String words, List<String> list){
-        List<String> wordsList =Arrays.asList(words.trim().split(" "));
+    }
+
+    private List<String> searchList(String words, List<String> list) {
+        List<String> wordsList = Arrays.asList(words.trim().split(" "));
         return list.stream()
-                .filter(s ->wordsList.stream().allMatch(y-> s.toLowerCase().contains(y.toLowerCase())))
+                .filter(s -> wordsList.stream().allMatch(y -> s.toLowerCase().contains(y.toLowerCase())))
                 .collect(Collectors.toList());
-}
+    }
 
 
     /**
- filters the search through the value chosen by the user in the ChoiceBox
+     * filters the search through the value chosen by the user in the ChoiceBox
      */
     private void filter(String value) {
 
@@ -173,20 +176,19 @@ private List<String> searchList(String words, List<String> list){
             }
         }
 
-        controller.getAllRestaurants( this::setRestaurantList);
+        controller.getAllRestaurants(this::setRestaurantList);
         listView.getItems().clear();
         listView.getItems().addAll(toStringList(list));
 
 
-
-}
+    }
 
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;
     }
 
     private void setRestaurantList(List<Restaurant> restaurants) {
-        Platform.runLater(()-> {
+        Platform.runLater(() -> {
             list.setAll(restaurants);
             listView.getItems().addAll(toStringList(list));
             filterBox.getItems().clear();
@@ -196,25 +198,27 @@ private List<String> searchList(String words, List<String> list){
                             -> filter(newValue));
         });
     }
+
     public void makeReservation(ActionEvent e) throws IOException {
-        if (e.getSource()==reserve){
-if (name.isEmpty()){
-    welcome.setText("please log in to proceed");
-}
-             setRestaurant(listView.getSelectionModel().getSelectedItem());
+        if (e.getSource() == reserve) {
+            if (name.isEmpty()) {
+                welcome.setText("please log in to proceed");
+            }
+            setRestaurant(listView.getSelectionModel().getSelectedItem());
             goToReservation();
         }
 
 
     }
-// the map is now resizable
+
+    // the map is now resizable
     public void loadPage() {
         File localMapLink = new File("src/client/resources/simple_map.html");
         engine.load(localMapLink.toURI().toString());
     }
 
     /**
-     returns to login page
+     * returns to login page
      */
     public void exit() throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
@@ -222,7 +226,7 @@ if (name.isEmpty()){
         root = loader.load();
 
 
-        stage= (Stage) exit.getScene().getWindow();
+        stage = (Stage) exit.getScene().getWindow();
 
         stage.setHeight(500);
         stage.setWidth(700);
@@ -232,14 +236,15 @@ if (name.isEmpty()){
         stage.centerOnScreen();
         stage.show();
     }
-    public void goToReservation() throws IOException{
+
+    public void goToReservation() throws IOException {
         Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation.fxml"));
-      root = loader.load();
-ReservationSceneController controller= loader.getController();
-controller.displayInfo(name,restaurant);
+        root = loader.load();
+        ReservationSceneController controller = loader.getController();
+        controller.displayInfo(name, restaurant);
 
-        stage= (Stage) exit.getScene().getWindow();
+        stage = (Stage) exit.getScene().getWindow();
         stage.setWidth(700);
         stage.setHeight(500);
         Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());

@@ -1,6 +1,5 @@
 package javafxapplication.controller;
 
-import commonapplication.models.Generator;
 import commonapplication.models.Reservation;
 import commonapplication.models.Restaurant;
 import commonapplication.models.Table;
@@ -35,7 +34,7 @@ public class ReservationSceneController implements Initializable {
     private final ObservableList<Reservation> reservationList;
     private LocalDate date;
     private LocalTime reservationStart, reservationEnd;
-    private boolean verif = false;
+    private boolean verify = false;
     private RestaurantController restaurantController;
     @FXML
     private Spinner<Integer> guests;
@@ -114,17 +113,7 @@ public class ReservationSceneController implements Initializable {
                 time = "0" + time;
             }
             times.add(time);
-            // We will just use full hours, kept this commented just in case..
-            /*
-            for (int j = 0; j < 4; j++) {
-                String[] minutes = {"00", "15", "30", "45"};
-                String time = i + ":" + minutes[j];
-                if (i < 10) {
-                    time = "0" + time;
-                }
-                times.add(time);
-            }
-            */
+
 
         }
 
@@ -161,62 +150,58 @@ public class ReservationSceneController implements Initializable {
         if (e.getSource().equals(confirmDate)) {
             if (start == null || end == null) {
                 prompt.setText("Please chose the period of your reservation");
-                this.verif = false;
+                this.verify = false;
             }
             if (start.getValue().isBlank() || end.getValue().isBlank()) {
                 prompt.setText("please provide reservation start and end");
-                this.verif = false;
+                this.verify = false;
             }
             this.reservationStart = LocalTime.parse(start.getValue());
             this.reservationEnd = LocalTime.parse(end.getValue());
 
             if (reservationStart.isBefore(reservationEnd)) {
-                this.verif = true;
+                this.verify = true;
             } else {
                 prompt.setText("Starting time seems to be equal to or after ending time");
-                this.verif = false;
+                this.verify = false;
             }
         }
     }
 
     public void makeReservation(ActionEvent e) {
         if (e.getSource().equals(makeReservation)) {
-            if (verif && confirm) {
-                Random rand = new Random();
-                if (restaurant.getTables().length > 0) {
-                    while (this.table == null) {
-                        this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
-                    }
-                } else {
-                    this.table = new Table();
-                }
-                Reservation reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
-                info.setText("\nTable has been successfully booked on " + date.toString() + "\n from: " + reservationStart.toString() + " to " + reservationEnd.toString());
+            if (verify && confirm) {
+
+                Reservation reservation = reserve();
+                info.setText("\nTable is booked on " + date.toString() + "\n from: " + reservationStart.toString() + " to " + reservationEnd.toString());
                 controller.addReservation(reservation, this::setReservationList);
             } else {
                 prompt.setText("failed to make a reservation, please choose a table before proceeding");
             }
         }
+        }
 
+
+
+    private Reservation reserve() {
+        Random rand = new Random();
+        if (restaurant.getTables().length > 0) {
+            while (this.table == null) {
+                this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
+            }
+        } else {
+            this.table = new Table();
+        }
+        Reservation reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
+        return reservation;
     }
 
     public void confirmReservation(ActionEvent e) {
         if (e.getSource().equals(confirmReservation)) {
-            if (verif && confirm) {
-                Random rand = new Random();
-                if (restaurant.getTables().length > 0) {
-                    while (this.table == null) {
-                        this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
-                    }
-                } else {
-                    this.table = new Table();
-                }
-                Reservation reservation;
-                if (Parser.reservationExists(Generator.generateUniqueId(reservationStart.toString(),
-                        reservationEnd.toString(), username, date.toString()))) {
-                    reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
+            if (verify && confirm) {
+                Reservation reservation = reserve();
+                if (Parser.reservationExists(reservation.getId())) {
                     Saver.confirmReservation(reservation);
-                    info.setText("Your reservation has been successfully confirmed");
                 } else {
                     info.setText("The reservation you are trying to confirm doesn't even exist.." + System.lineSeparator() + "Maybe make it first?");
                 }
@@ -230,21 +215,9 @@ public class ReservationSceneController implements Initializable {
 
     public void cancelReservation(ActionEvent e) {
         if (e.getSource().equals(cancelReservation)) {
-            if (verif && confirm) {
-                Random rand = new Random();
-                if (restaurant.getTables().length > 0) {
-                    while (this.table == null) {
-                        this.table = restaurant.getTables()[rand.nextInt(0, restaurant.getTables().length)];
-                    }
-                } else {
-                    this.table = new Table();
-                }
-                Reservation reservation;
-                if (Parser.reservationExists(Generator.generateUniqueId(reservationStart.toString(),
-                        reservationEnd.toString(), username, date.toString()))) {
-
-                    reservation = new Reservation(reservationStart, reservationEnd, username, restaurant, table, date);
-
+            if (verify && confirm) {
+                Reservation reservation = reserve();
+                if (Parser.reservationExists(reservation.getId())) {
                     if (Parser.isReservationConfirmed(reservation.getId())) {
                         info.setText("You have already confirmed your reservation.." + System.lineSeparator() + "it is INEVITABLE!");
                     } else {
@@ -255,15 +228,12 @@ public class ReservationSceneController implements Initializable {
                     info.setText("The reservation you are trying to cancel never existed in the first place.." + System.lineSeparator() +
                             "Maybe you could try making it first?");
                 }
-
-
             } else {
                 info.setText("Please first chose the details of the reservation you want to cancel.. or should i guess?");
             }
         }
 
     }
-
 
     @FXML
     public void generateSchema(ActionEvent e) {
@@ -292,7 +262,7 @@ public class ReservationSceneController implements Initializable {
             while (j < buttons.length) {
                 buttons[j].setStyle("-fx-background-color: #c90b04;");
                 buttons[j].setDisable(true);
-
+                j++;
             }
         }
 
@@ -307,9 +277,10 @@ public class ReservationSceneController implements Initializable {
         Parent root = loader.load();
 
         stage = (Stage) home.getScene().getWindow();
+
+        Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
         stage.setWidth(700);
         stage.setHeight(500);
-        Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
@@ -336,21 +307,6 @@ public class ReservationSceneController implements Initializable {
             button.setOnAction(e -> setPrompt(text));
         }
 
-     /*   t0.setOnAction(e->setPrompt(t0.getText()));
-        t1.setOnAction(e->setPrompt(t1.getText()));
-        t2.setOnAction(e->setPrompt(t2.getText()));
-        t3.setOnAction(e->setPrompt(t3.getText()));
-        t4.setOnAction(e->setPrompt(t4.getText()));
-        t5.setOnAction(e->setPrompt(t5.getText()));
-        t6.setOnAction(e->setPrompt(t6.getText()));
-        t7.setOnAction(e->setPrompt(t7.getText()));
-        t9.setOnAction(e->setPrompt(t9.getText()));
-        t10.setOnAction(e->setPrompt(t10.getText()));
-        t11.setOnAction(e->setPrompt(t11.getText()));
-        t12.setOnAction(e->setPrompt(t12.getText()));
-        t13.setOnAction(e->setPrompt(t13.getText()));
-        t14.setOnAction(e->setPrompt(t14.getText()));
-        t15.setOnAction(e->setPrompt(t15.getText()));*/
 
         SpinnerValueFactory<Integer> valueFactory = new
                 SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20);

@@ -9,9 +9,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication.controller.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication.controller.LoginController">
     <left>
-        <AnchorPane prefWidth="200.0" style="-fx-background-color: #4d9ae0;" BorderPane.alignment="CENTER">
+        <AnchorPane minHeight="500.0" prefWidth="200.0" style="-fx-background-color: #4d9ae0;" BorderPane.alignment="CENTER">
             <children>
                 <Label alignment="CENTER" layoutX="-1.0" layoutY="83.0" prefHeight="27.0" prefWidth="201.0" text="Nibble" textAlignment="CENTER" textFill="#f4f2f2" textOverrun="CENTER_ELLIPSIS">
                     <font>
@@ -33,7 +33,7 @@
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane prefWidth="500.0" BorderPane.alignment="CENTER">
+        <AnchorPane minHeight="500.0" prefWidth="500.0" BorderPane.alignment="CENTER">
             <children>
                 <Label alignment="CENTER" layoutX="9.0" layoutY="38.0" prefHeight="33.0" prefWidth="391.0" text="Login to Nibble">
                     <font>

@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-// login as guest to view app, still working on client-server connection
 public class LoginController {
 
     private Stage stage;
@@ -52,7 +51,6 @@ public class LoginController {
         this.username = username;
     }
 
-    private Boolean authenticate;
 
     public LoginController() {
         this.userList = FXCollections.observableArrayList();
@@ -129,11 +127,7 @@ public class LoginController {
 
     }
 
- /*   public void setAuthenticate(Boolean authenticate, ActionEvent e) {
-        if(authenticate){
-            changeToMainScene(e);
-        }
-    }*/
+
 
     private void setUserList(List<User> users) {
         Platform.runLater(() -> {
@@ -153,8 +147,8 @@ public class LoginController {
         controller1.showName(username);
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 
-        stage.setWidth(600);
-        stage.setHeight(400);
+        stage.setWidth(700);
+        stage.setHeight(500);
         Scene scene = new Scene(root, visualBounds.getWidth(), visualBounds.getHeight());
         stage.setScene(scene);
         stage.centerOnScreen();
