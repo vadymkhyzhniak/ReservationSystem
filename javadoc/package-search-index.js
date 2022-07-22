@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"api.tests"},{"l":"commonapplication.models"},{"l":"commonapplication.persistancemanagement"},{"l":"javafxapplication"},{"l":"javafxapplication.controller"},{"l":"springapplication"},{"l":"springapplication.rest"},{"l":"springapplication.service"}];updateSearchResults();

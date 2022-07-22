@@ -1,0 +1,8 @@
+api.tests
+commonapplication.models
+commonapplication.persistancemanagement
+javafxapplication
+javafxapplication.controller
+springapplication
+springapplication.rest
+springapplication.service
